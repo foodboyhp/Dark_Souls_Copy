@@ -220,19 +220,15 @@ namespace PHH
                     playerManager.isInAir = true;
                 }
             }
-
-            if (playerManager.isGrounded)
+            
+            if(playerManager.isInteracting || inputHandler.moveAmount > 0)
             {
-                if(playerManager.isInteracting || inputHandler.moveAmount > 0)
-                {
-                    myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime);
-                }
-                else
-                {
-                    myTransform.position = targetPosition;
-                }
+                myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime);
             }
-
+            else
+            {
+                myTransform.position = targetPosition;
+            }
         }
         #endregion
     }
