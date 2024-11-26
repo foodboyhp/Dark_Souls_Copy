@@ -8,6 +8,7 @@ namespace PHH
     {
         WeaponHolderSlot leftHandSlot;
         WeaponHolderSlot rightHandSlot;
+        WeaponHolderSlot backSlot;
 
         DamageCollider leftHandDamageCollider;
         DamageCollider rightHandDamageCollider;
@@ -36,6 +37,10 @@ namespace PHH
                 {
                     rightHandSlot = weaponHolderSlot;
                 }
+                else if (weaponHolderSlot.isBackSlot)
+                {
+                    backSlot = weaponHolderSlot;
+                }
             }
         }
 
@@ -43,6 +48,7 @@ namespace PHH
         {
             if(isLeft)
             {
+                leftHandSlot.currentWeapon = weaponItem;
                 leftHandSlot.LoadWeaponModel(weaponItem);
                 LoadLeftWeaponDamageCollider();
                 quickSlotsUI.UpdateWeaponQuickSlotsUI(true, weaponItem);
@@ -62,15 +68,15 @@ namespace PHH
             {
                 if(inputHandler.twoHandFlag)
                 {
+                    backSlot.LoadWeaponModel(leftHandSlot.currentWeapon);
+                    leftHandSlot.UnloadWeaponAndDestroy();
                     animator.CrossFade(weaponItem.th_idle, 0.2f);
                 }
                 else
                 {
-                    rightHandSlot.LoadWeaponModel(weaponItem);
-                    LoadRightWeaponDamageCollider();
-                    quickSlotsUI.UpdateWeaponQuickSlotsUI(false, weaponItem);
-
                     #region Handle Right Weapon Idle Animations
+                    animator.CrossFade("Both Arms Empty", 0.2f);
+                    backSlot.UnloadWeaponAndDestroy();
                     if (weaponItem != null)
                     {
                         animator.CrossFade(weaponItem.right_hand_idle, 0.2f);
@@ -81,6 +87,10 @@ namespace PHH
                     }
                     #endregion
                 }
+                rightHandSlot.currentWeapon = weaponItem;
+                rightHandSlot.LoadWeaponModel(weaponItem);
+                LoadRightWeaponDamageCollider();
+                quickSlotsUI.UpdateWeaponQuickSlotsUI(false, weaponItem);
             }
         }
 

@@ -43,6 +43,7 @@ namespace PHH
         PlayerManager playerManager;    
         UIManager uiManager;
         CameraHandler cameraHandler;
+        WeaponSlotManager weaponSlotManager;
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -54,6 +55,7 @@ namespace PHH
             playerManager = GetComponent<PlayerManager>();  
             uiManager = FindObjectOfType<UIManager>();
             cameraHandler = FindObjectOfType<CameraHandler>();
+            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         }
 
         public void OnEnable()
@@ -92,6 +94,7 @@ namespace PHH
             HandleQuickSlotInput();
             HandleInventoryInput();
             HandleLockOnInput();
+            HandleTwoHandInput();
         }
 
         private void HandleMovementInput(float delta)
@@ -250,11 +253,12 @@ namespace PHH
                 twoHandFlag = !twoHandFlag;
                 if(twoHandFlag)
                 {
-
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
                 }
                 else
                 {
-
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.leftWeapon, true);
                 }
             }
         }
