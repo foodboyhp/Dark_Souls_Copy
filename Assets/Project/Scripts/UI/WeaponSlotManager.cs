@@ -16,7 +16,7 @@ namespace PHH
         public WeaponItem attackingWeapon;
 
         Animator animator;
-
+        PlayerManager playerManager;
         QuickSlotsUI quickSlotsUI;
         PlayerStats playerStats;
         InputHandler inputHandler;
@@ -26,6 +26,7 @@ namespace PHH
             quickSlotsUI = FindObjectOfType<QuickSlotsUI>();
             playerStats = GetComponentInParent<PlayerStats>();
             inputHandler = GetComponentInParent<InputHandler>();
+            playerManager = GetComponentInParent<PlayerManager>();
             WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
             foreach (WeaponHolderSlot weaponHolderSlot in weaponHolderSlots)
             {
@@ -105,24 +106,22 @@ namespace PHH
             rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
         }
 
-        public void OpenLeftDamageCollider()
+        public void OpenDamageCollider()
         {
-            leftHandDamageCollider.EnableDamageCollider();
+            if (playerManager.isUsingRightHand)
+            {                
+                rightHandDamageCollider.EnableDamageCollider();
+            }
+            if(playerManager.isUsingLeftHand)
+            {
+                leftHandDamageCollider.EnableDamageCollider();
+            }
         }
 
-        public void OpenRightDamageCollider()
-        {
-            rightHandDamageCollider.EnableDamageCollider();
-        }
-
-        public void CloseLeftDamageCollider()
-        {
-            leftHandDamageCollider.DisableDamageCollider();
-        }
-
-        public void CloseRightDamageCollider()
+        public void CloseDamageCollider()
         {
             rightHandDamageCollider.DisableDamageCollider();
+            leftHandDamageCollider.DisableDamageCollider();
         }
         #endregion
 

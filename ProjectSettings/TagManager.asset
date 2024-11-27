@@ -18,8 +18,8 @@ TagManager:
   - 
   - Environment
   - Character
-  - Controller
-  - 
+  - CharacterColliderBlocker
+  - Player
   - 
   - 
   - 

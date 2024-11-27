@@ -6,16 +6,21 @@ namespace PHH
 {
     public class PlayerStats : CharacterStats
     {
-        public HealthBar healthBar;
-        public StaminaBar staminaBar;
+        HealthBar healthBar;
+        StaminaBar staminaBar;
 
         AnimatorHandler animatorHandler;
+        PlayerManager playerManager;
+
+        public float staminaRegenerateAmount = 10f;
+        public float staminaRegenTimer = 0f;
 
         private void Awake()
         {
             healthBar = FindObjectOfType<HealthBar>();
             staminaBar = FindObjectOfType<StaminaBar>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            playerManager = GetComponent<PlayerManager>();
         }
 
         void Start ()
@@ -36,7 +41,7 @@ namespace PHH
             maxHealth = healthLevel * 10;   
             return maxHealth;
         }
-        private int SetMaxStaminaFromHealthLevel()
+        private float SetMaxStaminaFromHealthLevel()
         {
             maxStamina = staminaLevel * 10;
             return maxStamina;
@@ -44,6 +49,14 @@ namespace PHH
 
         public void TakeDamage(int damage)
         {
+            if (playerManager.isInvulnerable)
+            {
+                return;    
+            }
+            if (isDead)
+            {
+                return;
+            }
             currentHealth = currentHealth - damage;
             healthBar.SetCurrentHealth(currentHealth);
             animatorHandler.PlayerTargetAnimation("Damage_01", true);
@@ -52,6 +65,7 @@ namespace PHH
             {
                 currentHealth = 0;
                 animatorHandler.PlayerTargetAnimation("Dead_01", true);
+                isDead = true;
             }
         }
 
@@ -59,6 +73,23 @@ namespace PHH
         {
             currentStamina -= damage;
             staminaBar.SetCurrentStamina(currentStamina);
+        }
+
+        public void RegenerateStamina()
+        {
+            if (playerManager.isInteracting)
+            {
+                staminaRegenTimer = 0;
+            }
+            else 
+            {
+                staminaRegenTimer += Time.deltaTime;
+                if(currentStamina < maxStamina && staminaRegenTimer > 1f)
+                {
+                    currentStamina += staminaRegenerateAmount * Time.deltaTime;
+                    staminaBar.SetCurrentStamina(Mathf.RoundToInt(currentStamina));
+                }
+            }
         }
     }
 }

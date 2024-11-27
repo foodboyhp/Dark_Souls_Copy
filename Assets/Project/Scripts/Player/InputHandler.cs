@@ -43,6 +43,7 @@ namespace PHH
         PlayerManager playerManager;    
         UIManager uiManager;
         CameraHandler cameraHandler;
+        AnimatorHandler animatorHandler;
         WeaponSlotManager weaponSlotManager;
 
         Vector2 movementInput;
@@ -50,12 +51,13 @@ namespace PHH
 
         private void Awake()
         {
-            playerAttacker = GetComponent<PlayerAttacker>();    
+            playerAttacker = GetComponentInChildren<PlayerAttacker>();    
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();  
             uiManager = FindObjectOfType<UIManager>();
             cameraHandler = FindObjectOfType<CameraHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+            animatorHandler = GetComponentInChildren<AnimatorHandler>();
         }
 
         public void OnEnable()
@@ -132,24 +134,7 @@ namespace PHH
             //RB for the right hand
             if (rb_Input)
             {
-                if (playerManager.canDoCombo)
-                {
-                    comboFlag = true;
-                    playerAttacker.HandleWeaponCombo(playerInventory.rightWeapon);
-                    comboFlag = false;
-                }
-                else
-                {
-                    if (playerManager.isInteracting)
-                    {
-                        return;
-                    }
-                    if (playerManager.canDoCombo)
-                    {
-                        return;
-                    }
-                    playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
-                }
+                playerAttacker.HandlerRBAction();
             }
 
             if(rt_Input)
@@ -170,9 +155,12 @@ namespace PHH
                     {
                         return;
                     }
+                    animatorHandler.anim.SetBool("IsUsingLeftHand", true);
                     playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
                 }
             }
+
+
         }
 
         private void HandleQuickSlotInput()

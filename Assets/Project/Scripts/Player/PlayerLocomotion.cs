@@ -34,6 +34,8 @@ namespace PHH
         [SerializeField] float rotationSpeed = 10;
         [SerializeField] float fallingSpeed = 45;
 
+        public CapsuleCollider characterCollider;
+        public CapsuleCollider characterCollisionBlockerCollider;
         private void Awake()
         {
             cameraHandler = FindObjectOfType<CameraHandler>();
@@ -51,6 +53,7 @@ namespace PHH
 
             playerManager.isGrounded = true;
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
+            Physics.IgnoreCollision(characterCollider, characterCollisionBlockerCollider, true);  
         }
 
         #region Movement

@@ -12,6 +12,7 @@ namespace PHH
         Animator anim;
         CameraHandler cameraHandler;
         PlayerLocomotion playerLocomotion;
+        PlayerStats playerStats;
 
         InteractableUI interactableUI;
         public GameObject interactableUIGameObject;
@@ -24,7 +25,9 @@ namespace PHH
         public bool isInAir;
         public bool isGrounded;
         public bool canDoCombo;
-
+        public bool isUsingRightHand;
+        public bool isUsingLeftHand;
+        public bool isInvulnerable;
 
         private void Awake()
         {
@@ -38,6 +41,7 @@ namespace PHH
             anim = GetComponentInChildren<Animator>();
             playerLocomotion = GetComponent<PlayerLocomotion>();
             interactableUI = FindObjectOfType<InteractableUI>();
+            playerStats = GetComponent<PlayerStats>();
         }
 
         // Update is called once per frame
@@ -46,13 +50,18 @@ namespace PHH
             float delta = Time.deltaTime;
             isInteracting = anim.GetBool("isInteracting");
             canDoCombo = anim.GetBool("canDoCombo");
+            isUsingLeftHand = anim.GetBool("IsUsingLeftHand");
+            isUsingRightHand = anim.GetBool("IsUsingRightHand");
+            isInvulnerable = anim.GetBool("isInvulnerable");
             anim.SetBool("isInAir", isInAir);
             
             inputHandler.TickInput(delta);
             playerLocomotion.HandleRollingAndSprinting(delta);
             playerLocomotion.HandleJumping();
+            playerStats.RegenerateStamina();
 
             CheckForInteractableObject();
+
         }
         private void FixedUpdate()
         {
