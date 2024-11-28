@@ -17,7 +17,7 @@ namespace PHH
         {
             if (isSleeping && !enemyManager.isInteracting)
             {
-                enemyAnimatorManager.PlayerTargetAnimation(sleepAnimation, true);
+                enemyAnimatorManager.PlayTargetAnimation(sleepAnimation, true);
             }
 
             #region Handle TargetDetection
@@ -35,7 +35,7 @@ namespace PHH
                     {
                         enemyManager.currentTarget = characterStats;
                         isSleeping = false;
-                        enemyAnimatorManager.PlayerTargetAnimation(wakeAnimation, true);
+                        enemyAnimatorManager.PlayTargetAnimation(wakeAnimation, true);
                     }
                 }
             }

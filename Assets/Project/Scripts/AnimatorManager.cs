@@ -8,11 +8,16 @@ namespace PHH
     {
         public Animator anim;
 
-        public void PlayerTargetAnimation(string targetAnim, bool isInteracting)
+        public void PlayTargetAnimation(string targetAnim, bool isInteracting)
         {
             anim.applyRootMotion = isInteracting;
             anim.SetBool("isInteracting", isInteracting);
             anim.CrossFade(targetAnim, 0.2f);
+        }
+
+        public virtual void TakeCriticalDamageAnimationEvent()
+        {
+
         }
     }
 }

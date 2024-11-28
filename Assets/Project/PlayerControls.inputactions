@@ -167,6 +167,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "CriticalAttack",
+                    "type": "Button",
+                    "id": "dc84c4d2-1f49-45aa-8e15-92c75f25ff3a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "RT",
                     "type": "Button",
                     "id": "9877d137-4dd1-485b-8abd-d45d4a891f5d",
@@ -248,7 +257,7 @@
                     "name": "",
                     "id": "45770aad-bf11-4144-b5f1-09759c08c63c",
                     "path": "<Keyboard>/e",
-                    "interactions": "",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "",
                     "action": "RB",
@@ -318,6 +327,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5322048-6cb7-4501-bcb0-a5aab0e93d12",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Hold(duration=0.4)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CriticalAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

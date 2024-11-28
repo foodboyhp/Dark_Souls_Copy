@@ -15,7 +15,7 @@ namespace PHH
         [HideInInspector]
         public Transform myTransform;
         [HideInInspector]
-        public AnimatorHandler animatorHandler;
+        public PlayerAnimatorManager animatorHandler;
 
         public new Rigidbody rigidbody;
         public GameObject normalCamera;
@@ -46,7 +46,7 @@ namespace PHH
             playerManager = GetComponent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();  
             inputHandler = GetComponent<InputHandler>();
-            animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
             cameraObject = Camera.main.transform;
             myTransform = transform;
             animatorHandler.Initialize();
@@ -187,14 +187,14 @@ namespace PHH
 
                 if(inputHandler.moveAmount > 0)
                 {
-                    animatorHandler.PlayerTargetAnimation("Rolling", true);
+                    animatorHandler.PlayTargetAnimation("Rolling", true);
                     moveDirection.y = 0;
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
                 }
                 else
                 {
-                    animatorHandler.PlayerTargetAnimation("Backstep", true);
+                    animatorHandler.PlayTargetAnimation("Backstep", true);
                 }
             }
         }
@@ -235,12 +235,12 @@ namespace PHH
                 {
                     if (inAirTimer > 0.5f)
                     {
-                        animatorHandler.PlayerTargetAnimation("Landing", true);
+                        animatorHandler.PlayTargetAnimation("Landing", true);
                         inAirTimer = 0f;
                     }
                     else
                     {
-                        animatorHandler.PlayerTargetAnimation("Empty", false);
+                        animatorHandler.PlayTargetAnimation("Empty", false);
                         inAirTimer = 0f;
                     }
 
@@ -258,7 +258,7 @@ namespace PHH
                 {
                     if (playerManager.isInteracting == false && !inputHandler.rollFlag)
                     {
-                        animatorHandler.PlayerTargetAnimation("Falling", true);
+                        animatorHandler.PlayTargetAnimation("Falling", true);
                     }
 
                     Vector3 vel = rigidbody.velocity;
@@ -296,7 +296,7 @@ namespace PHH
                     moveDirection.Normalize();
                     //moveDirection.y = 0;
 
-                    animatorHandler.PlayerTargetAnimation("Jump", true);
+                    animatorHandler.PlayTargetAnimation("Jump", true);
                     Quaternion jumpRotation = Quaternion.LookRotation(moveDirection);   
                     myTransform.rotation = jumpRotation;    
                 }

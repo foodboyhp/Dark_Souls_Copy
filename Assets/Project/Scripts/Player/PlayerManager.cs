@@ -42,6 +42,8 @@ namespace PHH
             playerLocomotion = GetComponent<PlayerLocomotion>();
             interactableUI = FindObjectOfType<InteractableUI>();
             playerStats = GetComponent<PlayerStats>();
+            backStabCollider = GetComponentInChildren<BackStabCollider>();
+
         }
 
         // Update is called once per frame
@@ -54,6 +56,7 @@ namespace PHH
             isUsingRightHand = anim.GetBool("IsUsingRightHand");
             isInvulnerable = anim.GetBool("isInvulnerable");
             anim.SetBool("isInAir", isInAir);
+            anim.SetBool("isDead", playerStats.isDead);
             
             inputHandler.TickInput(delta);
             playerLocomotion.HandleRollingAndSprinting(delta);

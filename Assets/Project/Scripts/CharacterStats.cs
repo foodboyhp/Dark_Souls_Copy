@@ -14,6 +14,10 @@ namespace PHH
         public float maxStamina;
         public float currentStamina;
 
+        public int focusPointLevel = 10;
+        public float maxFocusPoint;
+        public float currentFocusPoint;
+
         public bool isDead;
     }
 }

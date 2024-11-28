@@ -21,9 +21,6 @@ namespace PHH
         public float rotationSpeed = 15f;
         public float maximumAttackRange = 1.5f;
 
-        //public EnemyAttackAction[] enemyAttacks;
-        //public EnemyAttackAction currentAttack;
-
         [Header("AI Settings")]
         public float detectionRadius = 20;
         public float maximumDetectionAngle = 50;
@@ -37,6 +34,7 @@ namespace PHH
             enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
             enemyStats = GetComponent<EnemyStats>();
             enemyRigidbody = GetComponent<Rigidbody>();
+            backStabCollider = GetComponentInChildren<BackStabCollider>();
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
             navMeshAgent.enabled = false;
         }
@@ -48,6 +46,7 @@ namespace PHH
         {
             HandleRecoveryTime();
             isInteracting = enemyAnimatorManager.anim.GetBool("isInteracting");
+            enemyAnimatorManager.anim.SetBool("isDead", enemyStats.isDead);
         }
 
         private void FixedUpdate()

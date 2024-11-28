@@ -17,6 +17,7 @@ namespace PHH
         public bool y_Input;
         public bool rb_Input;
         public bool rt_Input;
+        public bool critical_Attack_Input;
         public bool jump_Input;
         public bool inventory_Input;
         public bool lockOn_Input;
@@ -37,13 +38,15 @@ namespace PHH
         public bool inventoryFlag;
         public float rollInputTimer;
 
+        public Transform criticalAttackRayCastStartPoint; 
+
         PlayerControls inputActions;
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;    
         UIManager uiManager;
         CameraHandler cameraHandler;
-        AnimatorHandler animatorHandler;
+        PlayerAnimatorManager animatorHandler;
         WeaponSlotManager weaponSlotManager;
 
         Vector2 movementInput;
@@ -57,7 +60,7 @@ namespace PHH
             uiManager = FindObjectOfType<UIManager>();
             cameraHandler = FindObjectOfType<CameraHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
-            animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
         }
 
         public void OnEnable()
@@ -78,6 +81,7 @@ namespace PHH
                 inputActions.PlayerMovement.LockOnTargetRight.performed += i => right_Stick_Right_Input = true;
                 inputActions.PlayerMovement.LockOnTargetLeft.performed += i => right_Stick_Left_Input = true;
                 inputActions.PlayerActions.Y.performed += i => y_Input = true;
+                inputActions.PlayerActions.CriticalAttack.performed += i => critical_Attack_Input = true;
             }
 
             inputActions.Enable();
@@ -97,6 +101,7 @@ namespace PHH
             HandleInventoryInput();
             HandleLockOnInput();
             HandleTwoHandInput();
+            HandlerCriticalAttackInput();
         }
 
         private void HandleMovementInput(float delta)
@@ -248,6 +253,14 @@ namespace PHH
                     weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
                     weaponSlotManager.LoadWeaponOnSlot(playerInventory.leftWeapon, true);
                 }
+            }
+        }
+        private void HandlerCriticalAttackInput()
+        {
+            if (critical_Attack_Input)
+            {
+                critical_Attack_Input = false;
+                playerAttacker.AttemptBackStabOrRiposte();
             }
         }
     }

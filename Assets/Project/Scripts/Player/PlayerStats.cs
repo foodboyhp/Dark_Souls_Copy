@@ -8,8 +8,9 @@ namespace PHH
     {
         HealthBar healthBar;
         StaminaBar staminaBar;
+        FocusPointBar focusPointBar;
 
-        AnimatorHandler animatorHandler;
+        PlayerAnimatorManager animatorHandler;
         PlayerManager playerManager;
 
         public float staminaRegenerateAmount = 10f;
@@ -19,7 +20,8 @@ namespace PHH
         {
             healthBar = FindObjectOfType<HealthBar>();
             staminaBar = FindObjectOfType<StaminaBar>();
-            animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            focusPointBar = FindObjectOfType<FocusPointBar>();
+            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
             playerManager = GetComponent<PlayerManager>();
         }
 
@@ -30,10 +32,15 @@ namespace PHH
             healthBar.SetMaxHealth(maxHealth);
             healthBar.SetCurrentHealth(currentHealth);
 
-            maxStamina = SetMaxStaminaFromHealthLevel();
+            maxStamina = SetMaxStaminaFromStaminaLevel();
             currentStamina = maxStamina;
             staminaBar.SetMaxStamina(maxStamina);
             staminaBar.SetCurrentStamina(currentStamina);
+
+            maxFocusPoint = SetMaxFocusPointFromFocusPointLevel();
+            currentFocusPoint = maxFocusPoint;
+            focusPointBar.SetMaxFocusPoint(maxFocusPoint);
+            focusPointBar.SetCurrentFocusPoint(currentFocusPoint);
         }
 
         private int SetMaxHealthFromHealthLevel()
@@ -41,10 +48,27 @@ namespace PHH
             maxHealth = healthLevel * 10;   
             return maxHealth;
         }
-        private float SetMaxStaminaFromHealthLevel()
+        private float SetMaxStaminaFromStaminaLevel()
         {
             maxStamina = staminaLevel * 10;
             return maxStamina;
+        }
+        private float SetMaxFocusPointFromFocusPointLevel()
+        {
+            maxFocusPoint = focusPointLevel * 10;
+            return maxFocusPoint;
+        }
+
+        public void TakeDamageNoAnimation(int damage)
+        {
+            if (isDead) return;
+            currentHealth = currentHealth - damage;
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
         }
 
         public void TakeDamage(int damage)
@@ -59,12 +83,12 @@ namespace PHH
             }
             currentHealth = currentHealth - damage;
             healthBar.SetCurrentHealth(currentHealth);
-            animatorHandler.PlayerTargetAnimation("Damage_01", true);
+            animatorHandler.PlayTargetAnimation("Damage_01", true);
 
             if(currentHealth <= 0)
             {
                 currentHealth = 0;
-                animatorHandler.PlayerTargetAnimation("Dead_01", true);
+                animatorHandler.PlayTargetAnimation("Dead_01", true);
                 isDead = true;
             }
         }
@@ -90,6 +114,26 @@ namespace PHH
                     staminaBar.SetCurrentStamina(Mathf.RoundToInt(currentStamina));
                 }
             }
+        }
+
+        public void HealPlayer(int amount)
+        {
+            currentHealth = currentHealth + amount;
+            if(currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            healthBar.SetCurrentHealth(currentHealth);
+        }
+
+        public void DeductFocusPoint(int focusPoint)
+        {
+            currentFocusPoint -= focusPoint;
+            if(currentFocusPoint < 0)
+            {
+                currentFocusPoint = 0;
+            }
+            focusPointBar.SetCurrentFocusPoint(currentFocusPoint);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace PHH
                         {
                             enemyAnimatorManager.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
                             enemyAnimatorManager.anim.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
-                            enemyAnimatorManager.PlayerTargetAnimation(currentAttack.actionAnimation, true);
+                            enemyAnimatorManager.PlayTargetAnimation(currentAttack.actionAnimation, true);
                             enemyManager.isPerformingAction = true;
                             enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
                             currentAttack = null;
