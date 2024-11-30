@@ -1380,10 +1380,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 170426335198223519, guid: 0d872d55bb03d2a48b666865631dd864, type: 3}
+      propertyPath: staminaRegenerateAmount
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 669048297015745852, guid: 0d872d55bb03d2a48b666865631dd864, type: 3}
       propertyPath: normalCamera
       value: 
       objectReference: {fileID: 850445519}
+    - target: {fileID: 669048297015745852, guid: 0d872d55bb03d2a48b666865631dd864, type: 3}
+      propertyPath: rotationSpeed
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 669048297015745852, guid: 0d872d55bb03d2a48b666865631dd864, type: 3}
       propertyPath: animatorHandler
       value: 

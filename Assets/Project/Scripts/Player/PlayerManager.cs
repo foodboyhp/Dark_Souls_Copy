@@ -12,6 +12,7 @@ namespace PHH
         Animator anim;
         CameraHandler cameraHandler;
         PlayerLocomotion playerLocomotion;
+        PlayerAnimatorManager playerAnimatorManager;
         PlayerStats playerStats;
 
         InteractableUI interactableUI;
@@ -31,19 +32,19 @@ namespace PHH
 
         private void Awake()
         {
+            inputHandler = GetComponent<InputHandler>();
+            anim = GetComponentInChildren<Animator>();
+            playerLocomotion = GetComponent<PlayerLocomotion>();
+            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
+            interactableUI = FindObjectOfType<InteractableUI>();
+            playerStats = GetComponent<PlayerStats>();
+            backStabCollider = GetComponentInChildren<BackStabCollider>();
         }
 
 
         void Start()
         {
             cameraHandler = CameraHandler.singleton;
-            inputHandler = GetComponent<InputHandler>();
-            anim = GetComponentInChildren<Animator>();
-            playerLocomotion = GetComponent<PlayerLocomotion>();
-            interactableUI = FindObjectOfType<InteractableUI>();
-            playerStats = GetComponent<PlayerStats>();
-            backStabCollider = GetComponentInChildren<BackStabCollider>();
-
         }
 
         // Update is called once per frame
@@ -59,6 +60,7 @@ namespace PHH
             anim.SetBool("isDead", playerStats.isDead);
             
             inputHandler.TickInput(delta);
+            playerAnimatorManager.canRotate = anim.GetBool("canRotate");
             playerLocomotion.HandleRollingAndSprinting(delta);
             playerLocomotion.HandleJumping();
             playerStats.RegenerateStamina();
@@ -71,6 +73,7 @@ namespace PHH
             float delta = Time.fixedDeltaTime;
             playerLocomotion.HandleMovement(delta);
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
+            playerLocomotion.HandleRotation(delta);
         }
         private void LateUpdate()
         {

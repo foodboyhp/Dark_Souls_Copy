@@ -12,7 +12,6 @@ namespace PHH
         PlayerLocomotion playerLocomotion;
         int vertical;
         int horizontal;
-        public bool canRotate;
 
         public void Initialize()
         {
@@ -81,12 +80,12 @@ namespace PHH
 
         public void CanRotate()
         {
-            canRotate = true;   
+            anim.SetBool("canRotate", true);
         }
 
         public void StopRotation()
         {
-            canRotate = false;  
+            anim.SetBool("canRotate", false);
         }
 
         public void EnableCombo()

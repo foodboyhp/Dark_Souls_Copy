@@ -8,6 +8,7 @@ namespace PHH
     {
         CameraHandler cameraHandler;
         PlayerManager playerManager;
+        PlayerStats playerStats;
         Transform cameraObject;
         InputHandler inputHandler;
         public Vector3 moveDirection;
@@ -15,7 +16,7 @@ namespace PHH
         [HideInInspector]
         public Transform myTransform;
         [HideInInspector]
-        public PlayerAnimatorManager animatorHandler;
+        public PlayerAnimatorManager playerAnimatorManager;
 
         public new Rigidbody rigidbody;
         public GameObject normalCamera;
@@ -34,22 +35,28 @@ namespace PHH
         [SerializeField] float rotationSpeed = 10;
         [SerializeField] float fallingSpeed = 45;
 
+        [Header("Stamina Costs")]
+        [SerializeField] int rollStaminaCost = 15;
+        [SerializeField] int backStepStaminaCost = 12;
+        [SerializeField] int sprintStaminaCost = 1;
+
         public CapsuleCollider characterCollider;
         public CapsuleCollider characterCollisionBlockerCollider;
         private void Awake()
         {
             cameraHandler = FindObjectOfType<CameraHandler>();
+            playerStats = GetComponent<PlayerStats>();
+            playerManager = GetComponent<PlayerManager>();
+            rigidbody = GetComponent<Rigidbody>();
+            inputHandler = GetComponent<InputHandler>();
+            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
         }
 
         void Start()
         {
-            playerManager = GetComponent<PlayerManager>();
-            rigidbody = GetComponent<Rigidbody>();  
-            inputHandler = GetComponent<InputHandler>();
-            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
             cameraObject = Camera.main.transform;
             myTransform = transform;
-            animatorHandler.Initialize();
+            playerAnimatorManager.Initialize();
 
             playerManager.isGrounded = true;
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
@@ -62,59 +69,61 @@ namespace PHH
 
         public void HandleRotation(float delta)
         {
-            if (inputHandler.lockOnFlag)
+            if (playerAnimatorManager.canRotate)
             {
-                if(inputHandler.rollFlag || inputHandler.sprintFlag)
+                if (inputHandler.lockOnFlag)
                 {
-                    Vector3 targetDirection = Vector3.zero;
-                    targetDirection = cameraHandler.cameraTransform.forward * inputHandler.vertical;
-                    targetDirection += cameraHandler.cameraTransform.right * inputHandler.horizontal;
-
-                    if(targetDirection ==  Vector3.zero)
+                    if (inputHandler.rollFlag || inputHandler.sprintFlag)
                     {
-                        targetDirection = transform.forward;
+                        Vector3 targetDirection = Vector3.zero;
+                        targetDirection = cameraHandler.cameraTransform.forward * inputHandler.vertical;
+                        targetDirection += cameraHandler.cameraTransform.right * inputHandler.horizontal;
+
+                        if (targetDirection == Vector3.zero)
+                        {
+                            targetDirection = transform.forward;
+                        }
+
+                        Quaternion tr = Quaternion.LookRotation(targetDirection);
+                        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+                        transform.rotation = targetRotation;
                     }
-
-                    Quaternion tr = Quaternion.LookRotation(targetDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-
-                    transform.rotation = targetRotation;
+                    else
+                    {
+                        Vector3 rotationDirection = moveDirection;
+                        rotationDirection = cameraHandler.currentLockOnTarget.position - transform.position;
+                        rotationDirection.y = 0;
+                        rotationDirection.Normalize();
+                        Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+                        transform.rotation = targetRotation;
+                    }
                 }
                 else
                 {
-                    Vector3 rotationDirection = moveDirection;
-                    rotationDirection = cameraHandler.currentLockOnTarget.position - transform.position;
-                    rotationDirection.y = 0;
-                    rotationDirection.Normalize();
-                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-                    transform.rotation = targetRotation;
+                    Vector3 targetDir = Vector3.zero;
+                    float moveOverride = inputHandler.moveAmount;
+
+                    targetDir = cameraObject.forward * inputHandler.vertical;
+                    targetDir += cameraObject.right * inputHandler.horizontal;
+
+                    targetDir.Normalize();
+                    targetDir.y = 0;
+
+                    if (targetDir == Vector3.zero)
+                    {
+                        targetDir = myTransform.forward;
+                    }
+
+                    float rs = rotationSpeed;
+
+                    Quaternion tr = Quaternion.LookRotation(targetDir);
+                    Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
+
+                    myTransform.rotation = targetRotation;
                 }
             }
-            else
-            {
-                Vector3 targetDir = Vector3.zero;
-                float moveOverride = inputHandler.moveAmount;
-
-                targetDir = cameraObject.forward * inputHandler.vertical;
-                targetDir += cameraObject.right * inputHandler.horizontal;
-
-                targetDir.Normalize();
-                targetDir.y = 0;
-
-                if(targetDir == Vector3.zero)
-                {
-                    targetDir = myTransform.forward;
-                }
-
-                float rs = rotationSpeed;
-
-                Quaternion tr = Quaternion.LookRotation(targetDir);
-                Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
-
-                myTransform.rotation = targetRotation;
-            }
-
         }
 
         public void HandleMovement(float delta)
@@ -140,6 +149,7 @@ namespace PHH
                 speed = sprintSpeed;
                 playerManager.isSprinting = true;
                 moveDirection *= speed;
+                playerStats.TakeDamage(sprintStaminaCost);
             } 
             else
             {
@@ -160,22 +170,22 @@ namespace PHH
 
             if(inputHandler.lockOnFlag && inputHandler.sprintFlag == false)
             {
-                animatorHandler.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
+                playerAnimatorManager.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
             }
             else
             {
-                animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
-            }
-
-            if (animatorHandler.canRotate)
-            {
-                HandleRotation(delta);
+                playerAnimatorManager.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
             }
         }
 
         public void HandleRollingAndSprinting(float delta)
         {
-            if (animatorHandler.anim.GetBool("isInteracting"))
+            if (playerAnimatorManager.anim.GetBool("isInteracting"))
+            {
+                return;
+            }
+
+            if(playerStats.currentStamina <= 0)
             {
                 return;
             }
@@ -187,14 +197,17 @@ namespace PHH
 
                 if(inputHandler.moveAmount > 0)
                 {
-                    animatorHandler.PlayTargetAnimation("Rolling", true);
+                    playerAnimatorManager.PlayTargetAnimation("Rolling", true);
                     moveDirection.y = 0;
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
+                    playerStats.TakeStaminaDamage(rollStaminaCost);
                 }
                 else
                 {
-                    animatorHandler.PlayTargetAnimation("Backstep", true);
+                    playerAnimatorManager.PlayTargetAnimation("Backstep", true);
+                    playerStats.TakeStaminaDamage(backStepStaminaCost);
+
                 }
             }
         }
@@ -235,12 +248,12 @@ namespace PHH
                 {
                     if (inAirTimer > 0.5f)
                     {
-                        animatorHandler.PlayTargetAnimation("Landing", true);
+                        playerAnimatorManager.PlayTargetAnimation("Landing", true);
                         inAirTimer = 0f;
                     }
                     else
                     {
-                        animatorHandler.PlayTargetAnimation("Empty", false);
+                        playerAnimatorManager.PlayTargetAnimation("Empty", false);
                         inAirTimer = 0f;
                     }
 
@@ -258,7 +271,7 @@ namespace PHH
                 {
                     if (playerManager.isInteracting == false && !inputHandler.rollFlag)
                     {
-                        animatorHandler.PlayTargetAnimation("Falling", true);
+                        playerAnimatorManager.PlayTargetAnimation("Falling", true);
                     }
 
                     Vector3 vel = rigidbody.velocity;
@@ -287,6 +300,10 @@ namespace PHH
             {
                 return;
             }
+            if (playerStats.currentStamina <= 0)
+            {
+                return;
+            }
             if (inputHandler.jump_Input)
             {
                 if(inputHandler.moveAmount > 0)
@@ -296,7 +313,7 @@ namespace PHH
                     moveDirection.Normalize();
                     //moveDirection.y = 0;
 
-                    animatorHandler.PlayTargetAnimation("Jump", true);
+                    playerAnimatorManager.PlayTargetAnimation("Jump", true);
                     Quaternion jumpRotation = Quaternion.LookRotation(moveDirection);   
                     myTransform.rotation = jumpRotation;    
                 }
