@@ -202,7 +202,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a462504dd00ae374cae6d8688fffa6f5, type: 2}
+  m_Motion: {fileID: 7400000, guid: 641d75cd1af6f084994a66618a341179, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -517,7 +517,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5633438624500191650}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 5716471172019593355}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 1
   m_WriteDefaultValues: 1
@@ -1238,6 +1239,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBool: isInteracting
   status: 0
+--- !u!114 &3627240442661587208
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetBool: isInteracting
+  status: 0
 --- !u!1107 &3655787918173093944
 AnimatorStateMachine:
   serializedVersion: 6
@@ -1353,7 +1368,7 @@ AnimatorStateMachine:
     m_Position: {x: 640, y: -250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2772313957543391186}
-    m_Position: {x: 640, y: -130, z: 0}
+    m_Position: {x: 640, y: -120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7147158933490938291}
     m_Position: {x: 640, y: -190, z: 0}
@@ -1435,7 +1450,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3745790101609845059}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 3627240442661587208}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 1
   m_WriteDefaultValues: 1
@@ -1561,6 +1577,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetBool: isInvulnerable
+  status: 0
+--- !u!114 &5716471172019593355
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetBool: isInteracting
   status: 0
 --- !u!1102 &5908384212599331243
 AnimatorState:

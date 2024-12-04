@@ -18,6 +18,8 @@ namespace PHH
         public float maxFocusPoint;
         public float currentFocusPoint;
 
+        public int soulCount = 0;
+
         public bool isDead;
     }
 }

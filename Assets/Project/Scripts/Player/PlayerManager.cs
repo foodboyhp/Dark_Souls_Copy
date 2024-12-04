@@ -38,7 +38,6 @@ namespace PHH
             playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
             interactableUI = FindObjectOfType<InteractableUI>();
             playerStats = GetComponent<PlayerStats>();
-            backStabCollider = GetComponentInChildren<BackStabCollider>();
         }
 
 
@@ -80,6 +79,7 @@ namespace PHH
             inputHandler.rollFlag = false;
             inputHandler.rb_Input = false;
             inputHandler.rt_Input = false;
+            inputHandler.lt_Input = false;
             inputHandler.d_Pad_Up = false;
             inputHandler.d_Pad_Down = false;    
             inputHandler.d_Pad_Left = false;
@@ -101,7 +101,7 @@ namespace PHH
                 playerLocomotion.inAirTimer += Time.deltaTime;
             }
         }
-
+        #region Player Interaction
         public void CheckForInteractableObject()
         {
             RaycastHit hit;
@@ -134,5 +134,13 @@ namespace PHH
                 }
             }
         }
+        public void OpenChestInteraction(Transform playerOpenChestStandingPoint)
+        {
+            playerLocomotion.rigidbody.velocity = Vector3.zero;
+            transform.position = playerOpenChestStandingPoint.transform.position;
+            playerAnimatorManager.PlayTargetAnimation("Pick Up Item", true);
+            
+        }
+        #endregion
     }
 }

@@ -26,7 +26,7 @@ namespace PHH
             animatorHandler.PlayTargetAnimation("Pick Up Item", true);
             playerInventory.weaponsInventory.Add(weapon);
             playerManager.itemInteractableGameObject.GetComponentInChildren<TextMeshProUGUI>().text = weapon.itemName;
-            //playerManager.itemInteractableGameObject.GetComponentInChildren<RawImage>().texture = weapon.itemIcon.texture;
+            playerManager.itemInteractableGameObject.GetComponentInChildren<RawImage>().texture = weapon.itemIcon.texture;
             playerManager.itemInteractableGameObject.SetActive(true);
             Destroy(gameObject);
         }

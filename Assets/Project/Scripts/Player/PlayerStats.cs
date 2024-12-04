@@ -135,5 +135,10 @@ namespace PHH
             }
             focusPointBar.SetCurrentFocusPoint(currentFocusPoint);
         }
+
+        public void AddSouls(int souls)
+        {
+            soulCount += souls;
+        }
     }
 }

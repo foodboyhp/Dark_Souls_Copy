@@ -11,6 +11,10 @@ namespace PHH
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
+            if(enemyManager.isInteracting)
+            {
+                return this;
+            }
             #region Handle EnemyTargetDetection
             Collider[] colliders = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.detectionRadius, detectionLayer);
 

@@ -6,6 +6,7 @@ namespace PHH
 {
     public class DamageCollider : MonoBehaviour
     {
+        CharacterManager characterManager;
         Collider damageCollider;
         public int currentWeaponDamage;
 
@@ -32,7 +33,15 @@ namespace PHH
             if(collision.tag == "Player")
             {
                 PlayerStats playerStats = collision.GetComponent<PlayerStats>();    
-
+                CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
+                if(enemyCharacterManager != null)
+                {
+                    if (enemyCharacterManager.isParrying)
+                    {
+                        characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Damage_01", true);
+                        return;
+                    }
+                }
                 if(playerStats != null)
                 {
                     playerStats.TakeDamage(currentWeaponDamage);
@@ -40,10 +49,17 @@ namespace PHH
             }
             if(collision.tag == "Enemy")
             {
-
                 EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
-
-                if(enemyStats != null)
+                CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
+                if (enemyCharacterManager != null)
+                {
+                    if (enemyCharacterManager.isParrying)
+                    {
+                        characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Damage_01", true);
+                        return;
+                    }
+                }
+                if (enemyStats != null)
                 {
                     enemyStats.TakeDamage(currentWeaponDamage);
                 }

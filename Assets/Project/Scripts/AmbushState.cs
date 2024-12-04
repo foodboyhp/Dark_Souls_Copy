@@ -15,6 +15,10 @@ namespace PHH
         public PursueTargetState pursueTargetState;
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
+            if (enemyManager.isInteracting)
+            {
+                return this;
+            }
             if (isSleeping && !enemyManager.isInteracting)
             {
                 enemyAnimatorManager.PlayTargetAnimation(sleepAnimation, true);
