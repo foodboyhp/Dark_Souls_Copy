@@ -6,6 +6,7 @@ namespace PHH
 {
     public class PlayerAttacker : MonoBehaviour
     {
+        PlayerEquipmentManager playerEquipmentManager;
         PlayerAnimatorManager animatorHandler;
         PlayerManager playerManager;
         PlayerStats playerStats;
@@ -19,6 +20,7 @@ namespace PHH
 
         private void Awake()
         {
+            playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
             playerManager = GetComponentInParent<PlayerManager>();  
             playerStats = GetComponentInParent<PlayerStats>();
             playerInventory = GetComponentInParent<PlayerInventory>();  
@@ -97,6 +99,10 @@ namespace PHH
             }
         }
 
+        public void HandleLBAction()
+        {
+            PerformLBBlockingAction();
+        }
         public void HandleLTAction()
         {
             if(playerInventory.leftWeapon.isShieldWeapon)
@@ -170,6 +176,23 @@ namespace PHH
         private void SuccessfullyCastSpell()
         {
             playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats);
+        }
+        #endregion
+        #region Defense Actions
+        private void PerformLBBlockingAction()
+        {
+            if (playerManager.isInteracting)
+            {
+                return ;
+            }
+            if (playerManager.isBlocking)
+            {
+                return;
+            }
+            animatorHandler.PlayTargetAnimation("Block_Start", false, true);
+            playerEquipmentManager.OpenBlockingCollider();
+            playerManager.isBlocking = true;
+
         }
         #endregion
         public void AttemptBackStabOrRiposte()

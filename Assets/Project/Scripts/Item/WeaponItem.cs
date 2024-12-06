@@ -12,6 +12,9 @@ namespace PHH
         public int baseDamage = 25;
         public int criticalDamageMultiplier = 4;
 
+        [Header("Absorbtion")]
+        public float physicalDamageAbsorbtion;
+
         [Header("Idle Animations")]
         public string left_hand_idle;
         public string right_hand_idle;

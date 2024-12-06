@@ -29,8 +29,10 @@ namespace PHH
         public float maximumDetectionAngle = 50;
         public float minimumDetectionAngle = -50;
         public float viewableAngle;
-
         public float currentRecoveryTime = 0;
+        [Header("AI Combat Settings")]
+        public bool allowAIToperformCombo;
+        public float comboLikelyhood;
         private void Awake()
         {
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();

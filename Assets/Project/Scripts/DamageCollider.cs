@@ -34,12 +34,24 @@ namespace PHH
             {
                 PlayerStats playerStats = collision.GetComponent<PlayerStats>();    
                 CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
+                BlockingCollider shield = collision.GetComponentInChildren<BlockingCollider>();
+
                 if(enemyCharacterManager != null)
                 {
                     if (enemyCharacterManager.isParrying)
                     {
                         characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Damage_01", true);
                         return;
+                    }
+                    else if(shield != null && enemyCharacterManager.isBlocking)
+                    {
+                        float physicalDamageAfterBlock =
+                            currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorbtion) / 100;
+                        if(playerStats != null)
+                        {
+                            playerStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block_Idle");
+                            return;
+                        }
                     }
                 }
                 if(playerStats != null)
@@ -51,12 +63,24 @@ namespace PHH
             {
                 EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
                 CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
+                BlockingCollider shield = collision.GetComponentInChildren<BlockingCollider>();
+
                 if (enemyCharacterManager != null)
                 {
                     if (enemyCharacterManager.isParrying)
                     {
                         characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Damage_01", true);
                         return;
+                    }
+                    else if (shield != null && enemyCharacterManager.isBlocking)
+                    {
+                        float physicalDamageAfterBlock =
+                            currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorbtion) / 100;
+                        if (enemyStats != null)
+                        {
+                            enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block_Idle");
+                            return;
+                        }
                     }
                 }
                 if (enemyStats != null)
