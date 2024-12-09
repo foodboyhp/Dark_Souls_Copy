@@ -19,7 +19,7 @@ namespace PHH
             {
                 return this;
             }
-            else if(enemyManager.isInteracting && enemyManager.canDoCombo)
+            else if (enemyManager.isInteracting && enemyManager.canDoCombo)
             {
                 if (willDoComboOnNextAttack)
                 {
@@ -35,25 +35,28 @@ namespace PHH
             {
                 return combatStanceState;
             }
-            if(currentAttack != null)
+            if (currentAttack != null)
             {
-                if(distanceFromTarget < currentAttack.minimumDistanceNeededToAttack)
+                if (distanceFromTarget < currentAttack.minimumDistanceNeededToAttack)
                 {
                     return this;
                 }
-                else if(distanceFromTarget < currentAttack.maximumDistanceNeededToAttack)
+                else if (distanceFromTarget < currentAttack.maximumDistanceNeededToAttack)
                 {
-                    if(viewableAngle <= currentAttack.maximumAttackAngle 
+                    if (viewableAngle <= currentAttack.maximumAttackAngle
                         && viewableAngle >= currentAttack.minimumAttackAngle)
                     {
-                        if(enemyManager.currentRecoveryTime <= 0 && !enemyManager.isPerformingAction)
+                        if (enemyManager.currentRecoveryTime <= 0 && !enemyManager.isPerformingAction)
                         {
                             enemyAnimatorManager.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
                             enemyAnimatorManager.anim.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
-                            Debug.Log(currentAttack.actionAnimation); 
+                            enemyAnimatorManager.PlayTargetAnimation(currentAttack.actionAnimation, true);
+
+                            Debug.Log(currentAttack.actionAnimation);
                             enemyManager.isPerformingAction = true;
-                            enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
                             RollForComboChance(enemyManager);
+                            enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
+
                             if (currentAttack.canCombo && willDoComboOnNextAttack)
                             {
                                 currentAttack = currentAttack.comboAction;
@@ -64,7 +67,7 @@ namespace PHH
                                 currentAttack = null;
                                 return combatStanceState;
                             }
-                            
+
                         }
                     }
                 }
@@ -156,7 +159,7 @@ namespace PHH
         private void RollForComboChance(EnemyManager enemyManager)
         {
             float comboChance = Random.Range(0, 100);
-            if(enemyManager.allowAIToperformCombo && comboChance <= enemyManager.comboLikelyhood)
+            if (enemyManager.allowAIToperformCombo && comboChance <= enemyManager.comboLikelyhood)
             {
                 willDoComboOnNextAttack = true;
             }

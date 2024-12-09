@@ -60,7 +60,7 @@ namespace PHH
 
             playerManager.isGrounded = true;
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
-            Physics.IgnoreCollision(characterCollider, characterCollisionBlockerCollider, true);  
+            Physics.IgnoreCollision(characterCollider, characterCollisionBlockerCollider, true);
         }
 
         #region Movement
@@ -92,7 +92,7 @@ namespace PHH
                     else
                     {
                         Vector3 rotationDirection = moveDirection;
-                        rotationDirection = cameraHandler.currentLockOnTarget.position - transform.position;
+                        rotationDirection = cameraHandler.currentLockOnTarget.transform.position - transform.position;
                         rotationDirection.y = 0;
                         rotationDirection.Normalize();
                         Quaternion tr = Quaternion.LookRotation(rotationDirection);
@@ -128,11 +128,11 @@ namespace PHH
 
         public void HandleMovement(float delta)
         {
-            if(inputHandler.rollFlag)
+            if (inputHandler.rollFlag)
             {
                 return;
             }
-            if(playerManager.isInteracting)
+            if (playerManager.isInteracting)
             {
                 return;
             }
@@ -144,16 +144,16 @@ namespace PHH
 
             float speed = movementSpeed;
 
-            if(inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f)
+            if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f)
             {
                 speed = sprintSpeed;
                 playerManager.isSprinting = true;
                 moveDirection *= speed;
                 playerStats.TakeDamage(sprintStaminaCost);
-            } 
+            }
             else
             {
-                if(inputHandler.moveAmount < 0.5f)
+                if (inputHandler.moveAmount < 0.5f)
                 {
                     moveDirection *= walkingSpeed;
                     playerManager.isSprinting = false;
@@ -168,7 +168,7 @@ namespace PHH
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             rigidbody.velocity = projectedVelocity;
 
-            if(inputHandler.lockOnFlag && inputHandler.sprintFlag == false)
+            if (inputHandler.lockOnFlag && inputHandler.sprintFlag == false)
             {
                 playerAnimatorManager.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
             }
@@ -185,7 +185,7 @@ namespace PHH
                 return;
             }
 
-            if(playerStats.currentStamina <= 0)
+            if (playerStats.currentStamina <= 0)
             {
                 return;
             }
@@ -195,7 +195,7 @@ namespace PHH
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;
 
-                if(inputHandler.moveAmount > 0)
+                if (inputHandler.moveAmount > 0)
                 {
                     playerAnimatorManager.PlayTargetAnimation("Rolling", true);
                     moveDirection.y = 0;
@@ -219,7 +219,7 @@ namespace PHH
             Vector3 origin = myTransform.position;
             origin.y += groundDetectionRayStartPoint;
 
-            if(Physics.Raycast(origin, myTransform.forward,out hit, 0.4f))
+            if (Physics.Raycast(origin, myTransform.forward, out hit, 0.4f))
             {
                 moveDirection = Vector3.zero;
             }
@@ -306,7 +306,7 @@ namespace PHH
             }
             if (inputHandler.jump_Input)
             {
-                if(inputHandler.moveAmount > 0)
+                if (inputHandler.moveAmount > 0)
                 {
                     moveDirection = cameraObject.forward * inputHandler.vertical;
                     moveDirection += cameraObject.right * inputHandler.horizontal;
@@ -314,8 +314,8 @@ namespace PHH
                     //moveDirection.y = 0;
 
                     playerAnimatorManager.PlayTargetAnimation("Jump", true);
-                    Quaternion jumpRotation = Quaternion.LookRotation(moveDirection);   
-                    myTransform.rotation = jumpRotation;    
+                    Quaternion jumpRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = jumpRotation;
                 }
             }
         }

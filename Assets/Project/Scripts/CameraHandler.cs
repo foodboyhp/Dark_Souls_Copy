@@ -39,12 +39,12 @@ namespace PHH
         public float lockedPivotPostion = 2.25f;
         public float unlockedPivotPosition = 1.65f;
 
-        public Transform currentLockOnTarget;
+        public CharacterManager currentLockOnTarget;
 
         List<CharacterManager> availableTargets = new List<CharacterManager>();
-        public Transform nearestLockOnTarget;
-        public Transform leftLockTarget;
-        public Transform rightLockTarget;
+        public CharacterManager nearestLockOnTarget;
+        public CharacterManager leftLockTarget;
+        public CharacterManager rightLockTarget;
         public float maximumLockOnDistance = 30f;
 
         private void Awake()
@@ -53,7 +53,7 @@ namespace PHH
             myTransform = transform;
             defaultPosition = cameraTransform.localPosition.z;
             ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
-            inputHandler = FindObjectOfType<InputHandler>();    
+            inputHandler = FindObjectOfType<InputHandler>();
             playerManager = FindObjectOfType<PlayerManager>();
         }
 
@@ -70,10 +70,10 @@ namespace PHH
 
             HandleCameraCollisions(delta);
         }
-    
+
         public void HandlerCameraRotation(float delta, float mouseXInput, float mouseYInput)
         {
-            if(inputHandler.lockOnFlag == false && currentLockOnTarget == null)
+            if (inputHandler.lockOnFlag == false && currentLockOnTarget == null)
             {
                 lookAngle += (mouseXInput * lookSpeed) / delta;
                 pivotAngle -= (mouseYInput * pivotSpeed) / delta;
@@ -88,19 +88,19 @@ namespace PHH
                 rotation.x = pivotAngle;
 
                 targetRotation = Quaternion.Euler(rotation);
-                cameraPivotTransform.localRotation = targetRotation; 
+                cameraPivotTransform.localRotation = targetRotation;
             }
             else
             {
                 float velocity = 0;
-                Vector3 dir = currentLockOnTarget.position - transform.position;    
+                Vector3 dir = currentLockOnTarget.transform.position - transform.position;
                 dir.Normalize();
                 dir.y = 0;
 
                 Quaternion targetRotation = Quaternion.Euler(dir);
                 transform.rotation = targetRotation;
 
-                dir = currentLockOnTarget.position - cameraPivotTransform.position;
+                dir = currentLockOnTarget.transform.position - cameraPivotTransform.position;
                 dir.Normalize();
 
                 targetRotation = Quaternion.LookRotation(dir);
@@ -124,7 +124,7 @@ namespace PHH
                 targetPosition = -(dis - cameraCollisionOffSet);
             }
 
-            if(Mathf.Abs(targetPosition) < minimumCollisionOffSet)
+            if (Mathf.Abs(targetPosition) < minimumCollisionOffSet)
             {
                 targetPosition = -minimumCollisionOffSet;
             }
@@ -143,26 +143,26 @@ namespace PHH
 
             if (colliders.Length > 0)
             {
-                for(int i = 0; i < colliders.Length; i++)
+                for (int i = 0; i < colliders.Length; i++)
                 {
                     CharacterManager character = colliders[i].GetComponent<CharacterManager>();
 
-                    if(character != null)
+                    if (character != null)
                     {
                         Vector3 lockTargetDirection = character.transform.position - targetTransform.position;
-                        float distanceFromTarget = Vector3.Distance (targetTransform.position, character.transform.position);
+                        float distanceFromTarget = Vector3.Distance(targetTransform.position, character.transform.position);
                         float viewableAngle = Vector3.Angle(lockTargetDirection, cameraTransform.forward);
                         RaycastHit hit;
 
-                        if(character.transform.root != targetTransform.root 
-                            && viewableAngle > -50 && viewableAngle < 50 
+                        if (character.transform.root != targetTransform.root
+                            && viewableAngle > -50 && viewableAngle < 50
                             && distanceFromTarget < maximumLockOnDistance)
                         {
-                            if(Physics.Linecast(playerManager.lockOnTransform.position, character.lockOnTransform.position, out hit))
+                            if (Physics.Linecast(playerManager.lockOnTransform.position, character.lockOnTransform.position, out hit))
                             {
                                 Debug.DrawLine(playerManager.lockOnTransform.position, character.lockOnTransform.position);
 
-                                if(hit.transform.gameObject.layer == environmentLayer)
+                                if (hit.transform.gameObject.layer == environmentLayer)
                                 {
 
                                 }
@@ -186,26 +186,26 @@ namespace PHH
                     if (distanceFromTarget < shortestDistance)
                     {
                         shortestDistance = distanceFromTarget;
-                        nearestLockOnTarget = availableTargets[k].lockOnTransform;
+                        nearestLockOnTarget = availableTargets[k];
                     }
 
                     if (inputHandler.lockOnFlag && currentLockOnTarget)
                     {
-                        Vector3 directionToTarget = availableTargets[k].transform.position - currentLockOnTarget.position;
+                        Vector3 directionToTarget = availableTargets[k].transform.position - currentLockOnTarget.transform.position;
                         float horizontalDistance = directionToTarget.x;
 
                         // Check left targets
                         if (horizontalDistance < 0.00f && Mathf.Abs(horizontalDistance) < Mathf.Abs(shortestDistanceOfLeftTarget))
                         {
                             shortestDistanceOfLeftTarget = horizontalDistance;
-                            leftLockTarget = availableTargets[k].lockOnTransform;
+                            leftLockTarget = availableTargets[k];
                         }
 
                         // Check right targets
                         if (horizontalDistance > 0.00f && horizontalDistance < shortestDistanceOfRightTarget)
                         {
                             shortestDistanceOfRightTarget = horizontalDistance;
-                            rightLockTarget = availableTargets[k].lockOnTransform;
+                            rightLockTarget = availableTargets[k];
                         }
                     }
                 }
@@ -223,7 +223,7 @@ namespace PHH
             Vector3 newLockedPosition = new Vector3(0, lockedPivotPostion);
             Vector3 newUnlockedPosition = new Vector3(0, unlockedPivotPosition);
 
-            if(currentLockOnTarget != null)
+            if (currentLockOnTarget != null)
             {
                 cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newLockedPosition, ref velocity, Time.deltaTime);
             }

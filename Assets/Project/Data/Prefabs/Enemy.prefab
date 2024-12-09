@@ -720,10 +720,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockOnTransform: {fileID: 3562496958307703898}
-  backStabBoxCollider: {fileID: 5819715078211181710}
   backStabCollider: {fileID: 7293167710429839772}
   riposteCollider: {fileID: 8356909126472839368}
   canBeRiposted: 0
+  canBeParried: 0
+  isParrying: 0
+  isBlocking: 0
   pendingCriticalDamage: 0
   navMeshAgent: {fileID: 8203200260057628987}
   currentState: {fileID: 3574197458641482115}
@@ -733,11 +735,14 @@ MonoBehaviour:
   isInteracting: 0
   rotationSpeed: 15
   maximumAttackRange: 1.5
+  canDoCombo: 0
   detectionRadius: 20
   maximumDetectionAngle: 50
   minimumDetectionAngle: -50
   viewableAngle: 0
   currentRecoveryTime: 0
+  allowAIToperformCombo: 1
+  comboLikelyhood: 0
 --- !u!114 &4294651687158302429
 MonoBehaviour:
   m_ObjectHideFlags: 0
