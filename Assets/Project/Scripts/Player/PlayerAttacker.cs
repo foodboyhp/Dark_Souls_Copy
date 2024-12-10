@@ -21,9 +21,9 @@ namespace PHH
         private void Awake()
         {
             playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
-            playerManager = GetComponentInParent<PlayerManager>();  
+            playerManager = GetComponentInParent<PlayerManager>();
             playerStats = GetComponentInParent<PlayerStats>();
-            playerInventory = GetComponentInParent<PlayerInventory>();  
+            playerInventory = GetComponentInParent<PlayerInventory>();
             animatorHandler = GetComponent<PlayerAnimatorManager>();
             weaponSlotManager = GetComponent<WeaponSlotManager>();
             inputHandler = GetComponentInParent<InputHandler>();
@@ -42,9 +42,9 @@ namespace PHH
                 {
                     animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_2, true);
                 }
-                else if(lastAttack == weapon.th_light_attack_1)
+                else if (lastAttack == weapon.th_light_attack_1)
                 {
-                    animatorHandler.PlayTargetAnimation(weapon.th_light_attack_2 , true);
+                    animatorHandler.PlayTargetAnimation(weapon.th_light_attack_2, true);
                 }
             }
         }
@@ -91,8 +91,8 @@ namespace PHH
             {
                 PerformRBMeleeAction();
             }
-            else if(playerInventory.rightWeapon.isSpellCaster 
-                || playerInventory.rightWeapon.isFaithCaster 
+            else if (playerInventory.rightWeapon.isSpellCaster
+                || playerInventory.rightWeapon.isFaithCaster
                 || playerInventory.rightWeapon.isPyroCaster)
             {
                 PerformRBMagicAction(playerInventory.rightWeapon);
@@ -105,11 +105,11 @@ namespace PHH
         }
         public void HandleLTAction()
         {
-            if(playerInventory.leftWeapon.isShieldWeapon)
+            if (playerInventory.leftWeapon.isShieldWeapon)
             {
                 PerformLTWeaponArt(inputHandler.twoHandFlag);
             }
-            else if(playerInventory.leftWeapon.isMeleeWeapon)
+            else if (playerInventory.leftWeapon.isMeleeWeapon)
             {
 
             }
@@ -142,15 +142,25 @@ namespace PHH
         {
             if (playerManager.isInteracting)
             {
-                return ;
+                return;
             }
             if (weapon.isFaithCaster)
             {
-                if(playerInventory.currentSpell != null && playerInventory.currentSpell.isFaithSpell)
+                if (playerInventory.currentSpell != null && playerInventory.currentSpell.isFaithSpell)
                 {
-                    if(playerStats.currentFocusPoint >= playerInventory.currentSpell.focusPointCost)
+                    if (playerStats.currentFocusPoint >= playerInventory.currentSpell.focusPointCost)
                     {
-                        playerInventory.currentSpell.AttemptToCastSpell(animatorHandler, playerStats);
+                        playerInventory.currentSpell.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager);
+                    }
+                }
+            }
+            else if (weapon.isPyroCaster)
+            {
+                if (playerInventory.currentSpell != null && playerInventory.currentSpell.isPyroSpell)
+                {
+                    if (playerStats.currentFocusPoint >= playerInventory.currentSpell.focusPointCost)
+                    {
+                        playerInventory.currentSpell.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager);
                     }
                 }
             }
@@ -160,9 +170,9 @@ namespace PHH
         {
             if (playerManager.isInteracting)
             {
-                return ;
+                return;
             }
-            if(isTwoHanding)
+            if (isTwoHanding)
             {
             }
             else
@@ -183,7 +193,7 @@ namespace PHH
         {
             if (playerManager.isInteracting)
             {
-                return ;
+                return;
             }
             if (playerManager.isBlocking)
             {
@@ -234,7 +244,7 @@ namespace PHH
                 DamageCollider rightWeapon = weaponSlotManager.rightHandDamageCollider;
                 playerManager.transform.position = enemyCharacterManager.riposteCollider.criticalDamageStandPosition.position;
 
-                if(enemyCharacterManager != null && enemyCharacterManager.canBeRiposted)
+                if (enemyCharacterManager != null && enemyCharacterManager.canBeRiposted)
                 {
                     Vector3 rotationDirection = playerManager.transform.root.eulerAngles;
                     rotationDirection = hit.transform.position - playerManager.transform.position;

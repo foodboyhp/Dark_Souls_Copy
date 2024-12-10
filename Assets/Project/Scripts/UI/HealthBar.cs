@@ -9,12 +9,12 @@ namespace PHH
     {
         public Slider slider;
 
-        public void SetCurrentHealth(int currentHealth)
+        public virtual void SetCurrentHealth(int currentHealth)
         {
             slider.value = currentHealth;
         }
 
-        public void SetMaxHealth(int maxHealth)
+        public virtual void SetMaxHealth(int maxHealth)
         {
             slider.maxValue = maxHealth;
             slider.value = maxHealth;

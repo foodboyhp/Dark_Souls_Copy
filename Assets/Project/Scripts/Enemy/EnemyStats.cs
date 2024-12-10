@@ -7,7 +7,7 @@ namespace PHH
     public class EnemyStats : CharacterStats
     {
         EnemyAnimatorManager enemyAnimatorManager;
-
+        public UIEnemyHealthBar enemyHealthBar;
         public int soulsAwardedOnDeath = 50;
         private void Awake()
         {
@@ -17,6 +17,7 @@ namespace PHH
         {
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
+            enemyHealthBar.SetMaxHealth(maxHealth);
         }
 
         private int SetMaxHealthFromHealthLevel()
@@ -29,7 +30,7 @@ namespace PHH
         {
             if (isDead) return;
             currentHealth = currentHealth - damage;
-
+            enemyHealthBar.SetCurrentHealth(currentHealth);
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
@@ -41,6 +42,8 @@ namespace PHH
         {
             if(isDead) return;
             currentHealth = currentHealth - damage;
+            enemyHealthBar.SetCurrentHealth(currentHealth);
+
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if (currentHealth <= 0)

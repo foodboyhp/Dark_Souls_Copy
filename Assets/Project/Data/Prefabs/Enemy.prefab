@@ -742,7 +742,7 @@ MonoBehaviour:
   viewableAngle: 0
   currentRecoveryTime: 0
   allowAIToperformCombo: 1
-  comboLikelyhood: 0
+  comboLikelyhood: 100
 --- !u!114 &4294651687158302429
 MonoBehaviour:
   m_ObjectHideFlags: 0

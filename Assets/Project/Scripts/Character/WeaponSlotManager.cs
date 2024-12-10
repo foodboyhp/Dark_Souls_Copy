@@ -6,8 +6,8 @@ namespace PHH
 {
     public class WeaponSlotManager : MonoBehaviour
     {
-        WeaponHolderSlot leftHandSlot;
-        WeaponHolderSlot rightHandSlot;
+        public WeaponHolderSlot leftHandSlot;
+        public WeaponHolderSlot rightHandSlot;
         WeaponHolderSlot backSlot;
 
         public DamageCollider leftHandDamageCollider;
@@ -35,7 +35,7 @@ namespace PHH
                 if (weaponHolderSlot.isLeftHandSlot)
                 {
                     leftHandSlot = weaponHolderSlot;
-                } 
+                }
                 else if (weaponHolderSlot.isRightHandSlot)
                 {
                     rightHandSlot = weaponHolderSlot;
@@ -49,7 +49,7 @@ namespace PHH
 
         public void LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft)
         {
-            if(isLeft)
+            if (isLeft)
             {
                 leftHandSlot.currentWeapon = weaponItem;
                 leftHandSlot.LoadWeaponModel(weaponItem);
@@ -57,7 +57,7 @@ namespace PHH
                 quickSlotsUI.UpdateWeaponQuickSlotsUI(true, weaponItem);
 
                 #region Handle Left Weapon Idle Animations
-                if(weaponItem != null)
+                if (weaponItem != null)
                 {
                     animator.CrossFade(weaponItem.left_hand_idle, 0.2f);
                 }
@@ -69,7 +69,7 @@ namespace PHH
             }
             else
             {
-                if(inputHandler.twoHandFlag)
+                if (inputHandler.twoHandFlag)
                 {
                     backSlot.LoadWeaponModel(leftHandSlot.currentWeapon);
                     leftHandSlot.UnloadWeaponAndDestroy();
@@ -113,10 +113,10 @@ namespace PHH
         public void OpenDamageCollider()
         {
             if (playerManager.isUsingRightHand)
-            {                
+            {
                 rightHandDamageCollider.EnableDamageCollider();
             }
-            if(playerManager.isUsingLeftHand)
+            if (playerManager.isUsingLeftHand)
             {
                 leftHandDamageCollider.EnableDamageCollider();
             }

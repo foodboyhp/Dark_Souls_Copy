@@ -136,7 +136,7 @@ namespace PHH
         {
             availableTargets.Clear();
             float shortestDistance = Mathf.Infinity;
-            float shortestDistanceOfLeftTarget = Mathf.Infinity;
+            float shortestDistanceOfLeftTarget = -Mathf.Infinity;
             float shortestDistanceOfRightTarget = Mathf.Infinity;
 
             Collider[] colliders = Physics.OverlapSphere(targetTransform.position, 26f);
@@ -189,22 +189,23 @@ namespace PHH
                         nearestLockOnTarget = availableTargets[k];
                     }
 
-                    if (inputHandler.lockOnFlag && currentLockOnTarget)
+                    if (inputHandler.lockOnFlag)
                     {
-                        Vector3 directionToTarget = availableTargets[k].transform.position - currentLockOnTarget.transform.position;
-                        float horizontalDistance = directionToTarget.x;
+                        Vector3 relativeEnemyPosition = inputHandler.transform.InverseTransformPoint(availableTargets[k].transform.position);
+                        var distanceFromLeftTarget = relativeEnemyPosition.x;
+                        var distanceFromRightTarget = relativeEnemyPosition.x;
 
-                        // Check left targets
-                        if (horizontalDistance < 0.00f && Mathf.Abs(horizontalDistance) < Mathf.Abs(shortestDistanceOfLeftTarget))
+                        if (relativeEnemyPosition.x <= 0.00 && distanceFromLeftTarget > shortestDistanceOfLeftTarget
+                            && availableTargets[k] != currentLockOnTarget)
                         {
-                            shortestDistanceOfLeftTarget = horizontalDistance;
+                            shortestDistanceOfLeftTarget = distanceFromLeftTarget;
                             leftLockTarget = availableTargets[k];
                         }
 
-                        // Check right targets
-                        if (horizontalDistance > 0.00f && horizontalDistance < shortestDistanceOfRightTarget)
+                        else if (relativeEnemyPosition.x >= 0.00 && distanceFromRightTarget < shortestDistanceOfRightTarget
+                            && availableTargets[k] != currentLockOnTarget)
                         {
-                            shortestDistanceOfRightTarget = horizontalDistance;
+                            shortestDistanceOfRightTarget = distanceFromRightTarget;
                             rightLockTarget = availableTargets[k];
                         }
                     }

@@ -22,7 +22,8 @@ namespace PHH
         [TextArea]
         public string spellDescription;
 
-        public virtual void AttemptToCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
+        public virtual void AttemptToCastSpell(PlayerAnimatorManager animatorHandler,
+            PlayerStats playerStats, WeaponSlotManager weaponSlotManager)
         {
 
         }
