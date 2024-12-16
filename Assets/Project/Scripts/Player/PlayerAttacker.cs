@@ -13,6 +13,7 @@ namespace PHH
         PlayerInventory playerInventory;
         InputHandler inputHandler;
         WeaponSlotManager weaponSlotManager;
+        CameraHandler cameraHandler;
         public string lastAttack;
 
         public LayerMask backStabLayer;
@@ -27,6 +28,7 @@ namespace PHH
             animatorHandler = GetComponent<PlayerAnimatorManager>();
             weaponSlotManager = GetComponent<WeaponSlotManager>();
             inputHandler = GetComponentInParent<InputHandler>();
+            cameraHandler = FindObjectOfType<CameraHandler>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
@@ -185,7 +187,8 @@ namespace PHH
 
         private void SuccessfullyCastSpell()
         {
-            playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats);
+            playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
+            animatorHandler.anim.SetBool("isFiringSpell", true);
         }
         #endregion
         #region Defense Actions

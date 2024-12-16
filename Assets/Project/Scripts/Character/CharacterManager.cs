@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PHH 
-{ 
+namespace PHH
+{
     public class CharacterManager : MonoBehaviour
     {
         [Header("Lock On Transform")]
@@ -18,6 +18,11 @@ namespace PHH
         public bool canBeParried;
         public bool isParrying;
         public bool isBlocking;
+
+
+        [Header("Spell Flags")]
+        public bool isFiringSpell;
+
         public int pendingCriticalDamage;
     }
 }

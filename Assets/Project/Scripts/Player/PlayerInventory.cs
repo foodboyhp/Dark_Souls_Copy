@@ -8,9 +8,17 @@ namespace PHH
     {
         WeaponSlotManager weaponSlotManager;
 
+        [Header("Quick Slot Items")]
         public SpellItem currentSpell;
         public WeaponItem rightWeapon;
         public WeaponItem leftWeapon;
+        public ConsumableItem currentConsumable;
+
+        [Header("Current Equipment")]
+        public HelmetEquipment currentHelmetEquipment;
+        public TorsoEquipment currentTorsoEquipment;
+        public LegEquipment currentLegEquipment;
+        public HandEquipment currentHandEquipment;
 
         public WeaponItem unarmedWeapon;
 
@@ -24,7 +32,7 @@ namespace PHH
 
         private void Awake()
         {
-            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();  
+            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         }
 
         private void Start()
@@ -58,7 +66,7 @@ namespace PHH
                 currentRightWeaponIndex++;
             }
 
-            if(currentRightWeaponIndex > weaponsInRightHandSlots.Length - 1)
+            if (currentRightWeaponIndex > weaponsInRightHandSlots.Length - 1)
             {
                 currentRightWeaponIndex = -1;
                 rightWeapon = unarmedWeapon;

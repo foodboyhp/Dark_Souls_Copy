@@ -28,7 +28,9 @@ namespace PHH
 
         }
 
-        public virtual void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
+        public virtual void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler,
+            PlayerStats playerStats, CameraHandler cameraHandler
+            , WeaponSlotManager weaponSlotManager)
         {
             playerStats.DeductFocusPoint(focusPointCost);
         }

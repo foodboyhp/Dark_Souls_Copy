@@ -25,7 +25,7 @@ namespace PHH
             playerManager = GetComponent<PlayerManager>();
         }
 
-        void Start ()
+        void Start()
         {
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
@@ -45,7 +45,7 @@ namespace PHH
 
         private int SetMaxHealthFromHealthLevel()
         {
-            maxHealth = healthLevel * 10;   
+            maxHealth = healthLevel * 10;
             return maxHealth;
         }
         private float SetMaxStaminaFromStaminaLevel()
@@ -71,11 +71,11 @@ namespace PHH
             }
         }
 
-        public void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
         {
             if (playerManager.isInvulnerable)
             {
-                return;    
+                return;
             }
             if (isDead)
             {
@@ -85,7 +85,7 @@ namespace PHH
             healthBar.SetCurrentHealth(currentHealth);
             animatorHandler.PlayTargetAnimation(damageAnimation, true);
 
-            if(currentHealth <= 0)
+            if (currentHealth <= 0)
             {
                 currentHealth = 0;
                 animatorHandler.PlayTargetAnimation("Dead_01", true);
@@ -105,10 +105,10 @@ namespace PHH
             {
                 staminaRegenTimer = 0;
             }
-            else 
+            else
             {
                 staminaRegenTimer += Time.deltaTime;
-                if(currentStamina < maxStamina && staminaRegenTimer > 1f)
+                if (currentStamina < maxStamina && staminaRegenTimer > 1f)
                 {
                     currentStamina += staminaRegenerateAmount * Time.deltaTime;
                     staminaBar.SetCurrentStamina(Mathf.RoundToInt(currentStamina));
@@ -119,7 +119,7 @@ namespace PHH
         public void HealPlayer(int amount)
         {
             currentHealth = currentHealth + amount;
-            if(currentHealth > maxHealth)
+            if (currentHealth > maxHealth)
             {
                 currentHealth = maxHealth;
             }
@@ -129,7 +129,7 @@ namespace PHH
         public void DeductFocusPoint(int focusPoint)
         {
             currentFocusPoint -= focusPoint;
-            if(currentFocusPoint < 0)
+            if (currentFocusPoint < 0)
             {
                 currentFocusPoint = 0;
             }

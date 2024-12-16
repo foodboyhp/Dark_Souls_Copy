@@ -17,9 +17,10 @@ namespace PHH
             animatorHandler.PlayTargetAnimation(spellAnimation, true);
         }
 
-        public override void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
+        public override void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats,
+            CameraHandler cameraHandler, WeaponSlotManager weaponSlotManager)
         {
-            base.SuccessfullyCastSpell(animatorHandler, playerStats);
+            base.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
             GameObject instantiatedSpellFX = Instantiate(spellCastFX, animatorHandler.transform);
             playerStats.HealPlayer(healAmount);
             playerStats.currentHealth = playerStats.currentHealth + healAmount;

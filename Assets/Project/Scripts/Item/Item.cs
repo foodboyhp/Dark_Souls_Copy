@@ -9,5 +9,7 @@ namespace PHH
         [Header("Item Information")]
         public Sprite itemIcon;
         public string itemName;
+
+
     }
 }

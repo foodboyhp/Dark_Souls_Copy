@@ -38,9 +38,9 @@ namespace PHH
             }
         }
 
-        public void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        public virtual void TakeDamage(int damage, string damageAnimation = "Damage_01")
         {
-            if(isDead) return;
+            if (isDead) return;
             currentHealth = currentHealth - damage;
             enemyHealthBar.SetCurrentHealth(currentHealth);
 

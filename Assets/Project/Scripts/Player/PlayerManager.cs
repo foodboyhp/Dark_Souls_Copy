@@ -55,10 +55,12 @@ namespace PHH
             isUsingLeftHand = anim.GetBool("IsUsingLeftHand");
             isUsingRightHand = anim.GetBool("IsUsingRightHand");
             isInvulnerable = anim.GetBool("isInvulnerable");
+            isFiringSpell = anim.GetBool("isFiringSpell");
             anim.SetBool("isInAir", isInAir);
             anim.SetBool("isDead", playerStats.isDead);
             anim.SetBool("isBlocking", isBlocking);
-            
+
+
             inputHandler.TickInput(delta);
             playerAnimatorManager.canRotate = anim.GetBool("canRotate");
             playerLocomotion.HandleRollingAndSprinting(delta);
@@ -82,7 +84,7 @@ namespace PHH
             inputHandler.rt_Input = false;
             inputHandler.lt_Input = false;
             inputHandler.d_Pad_Up = false;
-            inputHandler.d_Pad_Down = false;    
+            inputHandler.d_Pad_Down = false;
             inputHandler.d_Pad_Left = false;
             inputHandler.d_Pad_Right = false;
             inputHandler.a_Input = false;
@@ -106,12 +108,12 @@ namespace PHH
         public void CheckForInteractableObject()
         {
             RaycastHit hit;
-            if(Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, cameraHandler.ignoreLayers))
+            if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, cameraHandler.ignoreLayers))
             {
-                if(hit.collider.tag == "Interactable")
+                if (hit.collider.tag == "Interactable")
                 {
                     Interactable interactableObject = hit.collider.GetComponent<Interactable>();
-                    if(interactableObject != null)
+                    if (interactableObject != null)
                     {
                         string interactableText = interactableObject.interactableText;
                         interactableUI.interactableText.text = interactableText;
@@ -125,11 +127,11 @@ namespace PHH
             }
             else
             {
-                if(interactableUIGameObject != null)
+                if (interactableUIGameObject != null)
                 {
                     interactableUIGameObject.SetActive(false);
                 }
-                if(itemInteractableGameObject != null && inputHandler.a_Input)
+                if (itemInteractableGameObject != null && inputHandler.a_Input)
                 {
                     itemInteractableGameObject.SetActive(false);
                 }
@@ -140,7 +142,7 @@ namespace PHH
             playerLocomotion.rigidbody.velocity = Vector3.zero;
             transform.position = playerOpenChestStandingPoint.transform.position;
             playerAnimatorManager.PlayTargetAnimation("Pick Up Item", true);
-            
+
         }
         #endregion
     }
