@@ -90,6 +90,11 @@ namespace PHH
                     enemyStats.TakeDamage(currentWeaponDamage);
                 }
             }
+            if (collision.tag == "IllusionaryWall")
+            {
+                IllusionaryWall illusionaryWall = collision.GetComponent<IllusionaryWall>();
+                illusionaryWall.wallHasBeenHit = true;
+            }
         }
     }
 }

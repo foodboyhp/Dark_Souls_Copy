@@ -77,10 +77,7 @@ namespace PHH
             {
                 return;
             }
-            if (isDead)
-            {
-                return;
-            }
+            base.TakeDamage(damage, damageAnimation);
             currentHealth = currentHealth - damage;
             healthBar.SetCurrentHealth(currentHealth);
             animatorHandler.PlayTargetAnimation(damageAnimation, true);

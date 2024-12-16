@@ -9,6 +9,7 @@ namespace PHH
     {
         InputHandler inputHandler;
         PlayerInventory playerInventory;
+        PlayerStats playerStats;
 
         [Header("Equipment Model Changers")]
         //Head
@@ -46,6 +47,8 @@ namespace PHH
         {
             inputHandler = GetComponentInParent<InputHandler>();
             playerInventory = GetComponentInParent<PlayerInventory>();
+            playerStats = GetComponentInParent<PlayerStats>();
+
             helmetModelChanger = GetComponentInChildren<HelmetModelChanger>();
             torsoModelChanger = GetComponentInChildren<TorsoModelChanger>();
             upperLeftArmModelChanger = GetComponentInChildren<UpperLeftArmModelChanger>();
@@ -72,10 +75,12 @@ namespace PHH
             {
                 nakedHeadModel.SetActive(false);
                 helmetModelChanger.EquipHelmetModelByName(playerInventory.currentHelmetEquipment.helmetModelName);
+                playerStats.physicalDamageAbsorbtionHead = playerInventory.currentHelmetEquipment.physicalDefense;
             }
             else
             {
                 nakedHeadModel.SetActive(true);
+                playerStats.physicalDamageAbsorbtionHead = 0;
             }
             //Torso
             torsoModelChanger.UnequipAllTorsoModels();
@@ -86,12 +91,14 @@ namespace PHH
                 torsoModelChanger.EquipTorsoModelByName(playerInventory.currentTorsoEquipment.torsoModelName);
                 upperLeftArmModelChanger.EquipUpperArmModelByName(playerInventory.currentTorsoEquipment.upperLeftArmModelName);
                 upperRightArmModelChanger.EquipUpperArmModelByName(playerInventory.currentTorsoEquipment.upperRightArmModelName);
+                playerStats.physicalDamageAbsorbtionTorso = playerInventory.currentTorsoEquipment.physicalDefense;
             }
             else
             {
                 torsoModelChanger.EquipTorsoModelByName(nakedTorso);
                 upperLeftArmModelChanger.EquipUpperArmModelByName(nakedUpperLeftArm);
                 upperRightArmModelChanger.EquipUpperArmModelByName(nakedUpperRightArm);
+                playerStats.physicalDamageAbsorbtionTorso = 0;
             }
             //Leg
             hipModelChanger.UnequipAllHipModels();
@@ -102,12 +109,14 @@ namespace PHH
                 hipModelChanger.EquipHipModelByName(playerInventory.currentLegEquipment.hipModelName);
                 leftLegModelChanger.EquipLegModelByName(playerInventory.currentLegEquipment.leftLegName);
                 rightLegModelChanger.EquipLegModelByName(playerInventory.currentLegEquipment.rightLegName);
+                playerStats.physicalDamageAbsorbtionLeg = playerInventory.currentLegEquipment.physicalDefense;
             }
             else
             {
                 hipModelChanger.EquipHipModelByName(nakedHipModel);
                 leftLegModelChanger.EquipLegModelByName(nakedLeftLeg);
                 rightLegModelChanger.EquipLegModelByName(nakedRightLeg);
+                playerStats.physicalDamageAbsorbtionLeg = 0;
             }
             //Hand
             lowerLeftArmModelChanger.UnequipAllModels();
@@ -120,6 +129,7 @@ namespace PHH
                 lowerRightArmModelChanger.EquipModelByName(playerInventory.currentHandEquipment.lowerRightArmModelName);
                 leftHandModelChanger.EquipModelByName(playerInventory.currentHandEquipment.leftHandModelName);
                 rightHandModelChanger.EquipModelByName(playerInventory.currentHandEquipment.rightHandModelName);
+                playerStats.physcialDamageAbsorbtionHand = playerInventory.currentHandEquipment.physicalDefense;
             }
             else
             {
@@ -127,6 +137,7 @@ namespace PHH
                 lowerRightArmModelChanger.EquipModelByName(nakedLowerRightArm);
                 leftHandModelChanger.EquipModelByName(nakedLeftHand);
                 rightHandModelChanger.EquipModelByName(nakedRightHand);
+                playerStats.physcialDamageAbsorbtionHand = 0;
             }
         }
 

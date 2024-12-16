@@ -38,10 +38,9 @@ namespace PHH
             }
         }
 
-        public virtual void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
         {
-            if (isDead) return;
-            currentHealth = currentHealth - damage;
+            base.TakeDamage(damage, damageAnimation);
             enemyHealthBar.SetCurrentHealth(currentHealth);
 
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
