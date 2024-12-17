@@ -50,6 +50,8 @@ namespace PHH
         {
             HandleRecoveryTime();
             HandleStateMachine();
+
+            isRotatingWithRootMotion = enemyAnimatorManager.anim.GetBool("isRotatingWithRootMotion");
             isInteracting = enemyAnimatorManager.anim.GetBool("isInteracting");
             canDoCombo = enemyAnimatorManager.anim.GetBool("canDoCombo");
             enemyAnimatorManager.anim.SetBool("isDead", enemyStats.isDead);
@@ -63,11 +65,11 @@ namespace PHH
 
         private void HandleStateMachine()
         {
-            if(currentState != null)
+            if (currentState != null)
             {
                 State nextState = currentState.Tick(this, enemyStats, enemyAnimatorManager);
 
-                if(nextState != null)
+                if (nextState != null)
                 {
                     SwitchToNextState(nextState);
                 }
@@ -81,14 +83,14 @@ namespace PHH
 
         private void HandleRecoveryTime()
         {
-            if(currentRecoveryTime > 0)
+            if (currentRecoveryTime > 0)
             {
                 currentRecoveryTime -= Time.deltaTime;
             }
 
-            if(isPerformingAction)
+            if (isPerformingAction)
             {
-                if(currentRecoveryTime <= 0)
+                if (currentRecoveryTime <= 0)
                 {
                     isPerformingAction = false;
                 }

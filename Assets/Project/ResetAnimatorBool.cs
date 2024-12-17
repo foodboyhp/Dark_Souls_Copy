@@ -8,6 +8,8 @@ public class ResetAnimatorBool : StateMachineBehaviour
     public bool isInteractingStatus = false;
     public string isFiringSpellBool = "isFiringSpell";
     public bool isFiringSpellStatus = false;
+    public string isRotatingWithRootMotionBool = "isRotatingWithRootMotion";
+    public bool isRotatingWithRootMotionStatus = false;
     public string canRotateBool = "canRotate";
     public bool canRotateStatus = true;
 
@@ -16,5 +18,6 @@ public class ResetAnimatorBool : StateMachineBehaviour
         animator.SetBool(isInteractingBool, isInteractingStatus);
         animator.SetBool(isFiringSpellBool, isFiringSpellStatus);
         animator.SetBool(canRotateBool, canRotateStatus);
+        animator.SetBool(isRotatingWithRootMotionBool, isRotatingWithRootMotionStatus);
     }
 }

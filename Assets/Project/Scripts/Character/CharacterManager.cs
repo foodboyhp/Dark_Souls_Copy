@@ -19,6 +19,9 @@ namespace PHH
         public bool isParrying;
         public bool isBlocking;
 
+        [Header("Movement")]
+        public bool isRotatingWithRootMotion;
+
 
         [Header("Spell Flags")]
         public bool isFiringSpell;

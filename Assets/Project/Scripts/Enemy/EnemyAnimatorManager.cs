@@ -58,8 +58,13 @@ namespace PHH
             enemyManager.enemyRigidbody.drag = 0;
             Vector3 deltaPosition = anim.deltaPosition;
             deltaPosition.y = 0;
-            Vector3 velocity = deltaPosition/delta;
-            enemyManager.enemyRigidbody.velocity = velocity;  
+            Vector3 velocity = deltaPosition / delta;
+            enemyManager.enemyRigidbody.velocity = velocity;
+
+            if (enemyManager.isRotatingWithRootMotion)
+            {
+                enemyManager.transform.rotation *= anim.deltaRotation;
+            }
         }
 
         public void AwardSoulsOnDeath()
