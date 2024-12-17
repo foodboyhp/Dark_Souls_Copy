@@ -7,17 +7,24 @@ namespace PHH
     public class EnemyStats : CharacterStats
     {
         EnemyAnimatorManager enemyAnimatorManager;
+        EnemyBossManager enemyBossManager;
         public UIEnemyHealthBar enemyHealthBar;
         public int soulsAwardedOnDeath = 50;
+
+        public bool isBoss = false;
         private void Awake()
         {
             enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            enemyBossManager = GetComponent<EnemyBossManager>();
+            maxHealth = SetMaxHealthFromHealthLevel();
+            currentHealth = maxHealth;
         }
         void Start()
         {
-            maxHealth = SetMaxHealthFromHealthLevel();
-            currentHealth = maxHealth;
-            enemyHealthBar.SetMaxHealth(maxHealth);
+            if (!isBoss)
+            {
+                enemyHealthBar.SetMaxHealth(maxHealth);
+            }
         }
 
         private int SetMaxHealthFromHealthLevel()
@@ -41,7 +48,14 @@ namespace PHH
         public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
         {
             base.TakeDamage(damage, damageAnimation);
-            enemyHealthBar.SetCurrentHealth(currentHealth);
+            if (!isBoss)
+            {
+                enemyHealthBar.SetCurrentHealth(currentHealth);
+            }
+            else if (isBoss && enemyBossManager != null)
+            {
+                enemyBossManager.UpdateBossHealthBar(currentHealth);
+            }
 
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 

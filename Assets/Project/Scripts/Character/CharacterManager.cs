@@ -21,6 +21,7 @@ namespace PHH
 
         [Header("Movement")]
         public bool isRotatingWithRootMotion;
+        public bool canRotate;
 
 
         [Header("Spell Flags")]
