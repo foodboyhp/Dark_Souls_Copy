@@ -12,6 +12,10 @@ namespace PHH
         public int baseDamage = 25;
         public int criticalDamageMultiplier = 4;
 
+        [Header("Poise")]
+        public float poiseBreak;
+        public float offensivePoiseBonus;
+
         [Header("Absorbtion")]
         public float physicalDamageAbsorbtion;
 

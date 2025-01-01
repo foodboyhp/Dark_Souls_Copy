@@ -4,17 +4,18 @@ using UnityEngine;
 
 namespace PHH
 {
-    public class EnemyStats : CharacterStats
+    public class EnemyStatsManager : CharacterStatsManager
     {
+        EnemyManager enemyManager;
         EnemyAnimatorManager enemyAnimatorManager;
         EnemyBossManager enemyBossManager;
         public UIEnemyHealthBar enemyHealthBar;
-        public int soulsAwardedOnDeath = 50;
 
         public bool isBoss = false;
         private void Awake()
         {
-            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            enemyManager = GetComponent<EnemyManager>();
+            enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
             enemyBossManager = GetComponent<EnemyBossManager>();
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
@@ -27,34 +28,52 @@ namespace PHH
             }
         }
 
+        public override void HandlePoiseResetTimer()
+        {
+            if (poiseResetTimer > 0)
+            {
+                poiseResetTimer = poiseResetTimer - Time.deltaTime;
+            }
+            else if (poiseResetTimer <= 0 && !enemyManager.isInteracting)
+            {
+                totalPoiseDefense = armorPoiseBonus;
+            }
+        }
         private int SetMaxHealthFromHealthLevel()
         {
             maxHealth = healthLevel * 10;
             return maxHealth;
         }
 
-        public void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int damage)
         {
-            if (isDead) return;
-            currentHealth = currentHealth - damage;
-            enemyHealthBar.SetCurrentHealth(currentHealth);
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                isDead = true;
-            }
-        }
+            base.TakeDamageNoAnimation(damage);
 
-        public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
-        {
-            base.TakeDamage(damage, damageAnimation);
             if (!isBoss)
             {
                 enemyHealthBar.SetCurrentHealth(currentHealth);
             }
             else if (isBoss && enemyBossManager != null)
             {
-                enemyBossManager.UpdateBossHealthBar(currentHealth);
+                enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
+            }
+        }
+
+        public void BreakGuard()
+        {
+            enemyAnimatorManager.PlayTargetAnimation("Break_Guard", true);
+        }
+
+        public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        {
+            base.TakeDamage(damage, damageAnimation = "Damage_01");
+            if (!isBoss)
+            {
+                enemyHealthBar.SetCurrentHealth(currentHealth);
+            }
+            else if (isBoss && enemyBossManager != null)
+            {
+                enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
             }
 
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);

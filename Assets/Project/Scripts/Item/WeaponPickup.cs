@@ -18,8 +18,8 @@ namespace PHH
 
         private void PickupItem(PlayerManager playerManager)
         {
-            PlayerInventory playerInventory = playerManager.GetComponent<PlayerInventory>();
-            PlayerLocomotion playerLocomotion = playerManager.GetComponent<PlayerLocomotion>();
+            PlayerInventoryManager playerInventory = playerManager.GetComponent<PlayerInventoryManager>();
+            PlayerLocomotionManager playerLocomotion = playerManager.GetComponent<PlayerLocomotionManager>();
             PlayerAnimatorManager animatorHandler = playerLocomotion.GetComponentInChildren<PlayerAnimatorManager>();   
 
             playerLocomotion.rigidbody.velocity = Vector3.zero;

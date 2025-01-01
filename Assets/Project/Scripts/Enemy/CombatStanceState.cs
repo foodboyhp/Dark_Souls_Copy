@@ -10,19 +10,19 @@ namespace PHH
         public EnemyAttackAction[] enemyAttacks;
         public PursueTargetState pursueTargetState;
 
-        bool randomDestinationSet = false;
-        float verticalMovementValue = 0f;
-        float horizontalMovementValue = 0f;
-        public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
+        protected bool randomDestinationSet = false;
+        protected float verticalMovementValue = 0f;
+        protected float horizontalMovementValue = 0f;
+        public override State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
-            enemyAnimatorManager.anim.SetFloat("Vertical", verticalMovementValue, 0.2f, Time.deltaTime);
-            enemyAnimatorManager.anim.SetFloat("Horizontal", horizontalMovementValue, 0.2f, Time.deltaTime);
+            enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementValue, 0.2f, Time.deltaTime);
+            enemyAnimatorManager.animator.SetFloat("Horizontal", horizontalMovementValue, 0.2f, Time.deltaTime);
             attackState.hasPerformedAttack = false;
             if (enemyManager.isInteracting)
             {
-                enemyAnimatorManager.anim.SetFloat("Vertical", 0);
-                enemyAnimatorManager.anim.SetFloat("Horizontal", 0);
+                enemyAnimatorManager.animator.SetFloat("Vertical", 0);
+                enemyAnimatorManager.animator.SetFloat("Horizontal", 0);
                 return this;
             }
             if (distanceFromTarget > enemyManager.maximumAggroRadius)
@@ -49,7 +49,7 @@ namespace PHH
             }
             return this;
         }
-        private void HandleRotateTowardsTarget(EnemyManager enemyManager)
+        protected void HandleRotateTowardsTarget(EnemyManager enemyManager)
         {
             if (enemyManager.isPerformingAction)
             {
@@ -77,12 +77,12 @@ namespace PHH
             }
         }
 
-        private void DecideCirclingAction(EnemyAnimatorManager enemyAnimatorManager)
+        protected void DecideCirclingAction(EnemyAnimatorManager enemyAnimatorManager)
         {
             WalkAroundTarget(enemyAnimatorManager);
         }
 
-        private void WalkAroundTarget(EnemyAnimatorManager enemyAnimatorManager)
+        protected void WalkAroundTarget(EnemyAnimatorManager enemyAnimatorManager)
         {
             verticalMovementValue = 0.5f;
 
@@ -96,7 +96,7 @@ namespace PHH
                 horizontalMovementValue = -0.5f;
             }
         }
-        private void GetNewAttack(EnemyManager enemyManager)
+        protected virtual void GetNewAttack(EnemyManager enemyManager)
         {
             Vector3 targetsDirection = enemyManager.currentTarget.transform.position - transform.position;
             float viewableAngle = Vector3.Angle(targetsDirection, transform.forward);

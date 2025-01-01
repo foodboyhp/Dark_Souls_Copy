@@ -12,13 +12,13 @@ namespace PHH
 
         bool hasCollided = false;
 
-        CharacterStats spellTarget;
+        CharacterStatsManager spellTarget;
         Rigidbody rigidbody;
         Vector3 impactNormal; // Used to rotate the impact particles
 
         private void Awake()
         {
-            rigidbody = GetComponent<Rigidbody>();
+            this.rigidbody = GetComponent<Rigidbody>();
         }
 
         private void Start()
@@ -37,7 +37,7 @@ namespace PHH
         {
             if (!hasCollided)
             {
-                spellTarget = other.transform.GetComponent<CharacterStats>();
+                spellTarget = other.transform.GetComponent<CharacterStatsManager>();
                 if (spellTarget != null)
                 {
                     spellTarget.TakeDamage(currentWeaponDamage);

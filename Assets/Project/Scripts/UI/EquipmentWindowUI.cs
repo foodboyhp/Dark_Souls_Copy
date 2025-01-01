@@ -17,7 +17,7 @@ namespace PHH
         {
         }
 
-        public void LoadWeaponsOnEquipmentScreen(PlayerInventory playerInventory)
+        public void LoadWeaponsOnEquipmentScreen(PlayerInventoryManager playerInventory)
         {
             for(int i = 0; i < handEquipmentSlotUIs.Length; i++)
             {

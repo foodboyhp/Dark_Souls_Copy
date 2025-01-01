@@ -9,20 +9,16 @@ namespace PHH
     {
         EnemyLocomotionManager enemyLocomotionManager;
         EnemyAnimatorManager enemyAnimatorManager;
-        EnemyStats enemyStats;
+        EnemyStatsManager enemyStatsManager;
 
         public NavMeshAgent navMeshAgent;
         public State currentState;
-        public CharacterStats currentTarget;
+        public CharacterStatsManager currentTarget;
         public Rigidbody enemyRigidbody;
 
         public bool isPerformingAction;
-        public bool isInteracting;
         public float rotationSpeed = 15f;
         public float maximumAggroRadius = 1.5f;
-
-        [Header("Combat Flags")]
-        public bool canDoCombo;
 
         [Header("AI Settings")]
         public float detectionRadius = 20;
@@ -31,13 +27,14 @@ namespace PHH
         public float viewableAngle;
         public float currentRecoveryTime = 0;
         [Header("AI Combat Settings")]
+        public bool isPhaseShifting;
         public bool allowAIToperformCombo;
         public float comboLikelyhood;
         private void Awake()
         {
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
-            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
-            enemyStats = GetComponent<EnemyStats>();
+            enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+            enemyStatsManager = GetComponent<EnemyStatsManager>();
             enemyRigidbody = GetComponent<Rigidbody>();
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
             navMeshAgent.enabled = false;
@@ -51,11 +48,13 @@ namespace PHH
             HandleRecoveryTime();
             HandleStateMachine();
 
-            isRotatingWithRootMotion = enemyAnimatorManager.anim.GetBool("isRotatingWithRootMotion");
-            isInteracting = enemyAnimatorManager.anim.GetBool("isInteracting");
-            canDoCombo = enemyAnimatorManager.anim.GetBool("canDoCombo");
-            canRotate = enemyAnimatorManager.anim.GetBool("canRotate");
-            enemyAnimatorManager.anim.SetBool("isDead", enemyStats.isDead);
+            isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
+            isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
+            isPhaseShifting = enemyAnimatorManager.animator.GetBool("isPhaseShifting");
+            isInvulnerable = enemyAnimatorManager.animator.GetBool("isInvulnerable");
+            canDoCombo = enemyAnimatorManager.animator.GetBool("canDoCombo");
+            canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
+            enemyAnimatorManager.animator.SetBool("isDead", enemyStatsManager.isDead);
         }
 
         private void LateUpdate()
@@ -68,7 +67,7 @@ namespace PHH
         {
             if (currentState != null)
             {
-                State nextState = currentState.Tick(this, enemyStats, enemyAnimatorManager);
+                State nextState = currentState.Tick(this, enemyStatsManager, enemyAnimatorManager);
 
                 if (nextState != null)
                 {

@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace PHH
 {
-    public class PlayerLocomotion : MonoBehaviour
+    public class PlayerLocomotionManager : MonoBehaviour
     {
         CameraHandler cameraHandler;
         PlayerManager playerManager;
-        PlayerStats playerStats;
+        PlayerStatsManager playerStatsManager;
         Transform cameraObject;
         InputHandler inputHandler;
         public Vector3 moveDirection;
@@ -45,18 +45,17 @@ namespace PHH
         private void Awake()
         {
             cameraHandler = FindObjectOfType<CameraHandler>();
-            playerStats = GetComponent<PlayerStats>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
             playerManager = GetComponent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
-            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         }
 
         void Start()
         {
             cameraObject = Camera.main.transform;
             myTransform = transform;
-            playerAnimatorManager.Initialize();
 
             playerManager.isGrounded = true;
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
@@ -149,7 +148,7 @@ namespace PHH
                 speed = sprintSpeed;
                 playerManager.isSprinting = true;
                 moveDirection *= speed;
-                playerStats.TakeDamage(sprintStaminaCost);
+                playerStatsManager.TakeDamage(sprintStaminaCost);
             }
             else
             {
@@ -180,12 +179,12 @@ namespace PHH
 
         public void HandleRollingAndSprinting(float delta)
         {
-            if (playerAnimatorManager.anim.GetBool("isInteracting"))
+            if (playerAnimatorManager.animator.GetBool("isInteracting"))
             {
                 return;
             }
 
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
             {
                 return;
             }
@@ -201,12 +200,12 @@ namespace PHH
                     moveDirection.y = 0;
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
-                    playerStats.TakeStaminaDamage(rollStaminaCost);
+                    playerStatsManager.TakeStaminaDamage(rollStaminaCost);
                 }
                 else
                 {
                     playerAnimatorManager.PlayTargetAnimation("Backstep", true);
-                    playerStats.TakeStaminaDamage(backStepStaminaCost);
+                    playerStatsManager.TakeStaminaDamage(backStepStaminaCost);
 
                 }
             }
@@ -300,7 +299,7 @@ namespace PHH
             {
                 return;
             }
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
             {
                 return;
             }

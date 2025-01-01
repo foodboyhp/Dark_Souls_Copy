@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PHH
 {
-    public class CharacterStats : MonoBehaviour
+    public class CharacterStatsManager : MonoBehaviour
     {
         public int healthLevel = 10;
         public int maxHealth;
@@ -18,7 +18,15 @@ namespace PHH
         public float maxFocusPoint;
         public float currentFocusPoint;
 
+        public int soulsAwardedOnDeath = 50;
         public int soulCount = 0;
+
+        [Header("Poise")]
+        public float totalPoiseDefense; // The total poise after damage calculation
+        public float offensivePoiseBonus;//poise gain during an attack with a weapon
+        public float armorPoiseBonus; //poise gain from wearing
+        public float totalPoiseResetTimer = 15f;
+        public float poiseResetTimer = 0;
 
         [Header("Armor absorbtion")]
         public float physicalDamageAbsorbtionHead;
@@ -28,6 +36,16 @@ namespace PHH
 
 
         public bool isDead;
+
+        protected virtual void Update()
+        {
+            HandlePoiseResetTimer();
+        }
+
+        private void Start()
+        {
+            totalPoiseDefense = armorPoiseBonus;
+        }
 
         public virtual void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
         {
@@ -46,6 +64,30 @@ namespace PHH
                 currentHealth = 0;
                 isDead = true;
 
+            }
+        }
+
+        public virtual void TakeDamageNoAnimation(int damage)
+        {
+            if (isDead) return;
+            currentHealth = currentHealth - damage;
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
+        }
+
+        public virtual void HandlePoiseResetTimer()
+        {
+            if (poiseResetTimer > 0)
+            {
+                poiseResetTimer = poiseResetTimer - Time.deltaTime;
+            }
+            else
+            {
+                totalPoiseDefense = armorPoiseBonus;
             }
         }
     }

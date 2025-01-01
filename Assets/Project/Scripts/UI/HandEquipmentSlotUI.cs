@@ -19,11 +19,12 @@ namespace PHH
 
         private void Awake()
         {
-            uiManager = FindObjectOfType<UIManager>();  
+            uiManager = FindObjectOfType<UIManager>();
         }
 
         public void AddItem(WeaponItem newItem)
         {
+            if (newItem == null) return;
             item = newItem;
             if (item.itemIcon != null)
             {
@@ -47,17 +48,17 @@ namespace PHH
             {
                 uiManager.rightHandSlot01Selected = true;
             }
-            else if(rightHandSlot02)
+            else if (rightHandSlot02)
             {
                 uiManager.rightHandSlot02Selected = true;
             }
             else if (leftHandSlot01)
             {
-                uiManager.leftHandSlot01Selected=true;
+                uiManager.leftHandSlot01Selected = true;
             }
-            else if(leftHandSlot02)
+            else if (leftHandSlot02)
             {
-                uiManager.leftHandSlot02Selected=true;
+                uiManager.leftHandSlot02Selected = true;
             }
         }
     }

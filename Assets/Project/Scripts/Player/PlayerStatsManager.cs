@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace PHH
 {
-    public class PlayerStats : CharacterStats
+    public class PlayerStatsManager : CharacterStatsManager
     {
         HealthBar healthBar;
         StaminaBar staminaBar;
         FocusPointBar focusPointBar;
 
-        PlayerAnimatorManager animatorHandler;
+        PlayerAnimatorManager playerAnimatorManager;
         PlayerManager playerManager;
 
         public float staminaRegenerateAmount = 10f;
@@ -21,7 +21,7 @@ namespace PHH
             healthBar = FindObjectOfType<HealthBar>();
             staminaBar = FindObjectOfType<StaminaBar>();
             focusPointBar = FindObjectOfType<FocusPointBar>();
-            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerManager = GetComponent<PlayerManager>();
         }
 
@@ -43,6 +43,17 @@ namespace PHH
             focusPointBar.SetCurrentFocusPoint(currentFocusPoint);
         }
 
+        public override void HandlePoiseResetTimer()
+        {
+            if (poiseResetTimer > 0)
+            {
+                poiseResetTimer = poiseResetTimer - Time.deltaTime;
+            }
+            else if (poiseResetTimer <= 0 && !playerManager.isInteracting)
+            {
+                totalPoiseDefense = armorPoiseBonus;
+            }
+        }
         private int SetMaxHealthFromHealthLevel()
         {
             maxHealth = healthLevel * 10;
@@ -59,16 +70,11 @@ namespace PHH
             return maxFocusPoint;
         }
 
-        public void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int damage)
         {
-            if (isDead) return;
-            currentHealth = currentHealth - damage;
+            base.TakeDamageNoAnimation(damage);
+            healthBar.SetCurrentHealth(currentHealth);
 
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                isDead = true;
-            }
         }
 
         public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
@@ -80,12 +86,12 @@ namespace PHH
             base.TakeDamage(damage, damageAnimation);
             currentHealth = currentHealth - damage;
             healthBar.SetCurrentHealth(currentHealth);
-            animatorHandler.PlayTargetAnimation(damageAnimation, true);
+            playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                animatorHandler.PlayTargetAnimation("Dead_01", true);
+                playerAnimatorManager.PlayTargetAnimation("Dead_01", true);
                 isDead = true;
             }
         }

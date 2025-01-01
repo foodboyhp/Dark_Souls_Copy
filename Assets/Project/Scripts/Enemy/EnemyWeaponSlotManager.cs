@@ -4,17 +4,25 @@ using UnityEngine;
 
 namespace PHH
 {
-    public class EnemyWeaponSlotManager : MonoBehaviour
+    public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     {
         public WeaponItem rightHandWeapon;
         public WeaponItem leftHandWeapon;
-        WeaponHolderSlot rightHandSlot;
-        WeaponHolderSlot leftHandSlot;
 
-        DamageCollider leftHandDamageCollider;
-        DamageCollider rightHandDamageCollider;
+        EnemyStatsManager enemyStatsManager;
 
         private void Awake()
+        {
+            enemyStatsManager = GetComponentInParent<EnemyStatsManager>();
+            LoadWeaponHolderSlot();
+        }
+
+        private void Start()
+        {
+            LoadWeaponOnBothHands();
+        }
+
+        private void LoadWeaponHolderSlot()
         {
             WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
             foreach (WeaponHolderSlot weaponHolderSlot in weaponHolderSlots)
@@ -28,11 +36,6 @@ namespace PHH
                     rightHandSlot = weaponHolderSlot;
                 }
             }
-        }
-
-        private void Start()
-        {
-            LoadWeaponOnBothHands();
         }
 
         public void LoadWeaponOnSlot(WeaponItem weapon, bool isLeft)
@@ -98,5 +101,17 @@ namespace PHH
         {
             //anim.SetBool("canDoCombo", false);
         }
+
+        #region Handle Weapons's Poise Bonuse
+        public void GrantWeaponAttackingPoiseBonus()
+        {
+            enemyStatsManager.totalPoiseDefense = enemyStatsManager.totalPoiseDefense + enemyStatsManager.offensivePoiseBonus;
+        }
+
+        public void ResetWeaponAttackingPoise()
+        {
+            enemyStatsManager.totalPoiseDefense = enemyStatsManager.armorPoiseBonus;
+        }
+        #endregion
     }
 }

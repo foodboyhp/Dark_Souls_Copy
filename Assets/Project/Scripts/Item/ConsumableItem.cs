@@ -18,7 +18,7 @@ namespace PHH
         public bool isInteracting;
 
         public virtual void AttemptToConsumeItem(PlayerAnimatorManager playerAnimatorManager,
-            WeaponSlotManager weaponSlotManager, PlayerEffectsManager playerEffectsManager)
+            PlayerWeaponSlotManager weaponSlotManager, PlayerEffectsManager playerEffectsManager)
         {
             if (currentItemAmount > 0)
             {

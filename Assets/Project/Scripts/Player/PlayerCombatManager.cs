@@ -4,16 +4,16 @@ using UnityEngine.InputSystem;
 
 namespace PHH
 {
-    public class PlayerAttacker : MonoBehaviour
+    public class PlayerCombatManager : MonoBehaviour
     {
-        PlayerEquipmentManager playerEquipmentManager;
-        PlayerAnimatorManager animatorHandler;
-        PlayerManager playerManager;
-        PlayerStats playerStats;
-        PlayerInventory playerInventory;
         InputHandler inputHandler;
-        WeaponSlotManager weaponSlotManager;
         CameraHandler cameraHandler;
+        PlayerManager playerManager;
+        PlayerStatsManager playerStatsManager;
+        PlayerAnimatorManager playerAnimatorManager;
+        PlayerEquipmentManager playerEquipmentManager;
+        PlayerInventoryManager playerInventoryManager;
+        PlayerWeaponSlotManager playerWeaponSlotManager;
         public string lastAttack;
 
         public LayerMask backStabLayer;
@@ -21,83 +21,83 @@ namespace PHH
 
         private void Awake()
         {
-            playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
-            playerManager = GetComponentInParent<PlayerManager>();
-            playerStats = GetComponentInParent<PlayerStats>();
-            playerInventory = GetComponentInParent<PlayerInventory>();
-            animatorHandler = GetComponent<PlayerAnimatorManager>();
-            weaponSlotManager = GetComponent<WeaponSlotManager>();
-            inputHandler = GetComponentInParent<InputHandler>();
+            inputHandler = GetComponent<InputHandler>();
             cameraHandler = FindObjectOfType<CameraHandler>();
+            playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+            playerManager = GetComponent<PlayerManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
         {
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
             {
                 return;
             }
             if (inputHandler.comboFlag)
             {
-                animatorHandler.anim.SetBool("canDoCombo", false);
+                playerAnimatorManager.animator.SetBool("canDoCombo", false);
                 if (lastAttack == weapon.OH_Light_Attack_1)
                 {
-                    animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_2, true);
+                    playerAnimatorManager.PlayTargetAnimation(weapon.OH_Light_Attack_2, true);
                 }
                 else if (lastAttack == weapon.th_light_attack_1)
                 {
-                    animatorHandler.PlayTargetAnimation(weapon.th_light_attack_2, true);
+                    playerAnimatorManager.PlayTargetAnimation(weapon.th_light_attack_2, true);
                 }
             }
         }
         public void HandleLightAttack(WeaponItem weapon)
         {
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
             {
                 return;
             }
-            weaponSlotManager.attackingWeapon = weapon;
+            playerWeaponSlotManager.attackingWeapon = weapon;
             if (inputHandler.twoHandFlag)
             {
-                animatorHandler.PlayTargetAnimation(weapon.th_light_attack_1, true);
+                playerAnimatorManager.PlayTargetAnimation(weapon.th_light_attack_1, true);
                 lastAttack = weapon.th_light_attack_1;
             }
             else
             {
-                animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_1, true);
+                playerAnimatorManager.PlayTargetAnimation(weapon.OH_Light_Attack_1, true);
                 lastAttack = weapon.OH_Light_Attack_1;
             }
         }
 
         public void HandleHeavyAttack(WeaponItem weapon)
         {
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
             {
                 return;
             }
-            weaponSlotManager.attackingWeapon = weapon;
+            playerWeaponSlotManager.attackingWeapon = weapon;
             if (inputHandler.twoHandFlag)
             {
 
             }
             else
             {
-                animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_1, true);
+                playerAnimatorManager.PlayTargetAnimation(weapon.OH_Heavy_Attack_1, true);
                 lastAttack = weapon.OH_Heavy_Attack_1;
             }
         }
         #region Handle InputActions
         public void HandlerRBAction()
         {
-            if (playerInventory.rightWeapon.isMeleeWeapon)
+            if (playerInventoryManager.rightWeapon.isMeleeWeapon)
             {
                 PerformRBMeleeAction();
             }
-            else if (playerInventory.rightWeapon.isSpellCaster
-                || playerInventory.rightWeapon.isFaithCaster
-                || playerInventory.rightWeapon.isPyroCaster)
+            else if (playerInventoryManager.rightWeapon.isSpellCaster
+                || playerInventoryManager.rightWeapon.isFaithCaster
+                || playerInventoryManager.rightWeapon.isPyroCaster)
             {
-                PerformRBMagicAction(playerInventory.rightWeapon);
+                PerformRBMagicAction(playerInventoryManager.rightWeapon);
             }
         }
 
@@ -107,11 +107,11 @@ namespace PHH
         }
         public void HandleLTAction()
         {
-            if (playerInventory.leftWeapon.isShieldWeapon)
+            if (playerInventoryManager.leftWeapon.isShieldWeapon)
             {
                 PerformLTWeaponArt(inputHandler.twoHandFlag);
             }
-            else if (playerInventory.leftWeapon.isMeleeWeapon)
+            else if (playerInventoryManager.leftWeapon.isMeleeWeapon)
             {
 
             }
@@ -123,7 +123,7 @@ namespace PHH
             if (playerManager.canDoCombo)
             {
                 inputHandler.comboFlag = true;
-                HandleWeaponCombo(playerInventory.rightWeapon);
+                HandleWeaponCombo(playerInventoryManager.rightWeapon);
                 inputHandler.comboFlag = false;
             }
             else
@@ -136,8 +136,8 @@ namespace PHH
                 {
                     return;
                 }
-                animatorHandler.anim.SetBool("IsUsingRightHand", true);
-                HandleLightAttack(playerInventory.rightWeapon);
+                playerAnimatorManager.animator.SetBool("IsUsingRightHand", true);
+                HandleLightAttack(playerInventoryManager.rightWeapon);
             }
         }
         private void PerformRBMagicAction(WeaponItem weapon)
@@ -148,21 +148,21 @@ namespace PHH
             }
             if (weapon.isFaithCaster)
             {
-                if (playerInventory.currentSpell != null && playerInventory.currentSpell.isFaithSpell)
+                if (playerInventoryManager.currentSpell != null && playerInventoryManager.currentSpell.isFaithSpell)
                 {
-                    if (playerStats.currentFocusPoint >= playerInventory.currentSpell.focusPointCost)
+                    if (playerStatsManager.currentFocusPoint >= playerInventoryManager.currentSpell.focusPointCost)
                     {
-                        playerInventory.currentSpell.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager);
+                        playerInventoryManager.currentSpell.AttemptToCastSpell(playerAnimatorManager, playerStatsManager, playerWeaponSlotManager);
                     }
                 }
             }
             else if (weapon.isPyroCaster)
             {
-                if (playerInventory.currentSpell != null && playerInventory.currentSpell.isPyroSpell)
+                if (playerInventoryManager.currentSpell != null && playerInventoryManager.currentSpell.isPyroSpell)
                 {
-                    if (playerStats.currentFocusPoint >= playerInventory.currentSpell.focusPointCost)
+                    if (playerStatsManager.currentFocusPoint >= playerInventoryManager.currentSpell.focusPointCost)
                     {
-                        playerInventory.currentSpell.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager);
+                        playerInventoryManager.currentSpell.AttemptToCastSpell(playerAnimatorManager, playerStatsManager, playerWeaponSlotManager);
                     }
                 }
             }
@@ -179,7 +179,7 @@ namespace PHH
             }
             else
             {
-                animatorHandler.PlayTargetAnimation(playerInventory.leftWeapon.weapon_art, true);
+                playerAnimatorManager.PlayTargetAnimation(playerInventoryManager.leftWeapon.weapon_art, true);
 
             }
 
@@ -187,8 +187,8 @@ namespace PHH
 
         private void SuccessfullyCastSpell()
         {
-            playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
-            animatorHandler.anim.SetBool("isFiringSpell", true);
+            playerInventoryManager.currentSpell.SuccessfullyCastSpell(playerAnimatorManager, playerStatsManager, cameraHandler, playerWeaponSlotManager);
+            playerAnimatorManager.animator.SetBool("isFiringSpell", true);
         }
         #endregion
         #region Defense Actions
@@ -202,7 +202,7 @@ namespace PHH
             {
                 return;
             }
-            animatorHandler.PlayTargetAnimation("Block_Start", false, true);
+            playerAnimatorManager.PlayTargetAnimation("Block_Start", false, true);
             playerEquipmentManager.OpenBlockingCollider();
             playerManager.isBlocking = true;
 
@@ -210,7 +210,7 @@ namespace PHH
         #endregion
         public void AttemptBackStabOrRiposte()
         {
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
             {
                 return;
             }
@@ -219,7 +219,7 @@ namespace PHH
                 transform.TransformDirection(Vector3.forward), out hit, 0.5f, backStabLayer))
             {
                 CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
-                DamageCollider rightWeapon = weaponSlotManager.rightHandDamageCollider;
+                DamageCollider rightWeapon = playerWeaponSlotManager.rightHandDamageCollider;
 
                 if (enemyCharacterManager != null)
                 {
@@ -233,10 +233,10 @@ namespace PHH
                     Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
                     playerManager.transform.rotation = targetRotation;
 
-                    int criticalDamage = playerInventory.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
+                    int criticalDamage = playerInventoryManager.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
                     enemyCharacterManager.pendingCriticalDamage = criticalDamage;
 
-                    animatorHandler.PlayTargetAnimation("Stab", true);
+                    playerAnimatorManager.PlayTargetAnimation("Stab", true);
                     enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Damage_01", true);
                 }
             }
@@ -244,7 +244,7 @@ namespace PHH
                 transform.TransformDirection(Vector3.forward), out hit, 0.5f, riposteLayer))
             {
                 CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
-                DamageCollider rightWeapon = weaponSlotManager.rightHandDamageCollider;
+                DamageCollider rightWeapon = playerWeaponSlotManager.rightHandDamageCollider;
                 playerManager.transform.position = enemyCharacterManager.riposteCollider.criticalDamageStandPosition.position;
 
                 if (enemyCharacterManager != null && enemyCharacterManager.canBeRiposted)
@@ -257,10 +257,10 @@ namespace PHH
                     Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
                     playerManager.transform.rotation = targetRotation;
 
-                    int criticalDamage = playerInventory.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
+                    int criticalDamage = playerInventoryManager.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
                     enemyCharacterManager.pendingCriticalDamage = criticalDamage;
 
-                    animatorHandler.PlayTargetAnimation("Stab", true);
+                    playerAnimatorManager.PlayTargetAnimation("Stab", true);
                     enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Damage_01", true);
                 }
             }

@@ -9,35 +9,24 @@ namespace PHH
     public class PlayerManager : CharacterManager
     {
         InputHandler inputHandler;
-        Animator anim;
+        Animator animator;
         CameraHandler cameraHandler;
-        PlayerLocomotion playerLocomotion;
+        PlayerLocomotionManager playerLocomotion;
         PlayerAnimatorManager playerAnimatorManager;
-        PlayerStats playerStats;
+        PlayerStatsManager playerStatsManager;
 
         InteractableUI interactableUI;
         public GameObject interactableUIGameObject;
         public GameObject itemInteractableGameObject;
 
-        public bool isInteracting;
-
-        [Header("Player Flags")]
-        public bool isSprinting;
-        public bool isInAir;
-        public bool isGrounded;
-        public bool canDoCombo;
-        public bool isUsingRightHand;
-        public bool isUsingLeftHand;
-        public bool isInvulnerable;
-
         private void Awake()
         {
             inputHandler = GetComponent<InputHandler>();
-            anim = GetComponentInChildren<Animator>();
-            playerLocomotion = GetComponent<PlayerLocomotion>();
-            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
+            animator = GetComponent<Animator>();
+            playerLocomotion = GetComponent<PlayerLocomotionManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             interactableUI = FindObjectOfType<InteractableUI>();
-            playerStats = GetComponent<PlayerStats>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
         }
 
 
@@ -50,22 +39,22 @@ namespace PHH
         void Update()
         {
             float delta = Time.deltaTime;
-            isInteracting = anim.GetBool("isInteracting");
-            canDoCombo = anim.GetBool("canDoCombo");
-            isUsingLeftHand = anim.GetBool("IsUsingLeftHand");
-            isUsingRightHand = anim.GetBool("IsUsingRightHand");
-            isInvulnerable = anim.GetBool("isInvulnerable");
-            isFiringSpell = anim.GetBool("isFiringSpell");
-            anim.SetBool("isInAir", isInAir);
-            anim.SetBool("isDead", playerStats.isDead);
-            anim.SetBool("isBlocking", isBlocking);
+            isInteracting = animator.GetBool("isInteracting");
+            canDoCombo = animator.GetBool("canDoCombo");
+            isUsingLeftHand = animator.GetBool("IsUsingLeftHand");
+            isUsingRightHand = animator.GetBool("IsUsingRightHand");
+            isInvulnerable = animator.GetBool("isInvulnerable");
+            isFiringSpell = animator.GetBool("isFiringSpell");
+            animator.SetBool("isInAir", isInAir);
+            animator.SetBool("isDead", playerStatsManager.isDead);
+            animator.SetBool("isBlocking", isBlocking);
 
 
             inputHandler.TickInput(delta);
-            playerAnimatorManager.canRotate = anim.GetBool("canRotate");
+            playerAnimatorManager.canRotate = animator.GetBool("canRotate");
             playerLocomotion.HandleRollingAndSprinting(delta);
             playerLocomotion.HandleJumping();
-            playerStats.RegenerateStamina();
+            playerStatsManager.RegenerateStamina();
 
             CheckForInteractableObject();
 
@@ -143,6 +132,17 @@ namespace PHH
             transform.position = playerOpenChestStandingPoint.transform.position;
             playerAnimatorManager.PlayTargetAnimation("Pick Up Item", true);
 
+        }
+
+        public void PassThroughFogWallInteraction(Transform fogWallEntrance)
+        {
+            playerLocomotion.rigidbody.velocity = Vector3.zero;
+
+            Vector3 rotationDirection = fogWallEntrance.transform.forward;
+            Quaternion turnRotation = Quaternion.LookRotation(rotationDirection);
+            transform.rotation = turnRotation;
+
+            playerAnimatorManager.PlayTargetAnimation("Pass Through Fog", true);
         }
         #endregion
     }

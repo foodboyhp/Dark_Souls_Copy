@@ -19,7 +19,7 @@ namespace PHH
         public GameObject recoveryFX;
 
         public override void AttemptToConsumeItem(PlayerAnimatorManager playerAnimatorManager,
-            WeaponSlotManager weaponSlotManager, PlayerEffectsManager playerEffectsManager)
+            PlayerWeaponSlotManager weaponSlotManager, PlayerEffectsManager playerEffectsManager)
         {
             base.AttemptToConsumeItem(playerAnimatorManager, weaponSlotManager, playerEffectsManager);
             GameObject flask = Instantiate(itemModel, weaponSlotManager.leftHandSlot.transform);

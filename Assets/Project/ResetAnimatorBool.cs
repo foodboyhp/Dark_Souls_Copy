@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ResetAnimatorBool : StateMachineBehaviour
 {
+    public string isInvulnerableBool = "isInvulnerable";
+    public bool isInvulnerableStatus = false;
     public string isInteractingBool = "isInteracting";
     public bool isInteractingStatus = false;
     public string isFiringSpellBool = "isFiringSpell";
@@ -19,5 +21,6 @@ public class ResetAnimatorBool : StateMachineBehaviour
         animator.SetBool(isFiringSpellBool, isFiringSpellStatus);
         animator.SetBool(canRotateBool, canRotateStatus);
         animator.SetBool(isRotatingWithRootMotionBool, isRotatingWithRootMotionStatus);
+        animator.SetBool(isInvulnerableBool, isInvulnerableStatus);
     }
 }

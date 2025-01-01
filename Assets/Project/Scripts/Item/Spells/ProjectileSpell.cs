@@ -19,7 +19,7 @@ namespace PHH
         Rigidbody rigidbody;
 
         public override void AttemptToCastSpell(PlayerAnimatorManager animatorHandler,
-            PlayerStats playerStats, WeaponSlotManager weaponSlotManager)
+            PlayerStatsManager playerStats, PlayerWeaponSlotManager weaponSlotManager)
         {
             base.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager);
             GameObject instantiatedWarmUpSpellFX = Instantiate(spellWarmUpFX, weaponSlotManager.rightHandSlot.transform);
@@ -28,8 +28,8 @@ namespace PHH
         }
 
         public override void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler,
-            PlayerStats playerStats, CameraHandler cameraHandler
-            , WeaponSlotManager weaponSlotManager)
+            PlayerStatsManager playerStats, CameraHandler cameraHandler
+            , PlayerWeaponSlotManager weaponSlotManager)
         {
             base.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
             GameObject instantiatedSpellFX = Instantiate(spellCastFX, weaponSlotManager.rightHandSlot.transform.position,

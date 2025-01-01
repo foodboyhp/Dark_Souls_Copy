@@ -7,13 +7,20 @@ namespace PHH
     public class EnemyBossManager : MonoBehaviour
     {
         public string bossName;
-        UIBossHealthBar bossHealthBar;
-        EnemyStats enemyStats;
 
+        UIBossHealthBar bossHealthBar;
+        EnemyStatsManager enemyStats;
+        EnemyAnimatorManager enemyAnimatorManager;
+        BossCombatStanceState bossCombatStanceState;
+
+        [Header("Second Phase FX")]
+        public GameObject particleFX;
         private void Awake()
         {
             bossHealthBar = FindObjectOfType<UIBossHealthBar>();
-            enemyStats = GetComponent<EnemyStats>();
+            enemyStats = GetComponent<EnemyStatsManager>();
+            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            bossCombatStanceState = GetComponentInChildren<BossCombatStanceState>();
         }
 
         private void Start()
@@ -22,9 +29,22 @@ namespace PHH
             bossHealthBar.SetBossMaxHealth(enemyStats.maxHealth);
         }
 
-        public void UpdateBossHealthBar(int currentHealth)
+        public void UpdateBossHealthBar(int currentHealth, int maxHealth)
         {
             bossHealthBar.SetBossCurrentHealth(currentHealth);
+            if (currentHealth <= maxHealth / 2 && !bossCombatStanceState.hasPhaseShifted)
+            {
+                bossCombatStanceState.hasPhaseShifted = true;
+                ShiftToSecondPhase();
+            }
+        }
+
+        public void ShiftToSecondPhase()
+        {
+            enemyAnimatorManager.animator.SetBool("isInvulnerable", true);
+            enemyAnimatorManager.animator.SetBool("isPhaseShifting", true);
+            enemyAnimatorManager.PlayTargetAnimation("Phase Shift", true);
+            bossCombatStanceState.hasPhaseShifted = true;
         }
     }
 }

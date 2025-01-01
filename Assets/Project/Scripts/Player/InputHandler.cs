@@ -44,34 +44,32 @@ namespace PHH
         public Transform criticalAttackRayCastStartPoint;
 
         PlayerControls inputActions;
-        PlayerAttacker playerAttacker;
-        PlayerInventory playerInventory;
+        PlayerCombatManager playerCombatManager;
+        PlayerInventoryManager playerInventoryManager;
         PlayerManager playerManager;
         PlayerAnimatorManager playerAnimatorManager;
         PlayerEffectsManager playerEffectsManager;
-        PlayerStats playerStats;
+        PlayerStatsManager playerStatsManager;
         BlockingCollider blockingCollider;
         UIManager uiManager;
         CameraHandler cameraHandler;
-        PlayerAnimatorManager animatorHandler;
-        WeaponSlotManager weaponSlotManager;
+        PlayerWeaponSlotManager weaponSlotManager;
 
         Vector2 movementInput;
         Vector2 cameraInput;
 
         private void Awake()
         {
-            playerAttacker = GetComponentInChildren<PlayerAttacker>();
-            playerInventory = GetComponent<PlayerInventory>();
+            playerCombatManager = GetComponent<PlayerCombatManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerManager = GetComponent<PlayerManager>();
-            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
-            playerEffectsManager = GetComponentInChildren<PlayerEffectsManager>();
-            playerStats = GetComponent<PlayerStats>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            weaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
             blockingCollider = GetComponentInChildren<BlockingCollider>();
             uiManager = FindObjectOfType<UIManager>();
             cameraHandler = FindObjectOfType<CameraHandler>();
-            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
-            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
         }
 
         public void OnEnable()
@@ -137,13 +135,13 @@ namespace PHH
             if (b_Input)
             {
                 rollInputTimer += delta;
-                if (playerStats.currentStamina <= 0)
+                if (playerStatsManager.currentStamina <= 0)
                 {
                     b_Input = false;
                     sprintFlag = false;
                 }
 
-                if (moveAmount > 0.5f && playerStats.currentStamina > 0)
+                if (moveAmount > 0.5f && playerStatsManager.currentStamina > 0)
                 {
                     sprintFlag = true;
                 }
@@ -165,7 +163,7 @@ namespace PHH
             //RB for the right hand
             if (rb_Input)
             {
-                playerAttacker.HandlerRBAction();
+                playerCombatManager.HandlerRBAction();
             }
 
             if (rt_Input)
@@ -173,7 +171,7 @@ namespace PHH
                 if (playerManager.canDoCombo)
                 {
                     comboFlag = true;
-                    playerAttacker.HandleWeaponCombo(playerInventory.rightWeapon);
+                    playerCombatManager.HandleWeaponCombo(playerInventoryManager.rightWeapon);
                     comboFlag = false;
                 }
                 else
@@ -186,14 +184,14 @@ namespace PHH
                     {
                         return;
                     }
-                    animatorHandler.anim.SetBool("IsUsingLeftHand", true);
-                    playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+                    playerAnimatorManager.animator.SetBool("IsUsingLeftHand", true);
+                    playerCombatManager.HandleHeavyAttack(playerInventoryManager.rightWeapon);
                 }
             }
 
             if (lb_Input)
             {
-                playerAttacker.HandleLBAction();
+                playerCombatManager.HandleLBAction();
             }
             else
             {
@@ -212,7 +210,7 @@ namespace PHH
                 }
                 else
                 {
-                    playerAttacker.HandleLTAction();
+                    playerCombatManager.HandleLTAction();
                 }
             }
         }
@@ -221,11 +219,11 @@ namespace PHH
         {
             if (d_Pad_Right)
             {
-                playerInventory.ChangeRightWeapon();
+                playerInventoryManager.ChangeRightWeapon();
             }
             else if (d_Pad_Left)
             {
-                playerInventory.ChangeLeftWeapon();
+                playerInventoryManager.ChangeLeftWeapon();
             }
         }
 
@@ -295,12 +293,12 @@ namespace PHH
                 twoHandFlag = !twoHandFlag;
                 if (twoHandFlag)
                 {
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
                 }
                 else
                 {
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.leftWeapon, true);
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.leftWeapon, true);
                 }
             }
         }
@@ -309,7 +307,7 @@ namespace PHH
             if (critical_Attack_Input)
             {
                 critical_Attack_Input = false;
-                playerAttacker.AttemptBackStabOrRiposte();
+                playerCombatManager.AttemptBackStabOrRiposte();
             }
         }
 
@@ -318,7 +316,7 @@ namespace PHH
             if (x_Input)
             {
                 x_Input = false;
-                playerInventory.currentConsumable.AttemptToConsumeItem(playerAnimatorManager, weaponSlotManager, playerEffectsManager);
+                playerInventoryManager.currentConsumable.AttemptToConsumeItem(playerAnimatorManager, weaponSlotManager, playerEffectsManager);
             }
         }
     }

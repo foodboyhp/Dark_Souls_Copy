@@ -6,6 +6,7 @@ namespace PHH
 {
     public class WorldEventManager : MonoBehaviour
     {
+        public List<FogWall> fogWalls = new List<FogWall>();
         public UIBossHealthBar bossHealthBar;
         public EnemyBossManager boss;
 
@@ -23,13 +24,22 @@ namespace PHH
             bossFightIsActive = true;
             bossHasBeenAwakened = true;
             bossHealthBar.SetUIHealthBarToActive();
-            //Activate fog wall
+
+            foreach (FogWall fogWall in fogWalls)
+            {
+                fogWall.ActivateFogWall();
+            }
         }
 
         public void BossHasBeenDefeated()
         {
             bossHasBeenDefeated = true;
             bossFightIsActive = false;
+
+            foreach (var fogWall in fogWalls)
+            {
+                fogWall.DeactivateFogWall();
+            }
         }
     }
 }
