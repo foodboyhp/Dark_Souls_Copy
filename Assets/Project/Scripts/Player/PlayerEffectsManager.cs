@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PHH
 {
-    public class PlayerEffectsManager : MonoBehaviour
+    public class PlayerEffectsManager : CharacterEffectsManager
     {
         PlayerStatsManager playerStatsManager;
         PlayerWeaponSlotManager playerWeaponSlotManager;

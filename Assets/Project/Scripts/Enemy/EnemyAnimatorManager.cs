@@ -7,11 +7,13 @@ namespace PHH
     public class EnemyAnimatorManager : AnimatorManager
     {
         EnemyManager enemyManager;
+        EnemyEffectsManager enemyEffectsManager;
         EnemyBossManager enemyBossManager;
         protected override void Awake()
         {
             base.Awake();
             enemyManager = GetComponent<EnemyManager>();
+            enemyEffectsManager = GetComponent<EnemyEffectsManager>();
             enemyBossManager = GetComponent<EnemyBossManager>();
         }
 
@@ -32,6 +34,10 @@ namespace PHH
         {
             BossFXTransform bossFXTransform = GetComponentInChildren<BossFXTransform>();
             GameObject phaseFX = Instantiate(enemyBossManager.particleFX, bossFXTransform.transform);
+        }
+        public void PlayWeaponTrailFX()
+        {
+            enemyEffectsManager.PlayWeaponFX(false);
         }
         private void OnAnimatorMove()
         {

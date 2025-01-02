@@ -12,6 +12,7 @@ namespace PHH
         PlayerManager playerManager;
         PlayerInventoryManager playerInventoryManager;
         PlayerStatsManager playerStatsManager;
+        PlayerEffectsManager playerEffectsManager;
 
         [Header("Attacking Weapon")]
         public WeaponItem attackingWeapon;
@@ -19,12 +20,13 @@ namespace PHH
 
         private void Awake()
         {
-            inputHandler = GetComponent<InputHandler>();
-            playerManager = GetComponent<PlayerManager>();
-            playerStatsManager = GetComponent<PlayerStatsManager>();
-            playerInventoryManager = GetComponent<PlayerInventoryManager>();
             animator = GetComponent<Animator>();
             quickSlotsUI = FindObjectOfType<QuickSlotsUI>();
+            inputHandler = GetComponent<InputHandler>();
+            playerManager = GetComponent<PlayerManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
             LoadWeaponHolderSlots();
         }
 
@@ -124,6 +126,7 @@ namespace PHH
             leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             leftHandDamageCollider.currentWeaponDamage = playerInventoryManager.leftWeapon.baseDamage;
             leftHandDamageCollider.poiseBreak = playerInventoryManager.leftWeapon.poiseBreak;
+            playerEffectsManager.leftWeaponFX = leftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
         }
 
         private void LoadRightWeaponDamageCollider()
@@ -131,6 +134,8 @@ namespace PHH
             rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             rightHandDamageCollider.currentWeaponDamage = playerInventoryManager.rightWeapon.baseDamage;
             rightHandDamageCollider.poiseBreak = playerInventoryManager.rightWeapon.poiseBreak;
+            playerEffectsManager.rightWeaponFX = rightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
+
         }
 
         public void OpenDamageCollider()

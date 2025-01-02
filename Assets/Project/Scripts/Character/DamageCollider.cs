@@ -6,7 +6,7 @@ namespace PHH
 {
     public class DamageCollider : MonoBehaviour
     {
-        CharacterManager characterManager;
+        public CharacterManager characterManager;
         Collider damageCollider;
         public bool enabledDamageColliderOnStartUp = false;
 

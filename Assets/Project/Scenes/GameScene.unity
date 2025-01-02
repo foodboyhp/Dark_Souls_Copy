@@ -2344,29 +2344,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1309563449925235351, guid: aeb67440454e2dd44a66c81a033dc9d9, type: 3}
-      propertyPath: enemyRigidbody
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4891540482549644287, guid: aeb67440454e2dd44a66c81a033dc9d9, type: 3}
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 4891540482549644287, guid: aeb67440454e2dd44a66c81a033dc9d9, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 6390200458719528654, guid: aeb67440454e2dd44a66c81a033dc9d9, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6390200458719528654, guid: aeb67440454e2dd44a66c81a033dc9d9, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.785
-      objectReference: {fileID: 0}
-    - target: {fileID: 6390200458719528654, guid: aeb67440454e2dd44a66c81a033dc9d9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7549057283690047655, guid: aeb67440454e2dd44a66c81a033dc9d9, type: 3}
-      propertyPath: detectionLayer.m_Bits
-      value: 2048
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

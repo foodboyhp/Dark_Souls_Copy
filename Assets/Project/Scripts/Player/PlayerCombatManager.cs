@@ -14,6 +14,8 @@ namespace PHH
         PlayerEquipmentManager playerEquipmentManager;
         PlayerInventoryManager playerInventoryManager;
         PlayerWeaponSlotManager playerWeaponSlotManager;
+        PlayerEffectsManager playerEffectsManager;
+
         public string lastAttack;
 
         public LayerMask backStabLayer;
@@ -29,6 +31,7 @@ namespace PHH
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
@@ -139,6 +142,8 @@ namespace PHH
                 playerAnimatorManager.animator.SetBool("IsUsingRightHand", true);
                 HandleLightAttack(playerInventoryManager.rightWeapon);
             }
+
+            playerEffectsManager.PlayWeaponFX(false);
         }
         private void PerformRBMagicAction(WeaponItem weapon)
         {
