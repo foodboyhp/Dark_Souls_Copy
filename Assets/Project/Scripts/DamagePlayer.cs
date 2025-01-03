@@ -9,10 +9,10 @@ namespace PHH
         private int damage = 25;
         private void OnTriggerEnter(Collider other)
         {
-            PlayerStatsManager playerStats = other.GetComponent<PlayerStatsManager>(); 
-            if(playerStats != null)
+            PlayerStatsManager playerStats = other.GetComponent<PlayerStatsManager>();
+            if (playerStats != null)
             {
-                playerStats.TakeDamage(damage);
+                playerStats.TakeDamage(damage, 0);
             }
         }
     }

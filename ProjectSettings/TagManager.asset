@@ -9,6 +9,7 @@ TagManager:
   - Interactable
   - FxTemporaire
   - IllusionaryWall
+  - Character
   layers:
   - Default
   - TransparentFX

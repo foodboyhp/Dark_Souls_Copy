@@ -10,6 +10,7 @@ namespace PHH
         EnemyLocomotionManager enemyLocomotionManager;
         EnemyAnimatorManager enemyAnimatorManager;
         EnemyStatsManager enemyStatsManager;
+        EnemyEffectsManager enemyEffectsManager;
 
         public NavMeshAgent navMeshAgent;
         public State currentState;
@@ -35,6 +36,7 @@ namespace PHH
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
             enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
             enemyStatsManager = GetComponent<EnemyStatsManager>();
+            enemyEffectsManager = GetComponent<EnemyEffectsManager>();
             enemyRigidbody = GetComponent<Rigidbody>();
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
             navMeshAgent.enabled = false;
@@ -55,6 +57,11 @@ namespace PHH
             canDoCombo = enemyAnimatorManager.animator.GetBool("canDoCombo");
             canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
             enemyAnimatorManager.animator.SetBool("isDead", enemyStatsManager.isDead);
+        }
+
+        private void FixedUpdate()
+        {
+            enemyEffectsManager.HandleBuildUpEffects();
         }
 
         private void LateUpdate()

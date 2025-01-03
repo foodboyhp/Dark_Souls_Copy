@@ -6,7 +6,7 @@ namespace PHH
 {
     public class PlayerStatsManager : CharacterStatsManager
     {
-        HealthBar healthBar;
+        public HealthBar healthBar;
         StaminaBar staminaBar;
         FocusPointBar focusPointBar;
 
@@ -18,7 +18,6 @@ namespace PHH
 
         private void Awake()
         {
-            healthBar = FindObjectOfType<HealthBar>();
             staminaBar = FindObjectOfType<StaminaBar>();
             focusPointBar = FindObjectOfType<FocusPointBar>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -70,21 +69,33 @@ namespace PHH
             return maxFocusPoint;
         }
 
-        public override void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
         {
-            base.TakeDamageNoAnimation(damage);
+            base.TakeDamageNoAnimation(physicalDamage, fireDamage);
             healthBar.SetCurrentHealth(currentHealth);
 
         }
 
-        public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        public override void TakePoisonDamage(int damage)
+        {
+            if (isDead) return;
+            base.TakePoisonDamage(damage);
+            healthBar.SetCurrentHealth(currentHealth);
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                playerAnimatorManager.PlayTargetAnimation("Dead_01", true);
+                isDead = true;
+            }
+        }
+
+        public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
         {
             if (playerManager.isInvulnerable)
             {
                 return;
             }
-            base.TakeDamage(damage, damageAnimation);
-            currentHealth = currentHealth - damage;
+            base.TakeDamage(physicalDamage, fireDamage, damageAnimation);
             healthBar.SetCurrentHealth(currentHealth);
             playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 

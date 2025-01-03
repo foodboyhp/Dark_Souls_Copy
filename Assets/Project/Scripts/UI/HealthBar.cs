@@ -9,6 +9,12 @@ namespace PHH
     {
         public Slider slider;
 
+        private void Start()
+        {
+            slider = GetComponent<Slider>();
+
+        }
+
         public virtual void SetCurrentHealth(int currentHealth)
         {
             slider.value = currentHealth;

@@ -8,6 +8,7 @@ namespace PHH
     {
         public BoxCollider blockingCollider;
         public float blockingPhysicalDamageAbsorbtion;
+        public float blockingFireDamageAbsorbtion;
 
         private void Awake()
         {
@@ -16,7 +17,7 @@ namespace PHH
 
         public void SetColliderDamageAbsorbtion(WeaponItem weapon)
         {
-            if(weapon != null)
+            if (weapon != null)
             {
                 blockingPhysicalDamageAbsorbtion = weapon.physicalDamageAbsorbtion;
             }

@@ -129,7 +129,7 @@ namespace PHH
                 lowerRightArmModelChanger.EquipModelByName(playerInventoryManager.currentHandEquipment.lowerRightArmModelName);
                 leftHandModelChanger.EquipModelByName(playerInventoryManager.currentHandEquipment.leftHandModelName);
                 rightHandModelChanger.EquipModelByName(playerInventoryManager.currentHandEquipment.rightHandModelName);
-                playerStatsManager.physcialDamageAbsorbtionHand = playerInventoryManager.currentHandEquipment.physicalDefense;
+                playerStatsManager.physicalDamageAbsorbtionHand = playerInventoryManager.currentHandEquipment.physicalDefense;
             }
             else
             {
@@ -137,7 +137,7 @@ namespace PHH
                 lowerRightArmModelChanger.EquipModelByName(nakedLowerRightArm);
                 leftHandModelChanger.EquipModelByName(nakedLeftHand);
                 rightHandModelChanger.EquipModelByName(nakedRightHand);
-                playerStatsManager.physcialDamageAbsorbtionHand = 0;
+                playerStatsManager.physicalDamageAbsorbtionHand = 0;
             }
         }
 

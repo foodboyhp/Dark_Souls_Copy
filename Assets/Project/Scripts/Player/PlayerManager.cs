@@ -14,6 +14,7 @@ namespace PHH
         PlayerLocomotionManager playerLocomotion;
         PlayerAnimatorManager playerAnimatorManager;
         PlayerStatsManager playerStatsManager;
+        PlayerEffectsManager playerEffectsManager;
 
         InteractableUI interactableUI;
         public GameObject interactableUIGameObject;
@@ -27,6 +28,7 @@ namespace PHH
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             interactableUI = FindObjectOfType<InteractableUI>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
         }
 
 
@@ -65,6 +67,8 @@ namespace PHH
             playerLocomotion.HandleMovement(delta);
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
             playerLocomotion.HandleRotation(delta);
+
+            playerEffectsManager.HandleBuildUpEffects();
         }
         private void LateUpdate()
         {

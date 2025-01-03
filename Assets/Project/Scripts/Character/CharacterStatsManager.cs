@@ -32,8 +32,12 @@ namespace PHH
         public float physicalDamageAbsorbtionHead;
         public float physicalDamageAbsorbtionTorso;
         public float physicalDamageAbsorbtionLeg;
-        public float physcialDamageAbsorbtionHand;
+        public float physicalDamageAbsorbtionHand;
 
+        public float fireDamageAbsorbtionHead;
+        public float fireDamageAbsorbtionTorso;
+        public float fireDamageAbsorbtionLeg;
+        public float fireDamageAbsorbtionHand;
 
         public bool isDead;
 
@@ -47,16 +51,24 @@ namespace PHH
             totalPoiseDefense = armorPoiseBonus;
         }
 
-        public virtual void TakeDamage(int physicalDamage, string damageAnimation = "Damage_01")
+        public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
         {
             if (isDead) return;
             float totalPhysicalDamageAbsorbtion = 1 -
-                (1 - physcialDamageAbsorbtionHand / 100) *
+                (1 - physicalDamageAbsorbtionHand / 100) *
                 (1 - physicalDamageAbsorbtionHead / 100) *
                 (1 - physicalDamageAbsorbtionLeg / 100) *
                 (1 - physicalDamageAbsorbtionTorso / 100);
             physicalDamage = Mathf.RoundToInt((float)physicalDamage * (1.0f - totalPhysicalDamageAbsorbtion));
-            float finalDamage = physicalDamage;
+
+            float totalFireDamageAbsorbtion = 1 -
+                (1 - fireDamageAbsorbtionHand / 100) *
+                (1 - fireDamageAbsorbtionHead / 100) *
+                (1 - fireDamageAbsorbtionLeg / 100) *
+                (1 - fireDamageAbsorbtionTorso / 100);
+            fireDamage = Mathf.RoundToInt((float)fireDamage * (1.0f - totalFireDamageAbsorbtion));
+
+            float finalDamage = physicalDamage + fireDamage;
             currentHealth = Mathf.RoundToInt(currentHealth - finalDamage);
 
             if (currentHealth <= 0)
@@ -67,7 +79,34 @@ namespace PHH
             }
         }
 
-        public virtual void TakeDamageNoAnimation(int damage)
+        public virtual void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
+        {
+            if (isDead) return;
+            float totalPhysicalDamageAbsorbtion = 1 -
+                (1 - physicalDamageAbsorbtionHand / 100) *
+                (1 - physicalDamageAbsorbtionHead / 100) *
+                (1 - physicalDamageAbsorbtionLeg / 100) *
+                (1 - physicalDamageAbsorbtionTorso / 100);
+            physicalDamage = Mathf.RoundToInt((float)physicalDamage * (1.0f - totalPhysicalDamageAbsorbtion));
+
+            float totalFireDamageAbsorbtion = 1 -
+                (1 - fireDamageAbsorbtionHand / 100) *
+                (1 - fireDamageAbsorbtionHead / 100) *
+                (1 - fireDamageAbsorbtionLeg / 100) *
+                (1 - fireDamageAbsorbtionTorso / 100);
+            fireDamage = Mathf.RoundToInt((float)fireDamage * (1.0f - totalFireDamageAbsorbtion));
+
+            float finalDamage = physicalDamage + fireDamage;
+            currentHealth = Mathf.RoundToInt(currentHealth - finalDamage);
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
+        }
+
+        public virtual void TakePoisonDamage(int damage)
         {
             if (isDead) return;
             currentHealth = currentHealth - damage;

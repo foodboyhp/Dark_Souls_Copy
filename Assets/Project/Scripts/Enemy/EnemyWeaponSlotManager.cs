@@ -73,6 +73,10 @@ namespace PHH
             {
                 leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
                 leftHandDamageCollider.characterManager = GetComponentInParent<CharacterManager>();
+
+                leftHandDamageCollider.physicalDamage = leftHandWeapon.physicalDamage;
+                leftHandDamageCollider.fireDamage = leftHandWeapon.fireDamage;
+
                 enemyEffectsManager.leftWeaponFX = leftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
 
             }
@@ -80,6 +84,10 @@ namespace PHH
             {
                 rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
                 rightHandDamageCollider.characterManager = GetComponentInParent<CharacterManager>();
+
+                rightHandDamageCollider.physicalDamage = rightHandWeapon.physicalDamage;
+                rightHandDamageCollider.fireDamage = rightHandWeapon.fireDamage;
+
                 enemyEffectsManager.rightWeaponFX = rightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
 
             }

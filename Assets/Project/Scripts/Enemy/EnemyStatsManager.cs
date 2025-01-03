@@ -45,9 +45,9 @@ namespace PHH
             return maxHealth;
         }
 
-        public override void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
         {
-            base.TakeDamageNoAnimation(damage);
+            base.TakeDamageNoAnimation(physicalDamage, fireDamage);
 
             if (!isBoss)
             {
@@ -59,14 +59,34 @@ namespace PHH
             }
         }
 
+        public override void TakePoisonDamage(int damage)
+        {
+            if (isDead) return;
+            base.TakePoisonDamage(damage);
+            if (!isBoss)
+            {
+                enemyHealthBar.SetCurrentHealth(currentHealth);
+            }
+            else if (isBoss && enemyBossManager != null)
+            {
+                enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
+            }
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                enemyAnimatorManager.PlayTargetAnimation("Dead_01", true);
+                isDead = true;
+            }
+        }
+
         public void BreakGuard()
         {
             enemyAnimatorManager.PlayTargetAnimation("Break_Guard", true);
         }
 
-        public override void TakeDamage(int damage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
         {
-            base.TakeDamage(damage, damageAnimation = "Damage_01");
+            base.TakeDamage(physicalDamage, fireDamage, damageAnimation = "Damage_01");
             if (!isBoss)
             {
                 enemyHealthBar.SetCurrentHealth(currentHealth);
