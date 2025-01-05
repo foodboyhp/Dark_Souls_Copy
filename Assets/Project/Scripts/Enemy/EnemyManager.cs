@@ -31,6 +31,7 @@ namespace PHH
         public bool isPhaseShifting;
         public bool allowAIToperformCombo;
         public float comboLikelyhood;
+
         private void Awake()
         {
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
@@ -49,6 +50,9 @@ namespace PHH
         {
             HandleRecoveryTime();
             HandleStateMachine();
+
+            isUsingLeftHand = enemyAnimatorManager.animator.GetBool("isUsingLeftHand");
+            isUsingRightHand = enemyAnimatorManager.animator.GetBool("isUsingRightHand");
 
             isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
             isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");

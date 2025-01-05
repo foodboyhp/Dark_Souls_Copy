@@ -34,6 +34,8 @@ namespace PHH
             base.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
             GameObject instantiatedSpellFX = Instantiate(spellCastFX, weaponSlotManager.rightHandSlot.transform.position,
                 cameraHandler.cameraPivotTransform.rotation);
+            SpellDamageCollider spellDamageCollider = instantiatedSpellFX.GetComponent<SpellDamageCollider>();
+            spellDamageCollider.teamIDNumber = playerStats.teamIDNumber;
             rigidbody = instantiatedSpellFX.GetComponent<Rigidbody>();
 
             if (cameraHandler.currentLockOnTarget != null)

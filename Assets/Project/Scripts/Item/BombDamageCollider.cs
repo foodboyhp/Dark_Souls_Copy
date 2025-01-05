@@ -35,8 +35,11 @@ namespace PHH
 
                 if (character != null)
                 {
+                    if (character.teamIDNumber != teamIDNumber)
+                    {
+                        character.TakeDamage(0, explosionDamage);
+                    }
                     //character take damage
-                    character.TakeDamage(0, explosionDamage);
                 }
                 Destroy(impactParticles, 5f);
                 Destroy(transform.parent.parent.gameObject);
@@ -50,8 +53,11 @@ namespace PHH
                 CharacterStatsManager character = objectsInExplosion.GetComponent<CharacterStatsManager>();
                 if (character != null)
                 {
+                    if (character.teamIDNumber != teamIDNumber)
+                    {
+                        character.TakeDamage(0, explosionSplashDamage);
+                    }
                     // Deal fire damage
-                    character.TakeDamage(0, explosionSplashDamage);
                 }
             }
         }

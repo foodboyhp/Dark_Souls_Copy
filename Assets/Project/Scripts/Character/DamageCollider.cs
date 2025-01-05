@@ -10,6 +10,9 @@ namespace PHH
         protected Collider damageCollider;
         public bool enabledDamageColliderOnStartUp = false;
 
+        [Header("Team I.D")]
+        public int teamIDNumber = 0;
+
         [Header("Poise")]
         public float poiseBreak;
         public float offensivePoiseBonus;
@@ -50,9 +53,11 @@ namespace PHH
 
                 if (enemyManager != null)
                 {
+                    if (enemyStats.teamIDNumber == teamIDNumber)
+                        return;
                     if (enemyManager.isParrying)
                     {
-                        characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Damage_01", true);
+                        characterManager.GetComponentInChildren<CharacterAnimatorManager>().PlayTargetAnimation("Damage_01", true);
                         return;
                     }
                     else if (shield != null && enemyManager.isBlocking)
@@ -69,6 +74,8 @@ namespace PHH
                 }
                 if (enemyStats != null)
                 {
+                    if (enemyStats.teamIDNumber == teamIDNumber)
+                        return;
                     enemyStats.poiseResetTimer = enemyStats.totalPoiseResetTimer;
                     enemyStats.totalPoiseDefense = enemyStats.totalPoiseDefense - poiseBreak;
 

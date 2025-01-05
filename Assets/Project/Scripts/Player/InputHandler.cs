@@ -293,12 +293,17 @@ namespace PHH
                 twoHandFlag = !twoHandFlag;
                 if (twoHandFlag)
                 {
+                    playerManager.isTwoHandingWeapon = true;
                     weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
+                    weaponSlotManager.LoadTwoHandIKTarget(true);
                 }
                 else
                 {
+                    playerManager.isTwoHandingWeapon = false;
                     weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
                     weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.leftWeapon, true);
+                    weaponSlotManager.LoadTwoHandIKTarget(false);
+
                 }
             }
         }

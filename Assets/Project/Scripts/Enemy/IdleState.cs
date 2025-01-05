@@ -11,7 +11,7 @@ namespace PHH
 
         public override State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
-            if(enemyManager.isInteracting)
+            if (enemyManager.isInteracting)
             {
                 return this;
             }
@@ -23,12 +23,15 @@ namespace PHH
                 CharacterStatsManager characterStats = colliders[i].transform.GetComponent<CharacterStatsManager>();
                 if (characterStats != null)
                 {
-                    Vector3 targetDirection = characterStats.transform.position - enemyManager.transform.position;
-                    float viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
-
-                    if (viewableAngle > enemyManager.minimumDetectionAngle && viewableAngle < enemyManager.maximumDetectionAngle)
+                    if (characterStats.teamIDNumber != enemyStats.teamIDNumber)
                     {
-                        enemyManager.currentTarget = characterStats;
+                        Vector3 targetDirection = characterStats.transform.position - enemyManager.transform.position;
+                        float viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
+
+                        if (viewableAngle > enemyManager.minimumDetectionAngle && viewableAngle < enemyManager.maximumDetectionAngle)
+                        {
+                            enemyManager.currentTarget = characterStats;
+                        }
                     }
                 }
             }

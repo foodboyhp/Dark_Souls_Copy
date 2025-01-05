@@ -6,59 +6,29 @@ namespace PHH
 {
     public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
     {
-        Animator animator;
         QuickSlotsUI quickSlotsUI;
         InputHandler inputHandler;
         PlayerManager playerManager;
         PlayerInventoryManager playerInventoryManager;
         PlayerStatsManager playerStatsManager;
         PlayerEffectsManager playerEffectsManager;
+        PlayerAnimatorManager playerAnimatorManager;
         CameraHandler cameraHandler;
 
-        [Header("Attacking Weapon")]
-        public WeaponItem attackingWeapon;
-
-
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             cameraHandler = FindObjectOfType<CameraHandler>();
-            animator = GetComponent<Animator>();
             quickSlotsUI = FindObjectOfType<QuickSlotsUI>();
             inputHandler = GetComponent<InputHandler>();
             playerManager = GetComponent<PlayerManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerEffectsManager = GetComponent<PlayerEffectsManager>();
-            LoadWeaponHolderSlots();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         }
 
-        private void LoadWeaponHolderSlots()
-        {
-            WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
-            foreach (WeaponHolderSlot weaponHolderSlot in weaponHolderSlots)
-            {
-                if (weaponHolderSlot.isLeftHandSlot)
-                {
-                    leftHandSlot = weaponHolderSlot;
-                }
-                else if (weaponHolderSlot.isRightHandSlot)
-                {
-                    rightHandSlot = weaponHolderSlot;
-                }
-                else if (weaponHolderSlot.isBackSlot)
-                {
-                    backSlot = weaponHolderSlot;
-                }
-            }
-        }
-
-        public void LoadBothWeaponOnSlots()
-        {
-            LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
-            LoadWeaponOnSlot(playerInventoryManager.leftWeapon, true);
-        }
-
-        public void LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft)
+        public override void LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft)
         {
             if (weaponItem != null)
             {
@@ -68,7 +38,7 @@ namespace PHH
                     leftHandSlot.LoadWeaponModel(weaponItem);
                     LoadLeftWeaponDamageCollider();
                     quickSlotsUI.UpdateWeaponQuickSlotsUI(true, weaponItem);
-                    animator.CrossFade(weaponItem.left_hand_idle, 0.2f);
+                    playerAnimatorManager.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
                 }
                 else
                 {
@@ -76,26 +46,18 @@ namespace PHH
                     {
                         backSlot.LoadWeaponModel(leftHandSlot.currentWeapon);
                         leftHandSlot.UnloadWeaponAndDestroy();
-                        animator.CrossFade(weaponItem.th_idle, 0.2f);
+                        playerAnimatorManager.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
+
                     }
                     else
                     {
-                        animator.CrossFade("Both Arms Empty", 0.2f);
                         backSlot.UnloadWeaponAndDestroy();
-                        animator.CrossFade(weaponItem.right_hand_idle, 0.2f);
-
-                        if (weaponItem != null)
-                        {
-                        }
-                        else
-                        {
-                            animator.CrossFade("Left Arm Empty", 0.2f);
-                        }
                     }
                     rightHandSlot.currentWeapon = weaponItem;
                     rightHandSlot.LoadWeaponModel(weaponItem);
                     LoadRightWeaponDamageCollider();
                     quickSlotsUI.UpdateWeaponQuickSlotsUI(false, weaponItem);
+                    playerAnimatorManager.animator.runtimeAnimatorController = weaponItem.weaponController;
                 }
             }
             else
@@ -103,21 +65,23 @@ namespace PHH
                 weaponItem = unarmedWeapon;
                 if (isLeft)
                 {
-                    animator.CrossFade("Left Arm Empty", 0.2f);
                     playerInventoryManager.leftWeapon = unarmedWeapon;
                     leftHandSlot.currentWeapon = weaponItem;
                     leftHandSlot.LoadWeaponModel(weaponItem);
                     LoadLeftWeaponDamageCollider();
                     quickSlotsUI.UpdateWeaponQuickSlotsUI(true, weaponItem);
+                    playerAnimatorManager.PlayTargetAnimation(weaponItem.offHandIdleAnimation, false, true);
+
                 }
                 else
                 {
-                    animator.CrossFade("Left Arm Empty", 0.2f);
                     playerInventoryManager.rightWeapon = unarmedWeapon;
                     rightHandSlot.currentWeapon = weaponItem;
                     rightHandSlot.LoadWeaponModel(weaponItem);
                     LoadRightWeaponDamageCollider();
                     quickSlotsUI.UpdateWeaponQuickSlotsUI(false, weaponItem);
+                    playerAnimatorManager.animator.runtimeAnimatorController = weaponItem.weaponController;
+
                 }
             }
         }
@@ -136,61 +100,10 @@ namespace PHH
             damageCollider.explosionSplashDamage = fireBombItem.explosiveDamage;
             damageCollider.bombRigidbody.AddForce(activeBombModel.transform.forward * fireBombItem.forwadVelocity);
             damageCollider.bombRigidbody.AddForce(activeBombModel.transform.up * fireBombItem.upwardVelocity);
+            damageCollider.teamIDNumber = playerStatsManager.teamIDNumber;
             LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
         }
 
-        #region Handle Weapon's Damage Collider
-        private void LoadLeftWeaponDamageCollider()
-        {
-            leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-
-
-            leftHandDamageCollider.physicalDamage = playerInventoryManager.leftWeapon.physicalDamage;
-            leftHandDamageCollider.fireDamage = playerInventoryManager.leftWeapon.fireDamage;
-
-            leftHandDamageCollider.poiseBreak = playerInventoryManager.leftWeapon.poiseBreak;
-            playerEffectsManager.leftWeaponFX = leftHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
-        }
-
-        private void LoadRightWeaponDamageCollider()
-        {
-            rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-
-
-            rightHandDamageCollider.physicalDamage = playerInventoryManager.rightWeapon.physicalDamage;
-            rightHandDamageCollider.fireDamage = playerInventoryManager.rightWeapon.fireDamage;
-
-            rightHandDamageCollider.poiseBreak = playerInventoryManager.rightWeapon.poiseBreak;
-            playerEffectsManager.rightWeaponFX = rightHandSlot.currentWeaponModel.GetComponentInChildren<WeaponFX>();
-
-        }
-
-        public void OpenDamageCollider()
-        {
-            if (playerManager.isUsingRightHand)
-            {
-                rightHandDamageCollider.EnableDamageCollider();
-            }
-            if (playerManager.isUsingLeftHand)
-            {
-                leftHandDamageCollider.EnableDamageCollider();
-            }
-        }
-
-        public void CloseDamageCollider()
-        {
-            if (rightHandDamageCollider != null)
-            {
-                rightHandDamageCollider.DisableDamageCollider();
-            }
-            if (leftHandDamageCollider != null)
-            {
-                leftHandDamageCollider.DisableDamageCollider();
-            }
-        }
-        #endregion
-
-        #region Hanlde Weapon's Stamina Drainage
         public void DrainStaminaLightAttack()
         {
             playerStatsManager.TakeStaminaDamage(Mathf.RoundToInt(attackingWeapon.baseStamina * attackingWeapon.lightAttackMultiplier));
@@ -199,18 +112,5 @@ namespace PHH
         {
             playerStatsManager.TakeStaminaDamage(Mathf.RoundToInt(attackingWeapon.baseStamina * attackingWeapon.heavyAttackMultiplier));
         }
-        #endregion
-
-        #region Handle Weapons's Poise Bonuse
-        public void GrantWeaponAttackingPoiseBonus()
-        {
-            playerStatsManager.totalPoiseDefense = playerStatsManager.totalPoiseDefense + attackingWeapon.offensivePoiseBonus;
-        }
-
-        public void ResetWeaponAttackingPoise()
-        {
-            playerStatsManager.totalPoiseDefense = playerStatsManager.armorPoiseBonus;
-        }
-        #endregion
     }
 }

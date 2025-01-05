@@ -8,6 +8,7 @@ namespace PHH
     {
         public PlayerInventoryManager playerInventory;
         public EquipmentWindowUI equipmentWindowUI;
+        public QuickSlotsUI quickSlotsUI;
 
         [Header("UI Windows")]
         public GameObject hudWindow;
@@ -28,12 +29,15 @@ namespace PHH
 
         private void Awake()
         {
+            quickSlotsUI = GetComponentInChildren<QuickSlotsUI>();
         }
 
-        private void Start ()
+        private void Start()
         {
             weaponInventorySlots = weaponInventorySlotsParent.GetComponentsInChildren<WeaponInventorySlot>();
             equipmentWindowUI.LoadWeaponsOnEquipmentScreen(playerInventory);
+            quickSlotsUI.UpdateCurrentSpellIcon(playerInventory.currentSpell);
+            quickSlotsUI.UpdateCurrentConsumableIcon(playerInventory.currentConsumable);
         }
 
         public void UpdateUI()
@@ -41,9 +45,9 @@ namespace PHH
             #region Weapon Inventory Slots
             for (int i = 0; i < weaponInventorySlots.Length; i++)
             {
-                if(i < playerInventory.weaponsInventory.Count)
+                if (i < playerInventory.weaponsInventory.Count)
                 {
-                    if(weaponInventorySlots.Length < playerInventory.weaponsInventory.Count)
+                    if (weaponInventorySlots.Length < playerInventory.weaponsInventory.Count)
                     {
                         Instantiate(weaponInventorySlotPrefab, weaponInventorySlotsParent);
                         weaponInventorySlots = weaponInventorySlotsParent.GetComponentsInChildren<WeaponInventorySlot>();
@@ -73,8 +77,8 @@ namespace PHH
         {
             rightHandSlot01Selected = false;
             rightHandSlot02Selected = false;
-            leftHandSlot01Selected= false;
-            leftHandSlot02Selected= false;
+            leftHandSlot01Selected = false;
+            leftHandSlot02Selected = false;
         }
     }
 }
