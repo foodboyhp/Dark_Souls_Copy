@@ -6,6 +6,8 @@ namespace PHH
 {
     public class CharacterManager : MonoBehaviour
     {
+        CharacterAnimatorManager characterAnimatorManager;
+        CharacterWeaponSlotManager characterWeaponSlotManager;
         [Header("Lock On Transform")]
         public Transform lockOnTransform;
 
@@ -25,6 +27,7 @@ namespace PHH
         public bool isInvulnerable;
         public bool isUsingRightHand;
         public bool isUsingLeftHand;
+        public bool isHoldingArrow;
         public bool isTwoHandingWeapon;
 
         [Header("Movement")]
@@ -39,6 +42,18 @@ namespace PHH
         public bool isFiringSpell;
 
         public int pendingCriticalDamage;
+
+        protected virtual void Awake()
+        {
+            characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+            characterWeaponSlotManager = GetComponent<CharacterWeaponSlotManager>();
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            characterAnimatorManager.CheckHandIKWeight(characterWeaponSlotManager.rightHandIKTarget,
+                characterWeaponSlotManager.leftHandIKTarget, isTwoHandingWeapon);
+        }
     }
 }
 

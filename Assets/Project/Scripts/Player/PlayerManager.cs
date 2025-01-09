@@ -20,8 +20,9 @@ namespace PHH
         public GameObject interactableUIGameObject;
         public GameObject itemInteractableGameObject;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             inputHandler = GetComponent<InputHandler>();
             animator = GetComponent<Animator>();
             playerLocomotion = GetComponent<PlayerLocomotionManager>();
@@ -47,6 +48,7 @@ namespace PHH
             isUsingRightHand = animator.GetBool("IsUsingRightHand");
             isInvulnerable = animator.GetBool("isInvulnerable");
             isFiringSpell = animator.GetBool("isFiringSpell");
+            isHoldingArrow = animator.GetBool("isHoldingArrow");
             animator.SetBool("isTwoHandingWeapon", isTwoHandingWeapon);
             animator.SetBool("isInAir", isInAir);
             animator.SetBool("isDead", playerStatsManager.isDead);
@@ -62,8 +64,9 @@ namespace PHH
             CheckForInteractableObject();
 
         }
-        private void FixedUpdate()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             float delta = Time.fixedDeltaTime;
             playerLocomotion.HandleMovement(delta);
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);

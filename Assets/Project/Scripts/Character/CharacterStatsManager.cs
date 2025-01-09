@@ -6,6 +6,8 @@ namespace PHH
 {
     public class CharacterStatsManager : MonoBehaviour
     {
+        CharacterAnimatorManager characterAnimatorManager;
+
         [Header("Team I.D")]
         public int teamIDNumber = 0;
 
@@ -44,6 +46,11 @@ namespace PHH
 
         public bool isDead;
 
+        protected virtual void Awake()
+        {
+            characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+        }
+
         protected virtual void Update()
         {
             HandlePoiseResetTimer();
@@ -54,7 +61,7 @@ namespace PHH
             totalPoiseDefense = armorPoiseBonus;
         }
 
-        public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
+        public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
         {
             if (isDead) return;
             float totalPhysicalDamageAbsorbtion = 1 -
@@ -85,6 +92,8 @@ namespace PHH
         public virtual void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
         {
             if (isDead) return;
+
+            characterAnimatorManager.EraseHandIKForWeapon();
             float totalPhysicalDamageAbsorbtion = 1 -
                 (1 - physicalDamageAbsorbtionHand / 100) *
                 (1 - physicalDamageAbsorbtionHead / 100) *

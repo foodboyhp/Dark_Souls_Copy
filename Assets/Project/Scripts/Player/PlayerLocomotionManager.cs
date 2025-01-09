@@ -147,11 +147,11 @@ namespace PHH
                 speed = sprintSpeed;
                 playerManager.isSprinting = true;
                 moveDirection *= speed;
-                playerStatsManager.TakeDamage(sprintStaminaCost, 0);
+                playerStatsManager.TakeDamage(sprintStaminaCost, 0, "Damage_01");
             }
             else
             {
-                if (inputHandler.moveAmount < 0.5f)
+                if (inputHandler.moveAmount <= 0.5f)
                 {
                     moveDirection *= walkingSpeed;
                     playerManager.isSprinting = false;
@@ -196,6 +196,7 @@ namespace PHH
                 if (inputHandler.moveAmount > 0)
                 {
                     playerAnimatorManager.PlayTargetAnimation("Rolling", true);
+                    playerAnimatorManager.EraseHandIKForWeapon();
                     moveDirection.y = 0;
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
@@ -204,6 +205,8 @@ namespace PHH
                 else
                 {
                     playerAnimatorManager.PlayTargetAnimation("Backstep", true);
+                    playerAnimatorManager.EraseHandIKForWeapon();
+
                     playerStatsManager.TakeStaminaDamage(backStepStaminaCost);
 
                 }
@@ -312,6 +315,8 @@ namespace PHH
                     //moveDirection.y = 0;
 
                     playerAnimatorManager.PlayTargetAnimation("Jump", true);
+                    playerAnimatorManager.EraseHandIKForWeapon();
+
                     Quaternion jumpRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = jumpRotation;
                 }

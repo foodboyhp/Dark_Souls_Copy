@@ -19,39 +19,74 @@ namespace PHH
         Rigidbody rigidbody;
 
         public override void AttemptToCastSpell(PlayerAnimatorManager animatorHandler,
-            PlayerStatsManager playerStats, PlayerWeaponSlotManager weaponSlotManager)
+            PlayerStatsManager playerStats, PlayerWeaponSlotManager weaponSlotManager, bool isLeftHanded)
         {
-            base.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager);
-            GameObject instantiatedWarmUpSpellFX = Instantiate(spellWarmUpFX, weaponSlotManager.rightHandSlot.transform);
-            instantiatedWarmUpSpellFX.gameObject.transform.localScale = new Vector3(100, 100, 100);
-            animatorHandler.PlayTargetAnimation(spellAnimation, true);
+            base.AttemptToCastSpell(animatorHandler, playerStats, weaponSlotManager, isLeftHanded);
+            if (isLeftHanded)
+            {
+                GameObject instantiatedWarmUpSpellFX = Instantiate(spellWarmUpFX, weaponSlotManager.leftHandSlot.transform);
+                instantiatedWarmUpSpellFX.gameObject.transform.localScale = new Vector3(100, 100, 100);
+                animatorHandler.PlayTargetAnimation(spellAnimation, true, false, isLeftHanded);
+            }
+            else
+            {
+                GameObject instantiatedWarmUpSpellFX = Instantiate(spellWarmUpFX, weaponSlotManager.rightHandSlot.transform);
+                instantiatedWarmUpSpellFX.gameObject.transform.localScale = new Vector3(100, 100, 100);
+                animatorHandler.PlayTargetAnimation(spellAnimation, true, false, isLeftHanded);
+            }
         }
 
         public override void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler,
             PlayerStatsManager playerStats, CameraHandler cameraHandler
-            , PlayerWeaponSlotManager weaponSlotManager)
+            , PlayerWeaponSlotManager weaponSlotManager, bool isLeftHanded)
         {
-            base.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
-            GameObject instantiatedSpellFX = Instantiate(spellCastFX, weaponSlotManager.rightHandSlot.transform.position,
-                cameraHandler.cameraPivotTransform.rotation);
-            SpellDamageCollider spellDamageCollider = instantiatedSpellFX.GetComponent<SpellDamageCollider>();
-            spellDamageCollider.teamIDNumber = playerStats.teamIDNumber;
-            rigidbody = instantiatedSpellFX.GetComponent<Rigidbody>();
-
-            if (cameraHandler.currentLockOnTarget != null)
+            base.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager, isLeftHanded);
+            if (isLeftHanded)
             {
-                instantiatedSpellFX.transform.LookAt(cameraHandler.currentLockOnTarget.transform);
+                GameObject instantiatedSpellFX = Instantiate(spellCastFX, weaponSlotManager.leftHandSlot.transform.position,
+                cameraHandler.cameraPivotTransform.rotation);
+                SpellDamageCollider spellDamageCollider = instantiatedSpellFX.GetComponent<SpellDamageCollider>();
+                spellDamageCollider.teamIDNumber = playerStats.teamIDNumber;
+                rigidbody = instantiatedSpellFX.GetComponent<Rigidbody>();
+
+                if (cameraHandler.currentLockOnTarget != null)
+                {
+                    instantiatedSpellFX.transform.LookAt(cameraHandler.currentLockOnTarget.transform);
+                }
+                else
+                {
+                    instantiatedSpellFX.transform.rotation = Quaternion.Euler(cameraHandler.cameraPivotTransform.eulerAngles.x, playerStats.transform.eulerAngles.y, 0);
+                }
+
+                rigidbody.AddForce(instantiatedSpellFX.transform.forward * projectileForwardVelocity);
+                rigidbody.AddForce(instantiatedSpellFX.transform.up * projectileUpwardVelocity);
+                rigidbody.useGravity = isEffectedByGravity;
+                rigidbody.mass = projectileMass;
+                instantiatedSpellFX.transform.parent = null;
             }
             else
             {
-                instantiatedSpellFX.transform.rotation = Quaternion.Euler(cameraHandler.cameraPivotTransform.eulerAngles.x, playerStats.transform.eulerAngles.y, 0);
-            }
+                GameObject instantiatedSpellFX = Instantiate(spellCastFX, weaponSlotManager.rightHandSlot.transform.position,
+                cameraHandler.cameraPivotTransform.rotation);
+                SpellDamageCollider spellDamageCollider = instantiatedSpellFX.GetComponent<SpellDamageCollider>();
+                spellDamageCollider.teamIDNumber = playerStats.teamIDNumber;
+                rigidbody = instantiatedSpellFX.GetComponent<Rigidbody>();
 
-            rigidbody.AddForce(instantiatedSpellFX.transform.forward * projectileForwardVelocity);
-            rigidbody.AddForce(instantiatedSpellFX.transform.up * projectileUpwardVelocity);
-            rigidbody.useGravity = isEffectedByGravity;
-            rigidbody.mass = projectileMass;
-            instantiatedSpellFX.transform.parent = null;
+                if (cameraHandler.currentLockOnTarget != null)
+                {
+                    instantiatedSpellFX.transform.LookAt(cameraHandler.currentLockOnTarget.transform);
+                }
+                else
+                {
+                    instantiatedSpellFX.transform.rotation = Quaternion.Euler(cameraHandler.cameraPivotTransform.eulerAngles.x, playerStats.transform.eulerAngles.y, 0);
+                }
+
+                rigidbody.AddForce(instantiatedSpellFX.transform.forward * projectileForwardVelocity);
+                rigidbody.AddForce(instantiatedSpellFX.transform.up * projectileUpwardVelocity);
+                rigidbody.useGravity = isEffectedByGravity;
+                rigidbody.mass = projectileMass;
+                instantiatedSpellFX.transform.parent = null;
+            }
         }
     }
 }

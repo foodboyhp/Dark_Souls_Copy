@@ -32,8 +32,9 @@ namespace PHH
         public bool allowAIToperformCombo;
         public float comboLikelyhood;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
             enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
             enemyStatsManager = GetComponent<EnemyStatsManager>();
@@ -63,8 +64,9 @@ namespace PHH
             enemyAnimatorManager.animator.SetBool("isDead", enemyStatsManager.isDead);
         }
 
-        private void FixedUpdate()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             enemyEffectsManager.HandleBuildUpEffects();
         }
 

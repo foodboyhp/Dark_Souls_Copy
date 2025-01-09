@@ -37,7 +37,7 @@ namespace PHH
                 {
                     if (character.teamIDNumber != teamIDNumber)
                     {
-                        character.TakeDamage(0, explosionDamage);
+                        character.TakeDamage(0, explosionDamage, currentDamageAnimation);
                     }
                     //character take damage
                 }
@@ -55,7 +55,7 @@ namespace PHH
                 {
                     if (character.teamIDNumber != teamIDNumber)
                     {
-                        character.TakeDamage(0, explosionSplashDamage);
+                        character.TakeDamage(0, explosionSplashDamage, currentDamageAnimation);
                     }
                     // Deal fire damage
                 }

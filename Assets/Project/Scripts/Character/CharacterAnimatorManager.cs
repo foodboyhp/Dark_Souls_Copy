@@ -13,8 +13,10 @@ namespace PHH
         public bool canRotate;
 
         protected RigBuilder rigBuilder;
-        public TwoBoneIKConstraint leftHandConstranit;
-        public TwoBoneIKConstraint rightHandConstranit;
+        public TwoBoneIKConstraint leftHandConstraint;
+        public TwoBoneIKConstraint rightHandConstraint;
+
+        public bool handIKWeightRestet = false;
 
         protected virtual void Awake()
         {
@@ -23,11 +25,13 @@ namespace PHH
             characterStatsManager = GetComponent<CharacterStatsManager>();
             rigBuilder = GetComponent<RigBuilder>();
         }
-        public void PlayTargetAnimation(string targetAnim, bool isInteracting, bool canRotate = false)
+        public void PlayTargetAnimation(string targetAnim, bool isInteracting,
+            bool canRotate = false, bool mirrorAnim = false)
         {
             animator.applyRootMotion = isInteracting;
             animator.SetBool("canRotate", canRotate);
             animator.SetBool("isInteracting", isInteracting);
+            animator.SetBool("isMirrored", mirrorAnim);
             animator.CrossFade(targetAnim, 0.2f);
         }
         public void PlayTargetAnimationWithRootRotation(string targetAnim, bool isInteracting)
@@ -82,29 +86,75 @@ namespace PHH
             characterStatsManager.TakeDamageNoAnimation(characterManager.pendingCriticalDamage, 0);
             characterManager.pendingCriticalDamage = 0;
         }
-        public virtual void SetHandIKForWeapon(RightHandIKTarget rightHandTarget, LeftHandIKTarget leftHandTarget, bool isTwoHandingWeapon)
+        public virtual void SetHandIKForWeapon(RightHandIKTarget rightHandTarget, LeftHandIKTarget leftHandTarget,
+            bool isTwoHandingWeapon)
         {
             if (isTwoHandingWeapon)
             {
-                rightHandConstranit.data.target = rightHandTarget.transform;
-                rightHandConstranit.data.targetPositionWeight = 1;
-                rightHandConstranit.data.targetRotationWeight = 1;
+                if (rightHandTarget != null)
+                {
+                    rightHandConstraint.data.target = rightHandTarget.transform;
+                    rightHandConstraint.data.targetPositionWeight = 1;
+                    rightHandConstraint.data.targetRotationWeight = 1;
+                }
 
-                leftHandConstranit.data.target = leftHandTarget.transform;
-                leftHandConstranit.data.targetPositionWeight = 1;
-                leftHandConstranit.data.targetRotationWeight = 1;
+                if (leftHandTarget != null)
+                {
+                    leftHandConstraint.data.target = leftHandTarget.transform;
+                    leftHandConstraint.data.targetPositionWeight = 1;
+                    leftHandConstraint.data.targetRotationWeight = 1;
+                }
             }
             else
             {
-                rightHandConstranit.data.target = null;
-                leftHandConstranit.data.target = null;
+                rightHandConstraint.data.target = null;
+                leftHandConstraint.data.target = null;
             }
 
             rigBuilder.Build();
         }
+
+        public virtual void CheckHandIKWeight(RightHandIKTarget rightHandIKTarget, LeftHandIKTarget leftHandIKTarget, bool isTwoHandingWeapon)
+        {
+            if (characterManager.isInteracting)
+            {
+                return;
+            }
+            if (handIKWeightRestet)
+            {
+                handIKWeightRestet = false;
+                if (rightHandConstraint.data.target != null)
+                {
+                    rightHandConstraint.data.target = rightHandIKTarget.transform;
+                    rightHandConstraint.data.targetPositionWeight = 0;
+                    rightHandConstraint.data.targetRotationWeight = 0;
+
+                }
+
+                if (leftHandConstraint.data.target != null)
+                {
+                    leftHandConstraint.data.target = leftHandIKTarget.transform;
+                    leftHandConstraint.data.targetPositionWeight = 1;
+                    leftHandConstraint.data.targetRotationWeight = 1;
+                }
+            }
+        }
+
         public virtual void EraseHandIKForWeapon()
         {
+            handIKWeightRestet = true;
+            if (rightHandConstraint.data.target != null)
+            {
+                rightHandConstraint.data.targetPositionWeight = 0;
+                rightHandConstraint.data.targetRotationWeight = 0;
 
+            }
+
+            if (leftHandConstraint.data.target != null)
+            {
+                leftHandConstraint.data.targetPositionWeight = 1;
+                leftHandConstraint.data.targetRotationWeight = 1;
+            }
         }
     }
 }

@@ -222,6 +222,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -232,6 +236,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1101 &-7577943316085717147
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -266,6 +272,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -276,6 +286,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1101 &-7416849636050138439
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -415,6 +427,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -425,6 +441,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!114 &-6134413337162410394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -437,6 +455,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -447,6 +469,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1101 &-6104536172591577911
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -588,6 +612,21 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!206 &-5262226728262139511
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Blend Tree
+  m_Childs: []
+  m_BlendParameter: Vertical
+  m_BlendParameterY: Vertical
+  m_MinThreshold: 0
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 0
 --- !u!1101 &-5071235150716446772
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -649,6 +688,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -659,6 +702,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1101 &-4375846599030505177
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -766,6 +811,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -776,6 +825,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1101 &-3447335484066323770
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -907,6 +958,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -917,6 +972,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1101 &-2081409197273420948
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1328,6 +1385,18 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: isTwoHandingWeapon
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: isHoldingArrow
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: isMirrored
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1773,6 +1842,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -1783,6 +1856,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1101 &2051757124876514433
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1871,6 +1946,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -1881,6 +1960,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!114 &3627240442661587208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1893,6 +1974,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -1903,6 +1988,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1107 &3655787918173093944
 AnimatorStateMachine:
   serializedVersion: 6
@@ -2335,6 +2422,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -2345,6 +2436,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1102 &5908384212599331243
 AnimatorState:
   serializedVersion: 6
@@ -2371,6 +2464,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &6187112270211520187
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TH Aiming
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: -5262226728262139511}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!114 &6417710394523781602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2383,6 +2502,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc4131ac6577ea44b973eab6a717ff19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingRightHandBool: isUsingRightHand
+  isUsingRightHandStatus: 1
+  isUsingLeftHandBool: isUsingLeftHand
+  isUsingLeftHandStatus: 1
   isInvulnerableBool: isInvulnerable
   isInvulnerableStatus: 0
   isInteractingBool: isInteracting
@@ -2393,6 +2516,8 @@ MonoBehaviour:
   isRotatingWithRootMotionStatus: 0
   canRotateBool: canRotate
   canRotateStatus: 1
+  isMirroedBool: isMirroed
+  isMirroedStatus: 0
 --- !u!1102 &6560642014511255418
 AnimatorState:
   serializedVersion: 6
@@ -2435,6 +2560,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -8264904740094408510}
     m_Position: {x: 340, y: -100, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 6187112270211520187}
+    m_Position: {x: 570, y: -100, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

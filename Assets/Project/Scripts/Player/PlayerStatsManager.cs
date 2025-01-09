@@ -16,8 +16,9 @@ namespace PHH
         public float staminaRegenerateAmount = 10f;
         public float staminaRegenTimer = 0f;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             staminaBar = FindObjectOfType<StaminaBar>();
             focusPointBar = FindObjectOfType<FocusPointBar>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -89,7 +90,7 @@ namespace PHH
             }
         }
 
-        public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
         {
             if (playerManager.isInvulnerable)
             {

@@ -23,14 +23,14 @@ namespace PHH
         public string spellDescription;
 
         public virtual void AttemptToCastSpell(PlayerAnimatorManager animatorHandler,
-            PlayerStatsManager playerStats, PlayerWeaponSlotManager weaponSlotManager)
+            PlayerStatsManager playerStats, PlayerWeaponSlotManager weaponSlotManager, bool isLeftHanded)
         {
 
         }
 
         public virtual void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler,
             PlayerStatsManager playerStats, CameraHandler cameraHandler
-            , PlayerWeaponSlotManager weaponSlotManager)
+            , PlayerWeaponSlotManager weaponSlotManager, bool isLeftHanded)
         {
             playerStats.DeductFocusPoint(focusPointCost);
         }

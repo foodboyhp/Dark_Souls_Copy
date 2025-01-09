@@ -461,6 +461,54 @@ Transform:
   - {fileID: 8387936608363556871}
   m_Father: {fileID: 4782766985543678776}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1593519915881982102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7347247555578072886}
+  - component: {fileID: 1150699075936755847}
+  m_Layer: 11
+  m_Name: RigLayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7347247555578072886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593519915881982102}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6353944308077866420}
+  - {fileID: 1282890621969546753}
+  m_Father: {fileID: 7575964202534684309}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1150699075936755847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593519915881982102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b342d8ce5c2fd48b8fa3147d48d1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Effectors: []
 --- !u!1 &1624893478379306642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,9 +1373,10 @@ GameObject:
   - component: {fileID: 1303642313528005832}
   - component: {fileID: 5979400023216364108}
   - component: {fileID: 4091228844824941105}
-  m_Layer: 0
+  - component: {fileID: 7874271733355495294}
+  m_Layer: 11
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1340,7 +1389,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3555871994200783611}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.19, z: -2.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1351,6 +1400,7 @@ Transform:
   - {fileID: 7705514859781255674}
   - {fileID: 6351209581941886902}
   - {fileID: 1949164399790572051}
+  - {fileID: 7347247555578072886}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7348871124498619964
@@ -1482,24 +1532,25 @@ MonoBehaviour:
   lockOnTransform: {fileID: 1099513422203797615}
   backStabCollider: {fileID: 2378460063682800323}
   riposteCollider: {fileID: 479963142527498239}
+  isInteracting: 0
   canBeRiposted: 0
   canBeParried: 0
+  canDoCombo: 0
   isParrying: 0
   isBlocking: 0
   isInvulnerable: 0
+  isUsingRightHand: 0
+  isUsingLeftHand: 0
+  isTwoHandingWeapon: 0
   isRotatingWithRootMotion: 0
   canRotate: 0
+  isSprinting: 0
+  isInAir: 0
+  isGrounded: 0
   isFiringSpell: 0
   pendingCriticalDamage: 0
   interactableUIGameObject: {fileID: 0}
   itemInteractableGameObject: {fileID: 0}
-  isInteracting: 0
-  isSprinting: 0
-  isInAir: 0
-  isGrounded: 0
-  canDoCombo: 0
-  isUsingRightHand: 0
-  isUsingLeftHand: 0
 --- !u!114 &1220422399644681054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1514,6 +1565,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   canRotate: 0
+  leftHandConstraint: {fileID: 0}
+  rightHandConstraint: {fileID: 0}
+  handIKWeightRestet: 0
 --- !u!114 &7419377518836030269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1526,6 +1580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdc331777ad09a40a39401c45f5a3ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamIDNumber: 0
   healthLevel: 10
   maxHealth: 0
   currentHealth: 0
@@ -1535,6 +1590,7 @@ MonoBehaviour:
   focusPointLevel: 10
   maxFocusPoint: 0
   currentFocusPoint: 0
+  soulsAwardedOnDeath: 50
   soulCount: 0
   totalPoiseDefense: 0
   offensivePoiseBonus: 0
@@ -1544,8 +1600,13 @@ MonoBehaviour:
   physicalDamageAbsorbtionHead: 0
   physicalDamageAbsorbtionTorso: 0
   physicalDamageAbsorbtionLeg: 0
-  physcialDamageAbsorbtionHand: 0
+  physicalDamageAbsorbtionHand: 0
+  fireDamageAbsorbtionHead: 0
+  fireDamageAbsorbtionTorso: 0
+  fireDamageAbsorbtionLeg: 0
+  fireDamageAbsorbtionHand: 0
   isDead: 0
+  healthBar: {fileID: 0}
   staminaRegenerateAmount: 10
   staminaRegenTimer: 0
 --- !u!114 &6215356650649223892
@@ -1569,8 +1630,8 @@ MonoBehaviour:
   currentLegEquipment: {fileID: 11400000, guid: a0adbba7d6362fc45acff72530b57924, type: 2}
   currentHandEquipment: {fileID: 11400000, guid: 7dbf02cbf0c513a488e9d2fe081e8a53, type: 2}
   weaponsInRightHandSlots:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: db476a621b607e84b8a7a87df45849a1, type: 2}
+  - {fileID: 11400000, guid: db476a621b607e84b8a7a87df45849a1, type: 2}
   weaponsInLeftHandSlots:
   - {fileID: 11400000, guid: db476a621b607e84b8a7a87df45849a1, type: 2}
   - {fileID: 11400000, guid: db476a621b607e84b8a7a87df45849a1, type: 2}
@@ -1597,6 +1658,9 @@ MonoBehaviour:
   groundDetectionRayStartPoint: 0.5
   minimumDistanceNeededToBeginFall: 1
   groundDirectionRayDistance: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1
   inAirTimer: 0
   walkingSpeed: 1
   movementSpeed: 5
@@ -1620,12 +1684,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a667b01b76892b14197873a15def472e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackingWeapon: {fileID: 0}
   unarmedWeapon: {fileID: 11400000, guid: 6a95cd923a582934382fae97a7a4b96b, type: 2}
   leftHandSlot: {fileID: 0}
   rightHandSlot: {fileID: 0}
+  backSlot: {fileID: 0}
   leftHandDamageCollider: {fileID: 0}
   rightHandDamageCollider: {fileID: 0}
+  attackingWeapon: {fileID: 0}
+  rightHandIKTarget: {fileID: 0}
+  leftHandIKTarget: {fileID: 0}
 --- !u!114 &1303642313528005832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1681,9 +1748,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 654f29ca45bebd243abc71651cbeaf70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodSplatterFx: {fileID: 0}
+  rightWeaponFX: {fileID: 0}
+  leftWeaponFX: {fileID: 0}
+  defaultPoisonParticleFX: {fileID: 0}
+  currentPoisonParticleFX: {fileID: 0}
+  buildUpTransform: {fileID: 0}
+  isPoisoned: 0
+  poisonBuildUp: 0
+  poisonAmount: 100
+  defaultPoisonAmount: 0
+  poisonTimer: 2
+  poisonDamage: 1
   currentParticleFX: {fileID: 0}
   instantiatedFXModel: {fileID: 0}
   amountToBeHealed: 0
+--- !u!114 &7874271733355495294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3555871994200783611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 1150699075936755847}
+    m_Active: 1
+  m_Effectors: []
 --- !u!1 &3619172920129804917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2595,6 +2690,62 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7916074810051908036}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5586772306019340999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1282890621969546753}
+  - component: {fileID: 5527864528030583611}
+  m_Layer: 11
+  m_Name: LeftHandIK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1282890621969546753
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5586772306019340999}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7347247555578072886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5527864528030583611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5586772306019340999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Data:
+    m_Root: {fileID: 5117581702689787658}
+    m_Mid: {fileID: 5329619056728370976}
+    m_Tip: {fileID: 6412166286222882835}
+    m_Target: {fileID: 0}
+    m_Hint: {fileID: 0}
+    m_TargetPositionWeight: 1
+    m_TargetRotationWeight: 1
+    m_HintWeight: 1
+    m_MaintainTargetPositionOffset: 0
+    m_MaintainTargetRotationOffset: 0
 --- !u!1 &5603585156919588636
 GameObject:
   m_ObjectHideFlags: 0
@@ -2705,6 +2856,62 @@ Transform:
   - {fileID: 5843961328481099955}
   m_Father: {fileID: 4553465599768671161}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5793724025856277323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6353944308077866420}
+  - component: {fileID: 1629843780513639091}
+  m_Layer: 11
+  m_Name: RightHandIK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6353944308077866420
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5793724025856277323}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7347247555578072886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1629843780513639091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5793724025856277323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Data:
+    m_Root: {fileID: 6629602180180194952}
+    m_Mid: {fileID: 3304200674115284420}
+    m_Tip: {fileID: 4553465599768671161}
+    m_Target: {fileID: 0}
+    m_Hint: {fileID: 0}
+    m_TargetPositionWeight: 1
+    m_TargetRotationWeight: 1
+    m_HintWeight: 1
+    m_MaintainTargetPositionOffset: 0
+    m_MaintainTargetRotationOffset: 0
 --- !u!1 &5927987875545041734
 GameObject:
   m_ObjectHideFlags: 0
@@ -2835,6 +3042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockingCollider: {fileID: 3829628126793584382}
   blockingPhysicalDamageAbsorbtion: 0
+  blockingFireDamageAbsorbtion: 0
 --- !u!1 &6330849133065786428
 GameObject:
   m_ObjectHideFlags: 0

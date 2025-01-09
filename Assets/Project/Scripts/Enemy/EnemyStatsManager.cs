@@ -12,8 +12,9 @@ namespace PHH
         public UIEnemyHealthBar enemyHealthBar;
 
         public bool isBoss = false;
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             enemyManager = GetComponent<EnemyManager>();
             enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
             enemyBossManager = GetComponent<EnemyBossManager>();
@@ -84,9 +85,9 @@ namespace PHH
             enemyAnimatorManager.PlayTargetAnimation("Break_Guard", true);
         }
 
-        public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation = "Damage_01")
+        public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
         {
-            base.TakeDamage(physicalDamage, fireDamage, damageAnimation = "Damage_01");
+            base.TakeDamage(physicalDamage, fireDamage, damageAnimation);
             if (!isBoss)
             {
                 enemyHealthBar.SetCurrentHealth(currentHealth);

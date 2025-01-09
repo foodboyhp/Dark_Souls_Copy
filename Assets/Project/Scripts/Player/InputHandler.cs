@@ -16,11 +16,15 @@ namespace PHH
         public bool a_Input;
         public bool x_Input;
         public bool y_Input;
+
+
         public bool rb_Input;
+        public bool hold_Rb_Input;
         public bool rt_Input;
         public bool lb_Input;
         public bool lt_Input;
-        public bool critical_Attack_Input;
+
+
         public bool jump_Input;
         public bool inventory_Input;
         public bool lockOn_Input;
@@ -38,6 +42,7 @@ namespace PHH
         public bool sprintFlag;
         public bool comboFlag;
         public bool lockOnFlag;
+        public bool fireFlag;
         public bool inventoryFlag;
         public float rollInputTimer;
 
@@ -80,6 +85,11 @@ namespace PHH
                 inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
                 inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
                 inputActions.PlayerActions.RB.performed += i => rb_Input = true;
+                inputActions.PlayerActions.HoldRb.performed += i => hold_Rb_Input = true;
+                inputActions.PlayerActions.HoldRb.canceled += i => hold_Rb_Input = false;
+                inputActions.PlayerActions.HoldRb.canceled += i => fireFlag = true;
+
+
                 inputActions.PlayerActions.RT.performed += i => rt_Input = true;
                 inputActions.PlayerActions.LB.performed += i => lb_Input = true;
                 inputActions.PlayerActions.LB.canceled += i => lb_Input = false;
@@ -97,7 +107,6 @@ namespace PHH
                 inputActions.PlayerMovement.LockOnTargetRight.performed += i => right_Stick_Right_Input = true;
                 inputActions.PlayerMovement.LockOnTargetLeft.performed += i => right_Stick_Left_Input = true;
                 inputActions.PlayerActions.Y.performed += i => y_Input = true;
-                inputActions.PlayerActions.CriticalAttack.performed += i => critical_Attack_Input = true;
             }
 
             inputActions.Enable();
@@ -110,24 +119,38 @@ namespace PHH
 
         public void TickInput(float delta)
         {
+            if (playerStatsManager.isDead) return;
             HandleMovementInput(delta);
             HandleRollInput(delta);
+            HandleLBInput();
             HandleCombatInputs(delta);
             HandleQuickSlotInput();
             HandleInventoryInput();
             HandleLockOnInput();
             HandleTwoHandInput();
-            HandlerCriticalAttackInput();
             HandleUseConsumableInput();
+            HandleHoldRBInput();
+            HandleFireBowInput();
         }
 
         private void HandleMovementInput(float delta)
         {
-            horizontal = movementInput.x;
-            vertical = movementInput.y;
-            moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
-            mouseX = cameraInput.x;
-            mouseY = cameraInput.y;
+            if (playerManager.isHoldingArrow)
+            {
+                horizontal = movementInput.x;
+                vertical = movementInput.y;
+                moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical) / 2);
+                mouseX = cameraInput.x;
+                mouseY = cameraInput.y;
+            }
+            else
+            {
+                horizontal = movementInput.x;
+                vertical = movementInput.y;
+                moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
+                mouseX = cameraInput.x;
+                mouseY = cameraInput.y;
+            }
         }
 
         private void HandleRollInput(float delta)
@@ -163,43 +186,12 @@ namespace PHH
             //RB for the right hand
             if (rb_Input)
             {
-                playerCombatManager.HandlerRBAction();
+                playerCombatManager.HandleRBAction();
             }
 
             if (rt_Input)
             {
-                if (playerManager.canDoCombo)
-                {
-                    comboFlag = true;
-                    playerCombatManager.HandleWeaponCombo(playerInventoryManager.rightWeapon);
-                    comboFlag = false;
-                }
-                else
-                {
-                    if (playerManager.isInteracting)
-                    {
-                        return;
-                    }
-                    if (playerManager.canDoCombo)
-                    {
-                        return;
-                    }
-                    playerAnimatorManager.animator.SetBool("IsUsingLeftHand", true);
-                    playerCombatManager.HandleHeavyAttack(playerInventoryManager.rightWeapon);
-                }
-            }
-
-            if (lb_Input)
-            {
-                playerCombatManager.HandleLBAction();
-            }
-            else
-            {
-                playerManager.isBlocking = false;
-                if (blockingCollider.blockingCollider.enabled)
-                {
-                    blockingCollider.DisableBlockingCollider();
-                }
+                playerCombatManager.HandleRTAction();
             }
 
             if (lt_Input)
@@ -211,6 +203,31 @@ namespace PHH
                 else
                 {
                     playerCombatManager.HandleLTAction();
+                }
+            }
+        }
+
+        private void HandleLBInput()
+        {
+            if (playerManager.isInAir || playerManager.isSprinting || playerManager.isFiringSpell)
+            {
+                lb_Input = false;
+                return;
+            }
+            if (lb_Input)
+            {
+                playerCombatManager.HandleLBAction();
+            }
+            else if (lb_Input == false)
+            {
+                playerManager.isBlocking = false;
+                if (blockingCollider.blockingCollider.enabled)
+                {
+                    blockingCollider.DisableBlockingCollider();
+                }
+                if (playerManager.isHoldingArrow)
+                {
+                    //playerAnimatorManager.animator.SetBool("isAiming", false);
                 }
             }
         }
@@ -307,12 +324,32 @@ namespace PHH
                 }
             }
         }
-        private void HandlerCriticalAttackInput()
+
+        private void HandleHoldRBInput()
         {
-            if (critical_Attack_Input)
+            if (hold_Rb_Input)
             {
-                critical_Attack_Input = false;
-                playerCombatManager.AttemptBackStabOrRiposte();
+                if (playerInventoryManager.rightWeapon.weaponType.Equals(WeaponType.Bow))
+                {
+                    //Action
+                    playerCombatManager.HandleHoldRBAction();
+                }
+                else
+                {
+                    hold_Rb_Input = false;
+                    playerCombatManager.AttemptBackStabOrRiposte();
+                }
+            }
+        }
+        private void HandleFireBowInput()
+        {
+            if (fireFlag)
+            {
+                if (playerManager.isHoldingArrow)
+                {
+                    fireFlag = false;
+                    playerCombatManager.FireArrowAction();
+                }
             }
         }
 

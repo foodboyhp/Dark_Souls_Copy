@@ -11,7 +11,14 @@ namespace PHH
         SpellCaster,
         Unarmed,
         StraighSword,
-        Shield
+        Shield,
+        Bow
+    }
+
+    public enum AmmoType
+    {
+        Arrow,
+        Bolt
     }
     public class Enums : MonoBehaviour
     {

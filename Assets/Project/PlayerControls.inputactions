@@ -149,72 +149,9 @@
             "id": "703a2990-684a-4f88-b3b9-24942e348b21",
             "actions": [
                 {
-                    "name": "Roll",
-                    "type": "Button",
-                    "id": "50a8cef5-9dc6-4279-89c4-0d2e8843e08f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RB",
-                    "type": "Button",
-                    "id": "4d4e1d11-30bb-4798-a95a-5a6c203dee67",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "CriticalAttack",
-                    "type": "Button",
-                    "id": "dc84c4d2-1f49-45aa-8e15-92c75f25ff3a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RT",
-                    "type": "Button",
-                    "id": "9877d137-4dd1-485b-8abd-d45d4a891f5d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "A",
-                    "type": "Button",
-                    "id": "a0a5f7b5-b653-42e7-a680-7513dec7794e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "4d718625-a27b-445b-8799-2d2ff0b4c4c8",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Inventory",
                     "type": "Button",
                     "id": "1cf1dd48-8cda-40e4-8847-21303bc28bf0",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "LockOn",
-                    "type": "Button",
-                    "id": "8ebe4201-5fa0-427f-97dc-0e316482a0cd",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -230,18 +167,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LT",
+                    "name": "A",
                     "type": "Button",
-                    "id": "6efa575a-1b13-4339-837d-4a04ab3afbf9",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "LB",
-                    "type": "Button",
-                    "id": "def1f175-db14-4ca5-9f36-b42f9995942a",
+                    "id": "a0a5f7b5-b653-42e7-a680-7513dec7794e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -251,6 +179,78 @@
                     "name": "X",
                     "type": "Button",
                     "id": "7316418e-4982-42d7-ab12-a31d3d8c3bf4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "4d718625-a27b-445b-8799-2d2ff0b4c4c8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LT",
+                    "type": "Button",
+                    "id": "6efa575a-1b13-4339-837d-4a04ab3afbf9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RB",
+                    "type": "Button",
+                    "id": "4d4e1d11-30bb-4798-a95a-5a6c203dee67",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HoldRb",
+                    "type": "PassThrough",
+                    "id": "722d724e-0b16-4201-a25a-adb399807ade",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RT",
+                    "type": "Button",
+                    "id": "9877d137-4dd1-485b-8abd-d45d4a891f5d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LockOn",
+                    "type": "Button",
+                    "id": "8ebe4201-5fa0-427f-97dc-0e316482a0cd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Roll",
+                    "type": "Button",
+                    "id": "50a8cef5-9dc6-4279-89c4-0d2e8843e08f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LB",
+                    "type": "Button",
+                    "id": "def1f175-db14-4ca5-9f36-b42f9995942a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -282,6 +282,83 @@
                 },
                 {
                     "name": "",
+                    "id": "4871ea0d-08cf-41c2-93f0-584a57adc5ab",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d87a35f5-cd4f-4c03-a384-dcf3cd4f8422",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "99b63ce5-37cf-4705-af6c-7e6376b82841",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d777f3c-5313-40ee-9ea5-86eb78b5b283",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "A",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8cf7e0f1-7dfc-45c7-818d-7dc4904413b0",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "33add7b5-6fb4-4a73-befc-6fcf5c9fcff9",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3812f5d3-3d46-4344-9ab6-ab4f306d6a2b",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LT",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "45770aad-bf11-4144-b5f1-09759c08c63c",
                     "path": "<Keyboard>/e",
                     "interactions": "Tap",
@@ -304,39 +381,6 @@
                 },
                 {
                     "name": "",
-                    "id": "3d777f3c-5313-40ee-9ea5-86eb78b5b283",
-                    "path": "<Keyboard>/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "A",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "33add7b5-6fb4-4a73-befc-6fcf5c9fcff9",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d87a35f5-cd4f-4c03-a384-dcf3cd4f8422",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "0218e362-8342-48c5-b32c-21f1a2cc8e6d",
                     "path": "<Keyboard>/f",
                     "interactions": "",
@@ -348,56 +392,12 @@
                 },
                 {
                     "name": "",
-                    "id": "99b63ce5-37cf-4705-af6c-7e6376b82841",
-                    "path": "<Keyboard>/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Y",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a5322048-6cb7-4501-bcb0-a5aab0e93d12",
+                    "id": "696e3b57-15ee-41c3-989a-0d0d270c265e",
                     "path": "<Keyboard>/e",
-                    "interactions": "Hold(duration=0.4)",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "",
-                    "action": "CriticalAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3812f5d3-3d46-4344-9ab6-ab4f306d6a2b",
-                    "path": "<Keyboard>/z",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LT",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4871ea0d-08cf-41c2-93f0-584a57adc5ab",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LB",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8cf7e0f1-7dfc-45c7-818d-7dc4904413b0",
-                    "path": "<Keyboard>/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "X",
+                    "action": "HoldRb",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
