@@ -8,13 +8,17 @@ namespace PHH
 {
     public class PlayerManager : CharacterManager
     {
-        InputHandler inputHandler;
         Animator animator;
-        CameraHandler cameraHandler;
-        PlayerLocomotionManager playerLocomotion;
-        PlayerAnimatorManager playerAnimatorManager;
-        PlayerStatsManager playerStatsManager;
-        PlayerEffectsManager playerEffectsManager;
+        public CameraHandler cameraHandler;
+        public InputHandler inputHandler;
+        public PlayerLocomotionManager playerLocomotion;
+        public PlayerInventoryManager playerInventoryManager;
+        public PlayerAnimatorManager playerAnimatorManager;
+        public PlayerStatsManager playerStatsManager;
+        public PlayerWeaponSlotManager playerWeaponSlotManager;
+        public PlayerCombatManager playerCombatManager;
+        public PlayerEffectsManager playerEffectsManager;
+        public PlayerEquipmentManager PlayerEquipmentManager;
 
         InteractableUI interactableUI;
         public GameObject interactableUIGameObject;
@@ -27,9 +31,13 @@ namespace PHH
             animator = GetComponent<Animator>();
             playerLocomotion = GetComponent<PlayerLocomotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
             interactableUI = FindObjectOfType<InteractableUI>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
+            playerCombatManager = GetComponent<PlayerCombatManager>();
             playerEffectsManager = GetComponent<PlayerEffectsManager>();
+            PlayerEquipmentManager = GetComponent<PlayerEquipmentManager>();
         }
 
 
@@ -44,8 +52,6 @@ namespace PHH
             float delta = Time.deltaTime;
             isInteracting = animator.GetBool("isInteracting");
             canDoCombo = animator.GetBool("canDoCombo");
-            isUsingLeftHand = animator.GetBool("IsUsingLeftHand");
-            isUsingRightHand = animator.GetBool("IsUsingRightHand");
             isInvulnerable = animator.GetBool("isInvulnerable");
             isFiringSpell = animator.GetBool("isFiringSpell");
             isHoldingArrow = animator.GetBool("isHoldingArrow");
@@ -55,9 +61,10 @@ namespace PHH
             animator.SetBool("isBlocking", isBlocking);
 
 
-            inputHandler.TickInput(delta);
+            inputHandler.TickInput();
             playerAnimatorManager.canRotate = animator.GetBool("canRotate");
-            playerLocomotion.HandleRollingAndSprinting(delta);
+            playerLocomotion.HandleFalling(playerLocomotion.moveDirection);
+            playerLocomotion.HandleRollingAndSprinting();
             playerLocomotion.HandleJumping();
             playerStatsManager.RegenerateStamina();
 
@@ -67,33 +74,25 @@ namespace PHH
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
-            float delta = Time.fixedDeltaTime;
-            playerLocomotion.HandleMovement(delta);
-            playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
-            playerLocomotion.HandleRotation(delta);
+            playerLocomotion.HandleFalling(playerLocomotion.moveDirection);
+            playerLocomotion.HandleMovement();
+            playerLocomotion.HandleRotation();
 
             playerEffectsManager.HandleBuildUpEffects();
         }
         private void LateUpdate()
         {
-            inputHandler.rollFlag = false;
-            inputHandler.rb_Input = false;
-            inputHandler.rt_Input = false;
-            inputHandler.lt_Input = false;
             inputHandler.d_Pad_Up = false;
             inputHandler.d_Pad_Down = false;
             inputHandler.d_Pad_Left = false;
             inputHandler.d_Pad_Right = false;
             inputHandler.a_Input = false;
-            inputHandler.jump_Input = false;
             inputHandler.inventory_Input = false;
-
-            float delta = Time.deltaTime;
 
             if (cameraHandler != null)
             {
-                cameraHandler.FollowTarget(delta);
-                cameraHandler.HandlerCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
+                cameraHandler.FollowTarget();
+                cameraHandler.HandleCameraRotation();
             }
 
             if (isInAir)

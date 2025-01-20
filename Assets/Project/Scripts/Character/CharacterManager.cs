@@ -28,6 +28,7 @@ namespace PHH
         public bool isUsingRightHand;
         public bool isUsingLeftHand;
         public bool isHoldingArrow;
+        public bool isAiming;
         public bool isTwoHandingWeapon;
 
         [Header("Movement")]
@@ -53,6 +54,20 @@ namespace PHH
         {
             characterAnimatorManager.CheckHandIKWeight(characterWeaponSlotManager.rightHandIKTarget,
                 characterWeaponSlotManager.leftHandIKTarget, isTwoHandingWeapon);
+        }
+
+        public virtual void UpdateWhichHandCharacterIsUsing(bool usingRightHand)
+        {
+            if (usingRightHand)
+            {
+                isUsingLeftHand = false;
+                isUsingRightHand = true;
+            }
+            else
+            {
+                isUsingLeftHand = true;
+                isUsingRightHand = false;
+            }
         }
     }
 }

@@ -65,66 +65,75 @@ namespace PHH
         Vector3 normalVector;
         Vector3 targetPosition;
 
-        public void HandleRotation(float delta)
+        public void HandleRotation()
         {
             if (playerAnimatorManager.canRotate)
             {
-                if (inputHandler.lockOnFlag)
+                if (playerManager.isAiming)
                 {
-                    if (inputHandler.rollFlag || inputHandler.sprintFlag)
-                    {
-                        Vector3 targetDirection = Vector3.zero;
-                        targetDirection = cameraHandler.cameraTransform.forward * inputHandler.vertical;
-                        targetDirection += cameraHandler.cameraTransform.right * inputHandler.horizontal;
-
-                        if (targetDirection == Vector3.zero)
-                        {
-                            targetDirection = transform.forward;
-                        }
-
-                        Quaternion tr = Quaternion.LookRotation(targetDirection);
-                        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-
-                        transform.rotation = targetRotation;
-                    }
-                    else
-                    {
-                        Vector3 rotationDirection = moveDirection;
-                        rotationDirection = cameraHandler.currentLockOnTarget.transform.position - transform.position;
-                        rotationDirection.y = 0;
-                        rotationDirection.Normalize();
-                        Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-                        transform.rotation = targetRotation;
-                    }
+                    Quaternion targetRotation = Quaternion.Euler(0, cameraHandler.cameraTransform.eulerAngles.y, 0);
+                    Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    transform.rotation = playerRotation;
                 }
                 else
                 {
-                    Vector3 targetDir = Vector3.zero;
-                    float moveOverride = inputHandler.moveAmount;
-
-                    targetDir = cameraObject.forward * inputHandler.vertical;
-                    targetDir += cameraObject.right * inputHandler.horizontal;
-
-                    targetDir.Normalize();
-                    targetDir.y = 0;
-
-                    if (targetDir == Vector3.zero)
+                    if (inputHandler.lockOnFlag)
                     {
-                        targetDir = myTransform.forward;
+                        if (inputHandler.rollFlag || inputHandler.sprintFlag)
+                        {
+                            Vector3 targetDirection = Vector3.zero;
+                            targetDirection = cameraHandler.cameraTransform.forward * inputHandler.vertical;
+                            targetDirection += cameraHandler.cameraTransform.right * inputHandler.horizontal;
+
+                            if (targetDirection == Vector3.zero)
+                            {
+                                targetDirection = transform.forward;
+                            }
+
+                            Quaternion tr = Quaternion.LookRotation(targetDirection);
+                            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+                            transform.rotation = targetRotation;
+                        }
+                        else
+                        {
+                            Vector3 rotationDirection = moveDirection;
+                            rotationDirection = cameraHandler.currentLockOnTarget.transform.position - transform.position;
+                            rotationDirection.y = 0;
+                            rotationDirection.Normalize();
+                            Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+                            transform.rotation = targetRotation;
+                        }
                     }
+                    else
+                    {
+                        Vector3 targetDir = Vector3.zero;
+                        float moveOverride = inputHandler.moveAmount;
 
-                    float rs = rotationSpeed;
+                        targetDir = cameraObject.forward * inputHandler.vertical;
+                        targetDir += cameraObject.right * inputHandler.horizontal;
 
-                    Quaternion tr = Quaternion.LookRotation(targetDir);
-                    Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
+                        targetDir.Normalize();
+                        targetDir.y = 0;
 
-                    myTransform.rotation = targetRotation;
+                        if (targetDir == Vector3.zero)
+                        {
+                            targetDir = myTransform.forward;
+                        }
+
+                        float rs = rotationSpeed;
+
+                        Quaternion tr = Quaternion.LookRotation(targetDir);
+                        Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * Time.deltaTime);
+
+                        myTransform.rotation = targetRotation;
+                    }
                 }
             }
         }
 
-        public void HandleMovement(float delta)
+        public void HandleMovement()
         {
             if (inputHandler.rollFlag)
             {
@@ -176,7 +185,7 @@ namespace PHH
             }
         }
 
-        public void HandleRollingAndSprinting(float delta)
+        public void HandleRollingAndSprinting()
         {
             if (playerAnimatorManager.animator.GetBool("isInteracting"))
             {
@@ -190,6 +199,7 @@ namespace PHH
 
             if (inputHandler.rollFlag)
             {
+                inputHandler.rollFlag = false;
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;
 
@@ -213,7 +223,7 @@ namespace PHH
             }
         }
 
-        public void HandleFalling(float delta, Vector3 direction)
+        public void HandleFalling(Vector3 direction)
         {
             playerManager.isGrounded = false;
             RaycastHit hit;

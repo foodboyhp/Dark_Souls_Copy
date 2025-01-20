@@ -1496,10 +1496,10 @@ MonoBehaviour:
   x_Input: 0
   y_Input: 0
   rb_Input: 0
+  hold_Rb_Input: 0
   rt_Input: 0
   lb_Input: 0
   lt_Input: 0
-  critical_Attack_Input: 0
   jump_Input: 0
   inventory_Input: 0
   lockOn_Input: 0
@@ -1514,9 +1514,11 @@ MonoBehaviour:
   sprintFlag: 0
   comboFlag: 0
   lockOnFlag: 0
+  fireFlag: 0
   inventoryFlag: 0
   rollInputTimer: 0
   criticalAttackRayCastStartPoint: {fileID: 2989633078569544791}
+  uiManager: {fileID: 0}
 --- !u!114 &7645779279285931670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1541,6 +1543,8 @@ MonoBehaviour:
   isInvulnerable: 0
   isUsingRightHand: 0
   isUsingLeftHand: 0
+  isHoldingArrow: 0
+  isAiming: 0
   isTwoHandingWeapon: 0
   isRotatingWithRootMotion: 0
   canRotate: 0
@@ -1565,7 +1569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   canRotate: 0
-  leftHandConstraint: {fileID: 0}
+  leftHandConstraint: {fileID: 5527864528030583611}
   rightHandConstraint: {fileID: 0}
   handIKWeightRestet: 0
 --- !u!114 &7419377518836030269
@@ -1625,6 +1629,7 @@ MonoBehaviour:
   rightWeapon: {fileID: 0}
   leftWeapon: {fileID: 0}
   currentConsumable: {fileID: 0}
+  currentAmmo: {fileID: 0}
   currentHelmetEquipment: {fileID: 11400000, guid: 2ebd248fa9b92604399413c2d807fb4b, type: 2}
   currentTorsoEquipment: {fileID: 11400000, guid: 2e61470ddd47fdc4ea9b6d8e9d22d23e, type: 2}
   currentLegEquipment: {fileID: 11400000, guid: a0adbba7d6362fc45acff72530b57924, type: 2}
@@ -1748,6 +1753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 654f29ca45bebd243abc71651cbeaf70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentRangeFX: {fileID: 0}
   bloodSplatterFx: {fileID: 0}
   rightWeaponFX: {fileID: 0}
   leftWeaponFX: {fileID: 0}

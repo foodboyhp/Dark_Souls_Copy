@@ -10,6 +10,9 @@ namespace PHH
         public EquipmentWindowUI equipmentWindowUI;
         public QuickSlotsUI quickSlotsUI;
 
+        [Header("HUD")]
+        public GameObject crossHair;
+
         [Header("UI Windows")]
         public GameObject hudWindow;
         public GameObject selectWindow;

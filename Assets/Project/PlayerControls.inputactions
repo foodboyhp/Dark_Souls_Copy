@@ -253,7 +253,16 @@
                     "id": "def1f175-db14-4ca5-9f36-b42f9995942a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TapLB",
+                    "type": "Button",
+                    "id": "aebb1720-fa6f-4d75-9ae4-3aefbde35cff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap",
                     "initialStateCheck": false
                 }
             ],
@@ -398,6 +407,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "HoldRb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09e2f3d9-d7e5-4aaf-a2dc-c8b1fc27eca1",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TapLB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e820f83-f1a8-40bc-bfbc-a631a76b6994",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TapLB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

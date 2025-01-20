@@ -141,5 +141,10 @@ namespace PHH
                 totalPoiseDefense = armorPoiseBonus;
             }
         }
+
+        public virtual void DrainStaminaBasedOnAttackType()
+        {
+
+        }
     }
 }

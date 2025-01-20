@@ -9,7 +9,7 @@ namespace PHH
 
         public override void GrantWeaponAttackingPoiseBonus()
         {
-            characterStatsManager.totalPoiseDefense = characterStatsManager.totalPoiseDefense + attackingWeapon.offensivePoiseBonus;
+            //characterStatsManager.totalPoiseDefense = characterStatsManager.totalPoiseDefense + attackingWeapon.offensivePoiseBonus;
         }
 
         public override void ResetWeaponAttackingPoise()

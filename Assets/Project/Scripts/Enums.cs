@@ -11,6 +11,7 @@ namespace PHH
         SpellCaster,
         Unarmed,
         StraighSword,
+        SmallShield,
         Shield,
         Bow
     }
