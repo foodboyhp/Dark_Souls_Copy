@@ -6,8 +6,12 @@ namespace PHH
 {
     public class CharacterManager : MonoBehaviour
     {
-        CharacterAnimatorManager characterAnimatorManager;
-        CharacterWeaponSlotManager characterWeaponSlotManager;
+        public Animator animator;
+        public CharacterAnimatorManager characterAnimatorManager;
+        public CharacterWeaponSlotManager characterWeaponSlotManager;
+        public CharacterStatsManager characterStatsManager;
+        public CharacterInventoryManager characterInventoryManager;
+        public CharacterEffectsManager characterEffectsManager;
         [Header("Lock On Transform")]
         public Transform lockOnTransform;
 
@@ -17,6 +21,9 @@ namespace PHH
 
         [Header("Interaction")]
         public bool isInteracting;
+
+        [Header("Status")]
+        public bool isDead;
 
         [Header("Combat Flags")]
         public bool canBeRiposted;
@@ -46,8 +53,12 @@ namespace PHH
 
         protected virtual void Awake()
         {
+            animator = GetComponent<Animator>();
             characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
             characterWeaponSlotManager = GetComponent<CharacterWeaponSlotManager>();
+            characterStatsManager = GetComponent<CharacterStatsManager>();
+            characterInventoryManager = GetComponent<CharacterInventoryManager>();
+            characterEffectsManager = GetComponent<CharacterEffectsManager>();
         }
 
         protected virtual void FixedUpdate()

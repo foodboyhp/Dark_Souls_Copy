@@ -6,8 +6,7 @@ namespace PHH
 {
     public class EnemyLocomotionManager : MonoBehaviour
     {
-        EnemyManager enemyManager;
-        EnemyAnimatorManager enemyAnimatorManager;
+        EnemyManager enemy;
 
         public CapsuleCollider characterCollider;
         public CapsuleCollider characterCollisionBlockerCollider;
@@ -16,8 +15,7 @@ namespace PHH
 
         private void Awake()
         {
-            enemyManager = GetComponent<EnemyManager>();
-            enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+            enemy = GetComponent<EnemyManager>();
         }
 
         private void Start()

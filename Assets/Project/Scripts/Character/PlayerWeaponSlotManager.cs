@@ -8,7 +8,7 @@ namespace PHH
     {
         QuickSlotsUI quickSlotsUI;
         InputHandler inputHandler;
-        PlayerManager playerManager;
+        PlayerManager player;
         PlayerInventoryManager playerInventoryManager;
         PlayerStatsManager playerStatsManager;
         PlayerEffectsManager playerEffectsManager;
@@ -21,7 +21,7 @@ namespace PHH
             cameraHandler = FindObjectOfType<CameraHandler>();
             quickSlotsUI = FindObjectOfType<QuickSlotsUI>();
             inputHandler = GetComponent<InputHandler>();
-            playerManager = GetComponent<PlayerManager>();
+            player = GetComponent<PlayerManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerEffectsManager = GetComponent<PlayerEffectsManager>();
@@ -57,7 +57,7 @@ namespace PHH
                     rightHandSlot.LoadWeaponModel(weaponItem);
                     LoadRightWeaponDamageCollider();
                     quickSlotsUI.UpdateWeaponQuickSlotsUI(false, weaponItem);
-                    playerAnimatorManager.animator.runtimeAnimatorController = weaponItem.weaponController;
+                    player.animator.runtimeAnimatorController = weaponItem.weaponController;
                 }
             }
             else
@@ -80,7 +80,7 @@ namespace PHH
                     rightHandSlot.LoadWeaponModel(weaponItem);
                     LoadRightWeaponDamageCollider();
                     quickSlotsUI.UpdateWeaponQuickSlotsUI(false, weaponItem);
-                    playerAnimatorManager.animator.runtimeAnimatorController = weaponItem.weaponController;
+                    player.animator.runtimeAnimatorController = weaponItem.weaponController;
 
                 }
             }
@@ -93,7 +93,7 @@ namespace PHH
             GameObject activeBombModel = Instantiate(fireBombItem.liveBombModel, rightHandSlot.transform.position,
                 cameraHandler.cameraPivotTransform.rotation);
             activeBombModel.transform.rotation = Quaternion.Euler(cameraHandler.cameraPivotTransform.eulerAngles.x,
-                playerManager.lockOnTransform.eulerAngles.y, 0);
+                player.lockOnTransform.eulerAngles.y, 0);
             BombDamageCollider damageCollider = activeBombModel.GetComponentInChildren<BombDamageCollider>();
 
             damageCollider.explosionDamage = fireBombItem.baseDamage;

@@ -7,7 +7,7 @@ namespace PHH
     public class PlayerLocomotionManager : MonoBehaviour
     {
         CameraHandler cameraHandler;
-        PlayerManager playerManager;
+        PlayerManager player;
         PlayerStatsManager playerStatsManager;
         Transform cameraObject;
         InputHandler inputHandler;
@@ -46,7 +46,7 @@ namespace PHH
         {
             cameraHandler = FindObjectOfType<CameraHandler>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
-            playerManager = GetComponent<PlayerManager>();
+            player = GetComponent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -57,7 +57,7 @@ namespace PHH
             cameraObject = Camera.main.transform;
             myTransform = transform;
 
-            playerManager.isGrounded = true;
+            player.isGrounded = true;
             Physics.IgnoreCollision(characterCollider, characterCollisionBlockerCollider, true);
         }
 
@@ -67,9 +67,9 @@ namespace PHH
 
         public void HandleRotation()
         {
-            if (playerAnimatorManager.canRotate)
+            if (player.canRotate)
             {
-                if (playerManager.isAiming)
+                if (player.isAiming)
                 {
                     Quaternion targetRotation = Quaternion.Euler(0, cameraHandler.cameraTransform.eulerAngles.y, 0);
                     Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -139,7 +139,7 @@ namespace PHH
             {
                 return;
             }
-            if (playerManager.isInteracting)
+            if (player.isInteracting)
             {
                 return;
             }
@@ -154,7 +154,7 @@ namespace PHH
             if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f)
             {
                 speed = sprintSpeed;
-                playerManager.isSprinting = true;
+                player.isSprinting = true;
                 moveDirection *= speed;
                 playerStatsManager.TakeDamage(sprintStaminaCost, 0, "Damage_01");
             }
@@ -163,12 +163,12 @@ namespace PHH
                 if (inputHandler.moveAmount <= 0.5f)
                 {
                     moveDirection *= walkingSpeed;
-                    playerManager.isSprinting = false;
+                    player.isSprinting = false;
                 }
                 else
                 {
                     moveDirection *= speed;
-                    playerManager.isSprinting = false;
+                    player.isSprinting = false;
                 }
             }
 
@@ -177,17 +177,17 @@ namespace PHH
 
             if (inputHandler.lockOnFlag && inputHandler.sprintFlag == false)
             {
-                playerAnimatorManager.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
+                playerAnimatorManager.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, player.isSprinting);
             }
             else
             {
-                playerAnimatorManager.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
+                playerAnimatorManager.UpdateAnimatorValues(inputHandler.moveAmount, 0, player.isSprinting);
             }
         }
 
         public void HandleRollingAndSprinting()
         {
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            if (player.animator.GetBool("isInteracting"))
             {
                 return;
             }
@@ -225,7 +225,7 @@ namespace PHH
 
         public void HandleFalling(Vector3 direction)
         {
-            playerManager.isGrounded = false;
+            player.isGrounded = false;
             RaycastHit hit;
             Vector3 origin = myTransform.position;
             origin.y += groundDetectionRayStartPoint;
@@ -235,7 +235,7 @@ namespace PHH
                 moveDirection = Vector3.zero;
             }
 
-            if (playerManager.isInAir)
+            if (player.isInAir)
             {
                 rigidbody.AddForce(-Vector3.up * fallingSpeed);
                 rigidbody.AddForce(moveDirection * fallingSpeed / 5f);
@@ -252,10 +252,10 @@ namespace PHH
             {
                 normalVector = hit.normal;
                 Vector3 tp = hit.point;
-                playerManager.isGrounded = true;
+                player.isGrounded = true;
                 targetPosition.y = tp.y;
 
-                if (playerManager.isInAir)
+                if (player.isInAir)
                 {
                     if (inAirTimer > 0.5f)
                     {
@@ -268,19 +268,19 @@ namespace PHH
                         inAirTimer = 0f;
                     }
 
-                    playerManager.isInAir = false;
+                    player.isInAir = false;
                 }
             }
             else
             {
-                if (playerManager.isGrounded)
+                if (player.isGrounded)
                 {
-                    playerManager.isGrounded = false;
+                    player.isGrounded = false;
                 }
 
-                if (playerManager.isInAir == false)
+                if (player.isInAir == false)
                 {
-                    if (playerManager.isInteracting == false && !inputHandler.rollFlag)
+                    if (player.isInteracting == false && !inputHandler.rollFlag)
                     {
                         playerAnimatorManager.PlayTargetAnimation("Falling", true);
                     }
@@ -288,13 +288,13 @@ namespace PHH
                     Vector3 vel = rigidbody.velocity;
                     vel.Normalize();
                     rigidbody.velocity = vel * (movementSpeed / 2);
-                    playerManager.isInAir = true;
+                    player.isInAir = true;
                 }
             }
 
-            if (playerManager.isGrounded)
+            if (player.isGrounded)
             {
-                if (playerManager.isInteracting || inputHandler.moveAmount > 0)
+                if (player.isInteracting || inputHandler.moveAmount > 0)
                 {
                     myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime);
                 }
@@ -307,7 +307,7 @@ namespace PHH
 
         public void HandleJumping()
         {
-            if (playerManager.isInteracting)
+            if (player.isInteracting)
             {
                 return;
             }

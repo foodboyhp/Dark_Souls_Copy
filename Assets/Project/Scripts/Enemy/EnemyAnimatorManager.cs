@@ -6,15 +6,11 @@ namespace PHH
 {
     public class EnemyAnimatorManager : CharacterAnimatorManager
     {
-        EnemyManager enemyManager;
-        EnemyEffectsManager enemyEffectsManager;
-        EnemyBossManager enemyBossManager;
+        EnemyManager enemy;
         protected override void Awake()
         {
             base.Awake();
-            enemyManager = GetComponent<EnemyManager>();
-            enemyEffectsManager = GetComponent<EnemyEffectsManager>();
-            enemyBossManager = GetComponent<EnemyBossManager>();
+            enemy = GetComponent<EnemyManager>();
         }
 
         public void AwardSoulsOnDeath()
@@ -23,34 +19,34 @@ namespace PHH
             SoulsCountBar soulsCountBar = FindObjectOfType<SoulsCountBar>();
             if (playerStats != null)
             {
-                playerStats.AddSouls(characterStatsManager.soulsAwardedOnDeath);
+                playerStats.AddSouls(enemy.enemyStatsManager.soulsAwardedOnDeath);
                 if (soulsCountBar != null)
                 {
-                    soulsCountBar.SetSoulsCountText(playerStats.soulCount);
+                    soulsCountBar.SetSoulsCountText(playerStats.currentSoulCount);
                 }
             }
         }
         public void InstantiateBossParticleFX()
         {
             BossFXTransform bossFXTransform = GetComponentInChildren<BossFXTransform>();
-            GameObject phaseFX = Instantiate(enemyBossManager.particleFX, bossFXTransform.transform);
+            GameObject phaseFX = Instantiate(enemy.enemyBossManager.particleFX, bossFXTransform.transform);
         }
         public void PlayWeaponTrailFX()
         {
-            enemyEffectsManager.PlayWeaponFX(false);
+            enemy.enemyEffectsManager.PlayWeaponFX(false);
         }
         private void OnAnimatorMove()
         {
             float delta = Time.deltaTime;
-            enemyManager.enemyRigidbody.drag = 0;
-            Vector3 deltaPosition = animator.deltaPosition;
+            enemy.enemyRigidbody.drag = 0;
+            Vector3 deltaPosition = enemy.animator.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
-            enemyManager.enemyRigidbody.velocity = velocity;
+            enemy.enemyRigidbody.velocity = velocity;
 
-            if (enemyManager.isRotatingWithRootMotion)
+            if (enemy.isRotatingWithRootMotion)
             {
-                enemyManager.transform.rotation *= animator.deltaRotation;
+                enemy.transform.rotation *= enemy.animator.deltaRotation;
             }
         }
     }

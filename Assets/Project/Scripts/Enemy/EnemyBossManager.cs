@@ -9,8 +9,7 @@ namespace PHH
         public string bossName;
 
         UIBossHealthBar bossHealthBar;
-        EnemyStatsManager enemyStats;
-        EnemyAnimatorManager enemyAnimatorManager;
+        EnemyManager enemy;
         BossCombatStanceState bossCombatStanceState;
 
         [Header("Second Phase FX")]
@@ -18,15 +17,14 @@ namespace PHH
         private void Awake()
         {
             bossHealthBar = FindObjectOfType<UIBossHealthBar>();
-            enemyStats = GetComponent<EnemyStatsManager>();
-            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            enemy = GetComponent<EnemyManager>();
             bossCombatStanceState = GetComponentInChildren<BossCombatStanceState>();
         }
 
         private void Start()
         {
             bossHealthBar.SetBossName(bossName);
-            bossHealthBar.SetBossMaxHealth(enemyStats.maxHealth);
+            bossHealthBar.SetBossMaxHealth(enemy.enemyStatsManager.maxHealth);
         }
 
         public void UpdateBossHealthBar(int currentHealth, int maxHealth)
@@ -41,9 +39,9 @@ namespace PHH
 
         public void ShiftToSecondPhase()
         {
-            enemyAnimatorManager.animator.SetBool("isInvulnerable", true);
-            enemyAnimatorManager.animator.SetBool("isPhaseShifting", true);
-            enemyAnimatorManager.PlayTargetAnimation("Phase Shift", true);
+            enemy.animator.SetBool("isInvulnerable", true);
+            enemy.animator.SetBool("isPhaseShifting", true);
+            enemy.enemyAnimatorManager.PlayTargetAnimation("Phase Shift", true);
             bossCombatStanceState.hasPhaseShifted = true;
         }
     }

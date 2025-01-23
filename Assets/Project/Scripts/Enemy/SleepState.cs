@@ -6,7 +6,7 @@ namespace PHH
 {
     public class SleepState : State
     {
-        public override State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
+        public override State Tick(EnemyManager enemy)
         {
             return this;
         }

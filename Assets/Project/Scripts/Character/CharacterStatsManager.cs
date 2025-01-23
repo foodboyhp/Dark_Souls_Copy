@@ -6,25 +6,31 @@ namespace PHH
 {
     public class CharacterStatsManager : MonoBehaviour
     {
-        CharacterAnimatorManager characterAnimatorManager;
+        CharacterManager characterManager;
 
         [Header("Team I.D")]
         public int teamIDNumber = 0;
 
-        public int healthLevel = 10;
         public int maxHealth;
         public int currentHealth;
-
-        public int staminaLevel = 10;
         public float maxStamina;
         public float currentStamina;
-
-        public int focusPointLevel = 10;
         public float maxFocusPoint;
         public float currentFocusPoint;
 
+        public int currentSoulCount = 0;
         public int soulsAwardedOnDeath = 50;
-        public int soulCount = 0;
+        [Header("Character Level")]
+        public int playerLevel = 1;
+        [Header("Levels")]
+        public int healthLevel = 10;
+        public int staminaLevel = 10;
+        public int focusLevel = 10;
+        public int poiseLevel = 10;
+        public int strengthLevel = 10;
+        public int dexterityLevel = 10;
+        public int intelligenceLevel = 10;
+        public int faithLevel = 10;
 
         [Header("Poise")]
         public float totalPoiseDefense; // The total poise after damage calculation
@@ -44,11 +50,10 @@ namespace PHH
         public float fireDamageAbsorbtionLeg;
         public float fireDamageAbsorbtionHand;
 
-        public bool isDead;
 
         protected virtual void Awake()
         {
-            characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+            characterManager = GetComponent<CharacterManager>();
         }
 
         protected virtual void Update()
@@ -63,7 +68,7 @@ namespace PHH
 
         public virtual void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
         {
-            if (isDead) return;
+            if (characterManager.isDead) return;
             float totalPhysicalDamageAbsorbtion = 1 -
                 (1 - physicalDamageAbsorbtionHand / 100) *
                 (1 - physicalDamageAbsorbtionHead / 100) *
@@ -84,16 +89,16 @@ namespace PHH
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                isDead = true;
+                characterManager.isDead = true;
 
             }
         }
 
         public virtual void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
         {
-            if (isDead) return;
+            if (characterManager.isDead) return;
 
-            characterAnimatorManager.EraseHandIKForWeapon();
+            characterManager.characterAnimatorManager.EraseHandIKForWeapon();
             float totalPhysicalDamageAbsorbtion = 1 -
                 (1 - physicalDamageAbsorbtionHand / 100) *
                 (1 - physicalDamageAbsorbtionHead / 100) *
@@ -114,19 +119,19 @@ namespace PHH
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                isDead = true;
+                characterManager.isDead = true;
             }
         }
 
         public virtual void TakePoisonDamage(int damage)
         {
-            if (isDead) return;
+            if (characterManager.isDead) return;
             currentHealth = currentHealth - damage;
 
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                isDead = true;
+                characterManager.isDead = true;
             }
         }
 
@@ -145,6 +150,23 @@ namespace PHH
         public virtual void DrainStaminaBasedOnAttackType()
         {
 
+        }
+
+
+        public int SetMaxHealthFromHealthLevel()
+        {
+            maxHealth = healthLevel * 10;
+            return maxHealth;
+        }
+        public float SetMaxStaminaFromStaminaLevel()
+        {
+            maxStamina = staminaLevel * 10;
+            return maxStamina;
+        }
+        public float SetMaxFocusPointFromFocusPointLevel()
+        {
+            maxFocusPoint = focusLevel * 10;
+            return maxFocusPoint;
         }
     }
 }

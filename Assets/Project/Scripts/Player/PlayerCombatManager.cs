@@ -8,7 +8,7 @@ namespace PHH
     {
         InputHandler inputHandler;
         CameraHandler cameraHandler;
-        PlayerManager playerManager;
+        PlayerManager player;
         PlayerStatsManager playerStatsManager;
         PlayerAnimatorManager playerAnimatorManager;
         PlayerEquipmentManager playerEquipmentManager;
@@ -42,7 +42,7 @@ namespace PHH
             inputHandler = GetComponent<InputHandler>();
             cameraHandler = FindObjectOfType<CameraHandler>();
             playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
-            playerManager = GetComponent<PlayerManager>();
+            player = GetComponent<PlayerManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -51,8 +51,8 @@ namespace PHH
         }
         private void SuccessfullyCastSpell()
         {
-            playerInventoryManager.currentSpell.SuccessfullyCastSpell(playerAnimatorManager, playerStatsManager, cameraHandler, playerWeaponSlotManager, playerManager.isUsingLeftHand);
-            playerAnimatorManager.animator.SetBool("isFiringSpell", true);
+            playerInventoryManager.currentSpell.SuccessfullyCastSpell(playerAnimatorManager, playerStatsManager, cameraHandler, playerWeaponSlotManager, player.isUsingLeftHand);
+            player.animator.SetBool("isFiringSpell", true);
         }
         public void AttemptBackStabOrRiposte()
         {
@@ -69,15 +69,15 @@ namespace PHH
 
                 if (enemyCharacterManager != null)
                 {
-                    playerManager.transform.position = enemyCharacterManager.backStabCollider.criticalDamageStandPosition.position;
+                    player.transform.position = enemyCharacterManager.backStabCollider.criticalDamageStandPosition.position;
 
-                    Vector3 rotationDirection = playerManager.transform.root.eulerAngles;
-                    rotationDirection = hit.transform.position - playerManager.transform.position;
+                    Vector3 rotationDirection = player.transform.root.eulerAngles;
+                    rotationDirection = hit.transform.position - player.transform.position;
                     rotationDirection.y = 0;
                     rotationDirection.Normalize();
                     Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
-                    playerManager.transform.rotation = targetRotation;
+                    Quaternion targetRotation = Quaternion.Slerp(player.transform.rotation, tr, 500 * Time.deltaTime);
+                    player.transform.rotation = targetRotation;
 
                     int criticalDamage = playerInventoryManager.rightWeapon.criticalDamageMultiplier * rightWeapon.physicalDamage;
                     enemyCharacterManager.pendingCriticalDamage = criticalDamage;
@@ -91,17 +91,17 @@ namespace PHH
             {
                 CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
                 DamageCollider rightWeapon = playerWeaponSlotManager.rightHandDamageCollider;
-                playerManager.transform.position = enemyCharacterManager.riposteCollider.criticalDamageStandPosition.position;
+                player.transform.position = enemyCharacterManager.riposteCollider.criticalDamageStandPosition.position;
 
                 if (enemyCharacterManager != null && enemyCharacterManager.canBeRiposted)
                 {
-                    Vector3 rotationDirection = playerManager.transform.root.eulerAngles;
-                    rotationDirection = hit.transform.position - playerManager.transform.position;
+                    Vector3 rotationDirection = player.transform.root.eulerAngles;
+                    rotationDirection = hit.transform.position - player.transform.position;
                     rotationDirection.y = 0;
                     rotationDirection.Normalize();
                     Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
-                    playerManager.transform.rotation = targetRotation;
+                    Quaternion targetRotation = Quaternion.Slerp(player.transform.rotation, tr, 500 * Time.deltaTime);
+                    player.transform.rotation = targetRotation;
 
                     int criticalDamage = playerInventoryManager.rightWeapon.criticalDamageMultiplier * rightWeapon.physicalDamage;
                     enemyCharacterManager.pendingCriticalDamage = criticalDamage;

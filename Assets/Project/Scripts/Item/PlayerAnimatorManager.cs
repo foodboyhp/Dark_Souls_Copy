@@ -69,8 +69,8 @@ namespace PHH
                 h = horizontalMovement;
             }
 
-            animator.SetFloat(vertical, v, 0.1f, Time.deltaTime);
-            animator.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
+            character.animator.SetFloat(vertical, v, 0.1f, Time.deltaTime);
+            character.animator.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
         }
 
         public void DisableCollision()
@@ -87,11 +87,11 @@ namespace PHH
 
         private void OnAnimatorMove()
         {
-            if (characterManager.isInteracting == false) return;
+            if (character.isInteracting == false) return;
 
             float delta = Time.deltaTime;
             playerLocomotion.rigidbody.drag = 0;
-            Vector3 deltaPosition = animator.deltaPosition;
+            Vector3 deltaPosition = character.animator.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
             playerLocomotion.rigidbody.velocity = velocity;

@@ -19,7 +19,7 @@ namespace PHH
             Destroy(player.playerEffectsManager.currentRangeFX);
 
             player.playerAnimatorManager.PlayTargetAnimation("Bow_TH_Fire_01", true);
-            player.playerAnimatorManager.animator.SetBool("isHoldingArrow", false);
+            player.animator.SetBool("isHoldingArrow", false);
 
             GameObject liveArrow = Instantiate(player.playerInventoryManager.currentAmmo.liveAmmoModel, arrowInstantiationLocation.transform.position,
                 player.cameraHandler.cameraPivotTransform.rotation);

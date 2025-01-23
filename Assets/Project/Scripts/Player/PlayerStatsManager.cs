@@ -11,7 +11,7 @@ namespace PHH
         FocusPointBar focusPointBar;
 
         PlayerAnimatorManager playerAnimatorManager;
-        PlayerManager playerManager;
+        PlayerManager player;
 
         public float staminaRegenerateAmount = 10f;
         public float staminaRegenTimer = 0f;
@@ -22,7 +22,7 @@ namespace PHH
             staminaBar = FindObjectOfType<StaminaBar>();
             focusPointBar = FindObjectOfType<FocusPointBar>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
-            playerManager = GetComponent<PlayerManager>();
+            player = GetComponent<PlayerManager>();
         }
 
         void Start()
@@ -49,25 +49,10 @@ namespace PHH
             {
                 poiseResetTimer = poiseResetTimer - Time.deltaTime;
             }
-            else if (poiseResetTimer <= 0 && !playerManager.isInteracting)
+            else if (poiseResetTimer <= 0 && !player.isInteracting)
             {
                 totalPoiseDefense = armorPoiseBonus;
             }
-        }
-        private int SetMaxHealthFromHealthLevel()
-        {
-            maxHealth = healthLevel * 10;
-            return maxHealth;
-        }
-        private float SetMaxStaminaFromStaminaLevel()
-        {
-            maxStamina = staminaLevel * 10;
-            return maxStamina;
-        }
-        private float SetMaxFocusPointFromFocusPointLevel()
-        {
-            maxFocusPoint = focusPointLevel * 10;
-            return maxFocusPoint;
         }
 
         public override void TakeDamageNoAnimation(int physicalDamage, int fireDamage)
@@ -79,20 +64,20 @@ namespace PHH
 
         public override void TakePoisonDamage(int damage)
         {
-            if (isDead) return;
+            if (player.isDead) return;
             base.TakePoisonDamage(damage);
             healthBar.SetCurrentHealth(currentHealth);
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
                 playerAnimatorManager.PlayTargetAnimation("Dead_01", true);
-                isDead = true;
+                player.isDead = true;
             }
         }
 
         public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
         {
-            if (playerManager.isInvulnerable)
+            if (player.isInvulnerable)
             {
                 return;
             }
@@ -104,7 +89,7 @@ namespace PHH
             {
                 currentHealth = 0;
                 playerAnimatorManager.PlayTargetAnimation("Dead_01", true);
-                isDead = true;
+                player.isDead = true;
             }
         }
 
@@ -116,7 +101,7 @@ namespace PHH
 
         public void RegenerateStamina()
         {
-            if (playerManager.isInteracting)
+            if (player.isInteracting)
             {
                 staminaRegenTimer = 0;
             }
@@ -153,7 +138,7 @@ namespace PHH
 
         public void AddSouls(int souls)
         {
-            soulCount += souls;
+            currentSoulCount += souls;
         }
     }
 }

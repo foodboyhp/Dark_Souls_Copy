@@ -1,6 +1,7 @@
 using PHH;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,9 +9,16 @@ namespace PHH
 {
     public class PlayerManager : CharacterManager
     {
-        Animator animator;
+        [Header("Camera")]
         public CameraHandler cameraHandler;
+
+        [Header("Input")]
         public InputHandler inputHandler;
+
+        [Header("UI")]
+        public UIManager uiManager;
+
+        [Header("Player")]
         public PlayerLocomotionManager playerLocomotion;
         public PlayerInventoryManager playerInventoryManager;
         public PlayerAnimatorManager playerAnimatorManager;
@@ -20,15 +28,21 @@ namespace PHH
         public PlayerEffectsManager playerEffectsManager;
         public PlayerEquipmentManager PlayerEquipmentManager;
 
-        InteractableUI interactableUI;
+        [Header("Colliders")]
+        public BlockingCollider blockingCollider;
+
+        [Header("Interactable")]
+        public InteractableUI interactableUI;
         public GameObject interactableUIGameObject;
         public GameObject itemInteractableGameObject;
+
 
         protected override void Awake()
         {
             base.Awake();
             inputHandler = GetComponent<InputHandler>();
             animator = GetComponent<Animator>();
+            uiManager = FindObjectOfType<UIManager>();
             playerLocomotion = GetComponent<PlayerLocomotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
@@ -52,17 +66,17 @@ namespace PHH
             float delta = Time.deltaTime;
             isInteracting = animator.GetBool("isInteracting");
             canDoCombo = animator.GetBool("canDoCombo");
+            canRotate = animator.GetBool("canRotate");
             isInvulnerable = animator.GetBool("isInvulnerable");
             isFiringSpell = animator.GetBool("isFiringSpell");
             isHoldingArrow = animator.GetBool("isHoldingArrow");
             animator.SetBool("isTwoHandingWeapon", isTwoHandingWeapon);
             animator.SetBool("isInAir", isInAir);
-            animator.SetBool("isDead", playerStatsManager.isDead);
+            animator.SetBool("isDead", isDead);
             animator.SetBool("isBlocking", isBlocking);
 
 
             inputHandler.TickInput();
-            playerAnimatorManager.canRotate = animator.GetBool("canRotate");
             playerLocomotion.HandleFalling(playerLocomotion.moveDirection);
             playerLocomotion.HandleRollingAndSprinting();
             playerLocomotion.HandleJumping();

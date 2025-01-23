@@ -39,7 +39,6 @@ namespace PHH
             item = null;
             icon.sprite = null;
             icon.enabled = false;
-            gameObject.SetActive(false);
         }
 
         public void SelectThisSlot()

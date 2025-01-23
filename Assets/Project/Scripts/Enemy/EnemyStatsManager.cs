@@ -6,18 +6,14 @@ namespace PHH
 {
     public class EnemyStatsManager : CharacterStatsManager
     {
-        EnemyManager enemyManager;
-        EnemyAnimatorManager enemyAnimatorManager;
-        EnemyBossManager enemyBossManager;
+        EnemyManager enemy;
         public UIEnemyHealthBar enemyHealthBar;
 
         public bool isBoss = false;
         protected override void Awake()
         {
             base.Awake();
-            enemyManager = GetComponent<EnemyManager>();
-            enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
-            enemyBossManager = GetComponent<EnemyBossManager>();
+            enemy = GetComponent<EnemyManager>();
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
         }
@@ -35,7 +31,7 @@ namespace PHH
             {
                 poiseResetTimer = poiseResetTimer - Time.deltaTime;
             }
-            else if (poiseResetTimer <= 0 && !enemyManager.isInteracting)
+            else if (poiseResetTimer <= 0 && !enemy.isInteracting)
             {
                 totalPoiseDefense = armorPoiseBonus;
             }
@@ -54,35 +50,35 @@ namespace PHH
             {
                 enemyHealthBar.SetCurrentHealth(currentHealth);
             }
-            else if (isBoss && enemyBossManager != null)
+            else if (isBoss && enemy.enemyBossManager != null)
             {
-                enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
+                enemy.enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
             }
         }
 
         public override void TakePoisonDamage(int damage)
         {
-            if (isDead) return;
+            if (enemy.isDead) return;
             base.TakePoisonDamage(damage);
             if (!isBoss)
             {
                 enemyHealthBar.SetCurrentHealth(currentHealth);
             }
-            else if (isBoss && enemyBossManager != null)
+            else if (isBoss && enemy.enemyBossManager != null)
             {
-                enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
+                enemy.enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
             }
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                enemyAnimatorManager.PlayTargetAnimation("Dead_01", true);
-                isDead = true;
+                enemy.enemyAnimatorManager.PlayTargetAnimation("Dead_01", true);
+                enemy.isDead = true;
             }
         }
 
         public void BreakGuard()
         {
-            enemyAnimatorManager.PlayTargetAnimation("Break_Guard", true);
+            enemy.enemyAnimatorManager.PlayTargetAnimation("Break_Guard", true);
         }
 
         public override void TakeDamage(int physicalDamage, int fireDamage, string damageAnimation)
@@ -92,12 +88,12 @@ namespace PHH
             {
                 enemyHealthBar.SetCurrentHealth(currentHealth);
             }
-            else if (isBoss && enemyBossManager != null)
+            else if (isBoss && enemy.enemyBossManager != null)
             {
-                enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
+                enemy.enemyBossManager.UpdateBossHealthBar(currentHealth, maxHealth);
             }
 
-            enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
+            enemy.enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if (currentHealth <= 0)
             {
@@ -108,8 +104,8 @@ namespace PHH
         private void HandleDeath()
         {
             currentHealth = 0;
-            enemyAnimatorManager.PlayTargetAnimation("Dead_01", true);
-            isDead = true;
+            enemy.enemyAnimatorManager.PlayTargetAnimation("Dead_01", true);
+            enemy.isDead = true;
         }
     }
 }

@@ -9,35 +9,35 @@ namespace PHH
         public PursueTargetState pursueTargetState;
         public LayerMask detectionLayer;
 
-        public override State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
+        public override State Tick(EnemyManager enemy)
         {
-            if (enemyManager.isInteracting)
+            if (enemy.isInteracting)
             {
                 return this;
             }
             #region Handle EnemyTargetDetection
-            Collider[] colliders = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.detectionRadius, detectionLayer);
+            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, enemy.detectionRadius, detectionLayer);
 
             for (int i = 0; i < colliders.Length; i++)
             {
                 CharacterStatsManager characterStats = colliders[i].transform.GetComponent<CharacterStatsManager>();
                 if (characterStats != null)
                 {
-                    if (characterStats.teamIDNumber != enemyStats.teamIDNumber)
+                    if (characterStats.teamIDNumber != enemy.enemyStatsManager.teamIDNumber)
                     {
-                        Vector3 targetDirection = characterStats.transform.position - enemyManager.transform.position;
-                        float viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
+                        Vector3 targetDirection = characterStats.transform.position - enemy.transform.position;
+                        float viewableAngle = Vector3.Angle(targetDirection, enemy.transform.forward);
 
-                        if (viewableAngle > enemyManager.minimumDetectionAngle && viewableAngle < enemyManager.maximumDetectionAngle)
+                        if (viewableAngle > enemy.minimumDetectionAngle && viewableAngle < enemy.maximumDetectionAngle)
                         {
-                            enemyManager.currentTarget = characterStats;
+                            enemy.currentTarget = characterStats;
                         }
                     }
                 }
             }
             #endregion
             #region Handle SwitchToNextState
-            if (enemyManager.currentTarget != null)
+            if (enemy.currentTarget != null)
             {
                 return pursueTargetState;
             }
